@@ -21,12 +21,6 @@ void ValidateTest(const char* file)
 
 int main(int argc, const char** argv)
 {
-	std::cout << argc << std::endl;
-	for (int i = 0; i < argc; ++i)
-	{
-		std::cout << argv[i] << std::endl;
-	}
-
 	if (argc >= 3)
 	{
 		char modeArg = argv[1][0];
@@ -36,6 +30,10 @@ int main(int argc, const char** argv)
 		case 'r': RepackTest(argv[2]); break;
 		case 'v': ValidateTest(argv[2]); break;
 		}
+	}
+	else
+	{
+		UnpackTest("lolThisFileDontExist");
 	}
 
 	int end;

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PawnManager"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="PawnManager by Meem0" Height="450" Width="525">
+        Title="PawnManager by Meem0" Height="400" Width="500">
     <Window.Resources>
         <local:RadioButtonCheckedConverter x:Key="RadioConverter" />
     </Window.Resources>
@@ -51,34 +51,6 @@
                                         ToolTip="Open the containing folder of the currently loaded .sav file."/>
                             </StackPanel>
                         </UniformGrid>
-                        <!-- <UniformGrid Rows="2" Margin="10, 0">
-                            <RadioButton x:Name="radioSavDefault" Content="Use default .sav path" GroupName="radGroupSavLocationType">
-                                <RadioButton.IsChecked>
-                                    <Binding Path="SavTab.UseCustomSavPath" Converter="{StaticResource RadioConverter}">
-                                        <Binding.ConverterParameter>
-                                            <sys:Boolean>False</sys:Boolean>
-                                        </Binding.ConverterParameter>
-                                    </Binding>
-                                </RadioButton.IsChecked>
-                            </RadioButton>
-                            <DockPanel>
-                                <RadioButton x:Name="radioSavSpecify" Content="Specify:" GroupName="radGroupSavLocationType" DockPanel.Dock="Left" VerticalAlignment="Center">
-                                    <RadioButton.IsChecked>
-                                        <Binding Path="SavTab.UseCustomSavPath" Converter="{StaticResource RadioConverter}">
-                                            <Binding.ConverterParameter>
-                                                <sys:Boolean>True</sys:Boolean>
-                                            </Binding.ConverterParameter>
-                                        </Binding>
-                                    </RadioButton.IsChecked>
-                                </RadioButton>
-                                <Button x:Name="butSavPack" DockPanel.Dock="Right" Click="butSavPack_Click" Margin="5,0" Width="65"
-                                        IsEnabled="{Binding SavTab.IsValidSav}" Content="{Binding SavTab.PackButtonLabel}"/>
-                                <Button x:Name="butSavBrowse" Content="Browse" DockPanel.Dock="Right" Click="butSavBrowse_Click" Margin="5,0" Width="65"
-                                        IsEnabled="{Binding SavTab.UseCustomSavPath}"/>
-                                <TextBox x:Name="textBoxCustomSavPath" Height="23" TextWrapping="NoWrap" Margin="5,0"
-                                         IsEnabled="{Binding SavTab.UseCustomSavPath}" Text="{Binding SavTab.CustomSavPath}" />
-                            </DockPanel>
-                        </UniformGrid> -->
                     </GroupBox>
                     <GroupBox x:Name="groupBoxSavPawn" Header="Source Pawn" DockPanel.Dock="Top">
                         <UniformGrid Rows="3" Margin="10,0">
