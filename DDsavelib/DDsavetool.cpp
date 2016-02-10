@@ -254,3 +254,12 @@ __declspec(dllexport) int Validate(const char *path)
 
 	return 0;
 }
+
+extern "C" __declspec(dllexport) int UnpackTest(const char *path, char *unpackedSav)
+{
+	unpackedSav[0] = 'h';
+	unpackedSav[1] = 'i';
+	unpackedSav[2] = '\0';
+	return 0;
+}
+
