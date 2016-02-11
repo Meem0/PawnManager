@@ -20,14 +20,14 @@ Notes:
 #define SAVESIZE 524288
 #define MAXPATH 260
 
-__declspec(dllexport) int ERR_READ = 1;
-__declspec(dllexport) int ERR_WRITE = 2;
-__declspec(dllexport) int ERR_FORMAT = 3;
-__declspec(dllexport) int ERR_UNPACK = 4;
-__declspec(dllexport) int ERR_STREAM = EZ_STREAM_ERROR;
-__declspec(dllexport) int ERR_DATA = EZ_DATA_ERROR;
-__declspec(dllexport) int ERR_MEMORY = EZ_MEM_ERROR;
-__declspec(dllexport) int ERR_BUFFER = EZ_BUF_ERROR;
+int ERR_READ = 1;
+int ERR_WRITE = 2;
+int ERR_FORMAT = 3;
+int ERR_UNPACK = 4;
+int ERR_STREAM = EZ_STREAM_ERROR;
+int ERR_DATA = EZ_DATA_ERROR;
+int ERR_MEMORY = EZ_MEM_ERROR;
+int ERR_BUFFER = EZ_BUF_ERROR;
 
 #pragma pack(push, 1)
 struct header_s
@@ -118,7 +118,7 @@ int UnpackSave(header_s *header, unsigned char *data, unsigned char **txtData, u
 	return 0;
 }
 
-__declspec(dllexport) int Unpack(const char *path, unsigned char *output)
+__declspec(dllexport) int Unpack(const char *path, char *output)
 {
 	unsigned char *data = 0;
 	unsigned int dataSize = 0;

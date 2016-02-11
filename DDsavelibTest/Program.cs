@@ -15,14 +15,20 @@ namespace DDsavelibTest
         {
             int result = 0;
             IntPtr unpackedSavPtr = Marshal.AllocHGlobal(ALLOC_SIZE);
-            result = UnpackTest("Input.sav", unpackedSavPtr);
+            result = Unpack("../notes/input.sav", unpackedSavPtr);
 
             string unpackedSav = Marshal.PtrToStringAnsi(unpackedSavPtr);
-
-            Console.WriteLine(unpackedSav);
-
-            /*XElement root = XElement.Parse(unpackedSav);
-            Console.WriteLine(root.Name);*/
+            
+            XElement root = XElement.Parse(unpackedSav);
+            foreach (XElement current in root.Descendants())
+            {
+                Console.Write(current.Name);
+                foreach (XAttribute attribute in current.Attributes())
+                {
+                    Console.Write("{0}={1} ", attribute.Name, attribute.Value);
+                }
+                Console.WriteLine();
+            }
 
             Console.ReadKey();
         }

@@ -42,10 +42,10 @@ namespace PawnManager
             {
                 validUnpacked = true;
             }
-            else if (SavTool.ValidateSav(savPath) == null)
+            /*else if (SavTool.ValidateSav(savPath) == null)
             {
                 validPacked = true;
-            }
+            }*/
             
             if (setIfInvalid || validPacked || validUnpacked)
             {
@@ -152,7 +152,7 @@ namespace PawnManager
                 PawnIO.SavePawnSav(exportPawn, SavSourcePawn, extractedSavPath);
                 if (IsValidPackedSav)
                 {
-                    SavTool.RepackSav(extractedSavPath);
+                    //SavTool.RepackSav(extractedSavPath);
                 }
             }
         }
@@ -164,7 +164,7 @@ namespace PawnManager
 
         public void Repack()
         {
-            SavTool.RepackSav(SavPath);
+            //SavTool.RepackSav(SavPath);
         }
 
         private const string DDDAID = "367500";

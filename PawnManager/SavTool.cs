@@ -1,109 +1,91 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace PawnManager
 {
     public static class SavTool
     {
+        const int AllocSize = 25 * 1024 * 1024;
         const string DLLName = "DDsavelib.dll";
 
-        static string[] Errors =
+        [DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int Unpack([MarshalAs(UnmanagedType.LPStr)] string path, IntPtr output);
+        
+        static Dictionary<int, string> Errors = new Dictionary<int, string>
         {
-            null,
-            "Unable to read file",
-            "Unable to write to file",
-            "Invalid format",
-            "Unpacking error",
-            "Unknown error"
+            { 1, "Unable to read file" },
+            { 2, "Unable to write to file" },
+            { 3, "Invalid format" },
+            { 4, "Unpacking error" },
+            { -2, "EZ stream error" },
+            { -3, "EZ data error" },
+            { -4, "EZ memory error" },
+            { -5, "EZ buffer error" }
         };
 
         private static string CodeToMessage(int err)
         {
-            if (err < 0 || err > 5)
-                err = 5;
-            return Errors[err];
+            string ret = "";
+            if (!Errors.TryGetValue(err, out ret))
+                ret = "Unknown error";
+            return ret;
         }
 
-        [DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int Unpack([MarshalAs(UnmanagedType.LPStr)] string path);
-
-        public static bool UnpackSav(string savPath)
+        public static XElement UnpackSav(string savPath)
         {
+            bool isError = false;
             int code = 0;
-            try
+            XElement unpackedSav = null;
+
             {
-                code = Unpack(savPath);
+                IntPtr output = Marshal.AllocHGlobal(AllocSize);
+                try
+                {
+                    code = Unpack(savPath, output);
+                    if (code == 0)
+                    {
+                        string unpackedText = Marshal.PtrToStringAnsi(output);
+                        unpackedSav = XElement.Parse(unpackedText);
+                    }
+                }
+                catch (System.Xml.XmlException ex)
+                {
+                    isError = true;
+                    MessageBox.Show(
+                        string.Format("Error while parsing unpacked .sav as XML:\n{0}", ex.Message),
+                        "XML error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+                catch (Exception ex)
+                {
+                    isError = true;
+                    MessageBox.Show(
+                        string.Format("Error while trying to unpack using DDsavetool:\n{0}", ex.Message),
+                        "DDsavetool error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(output);
+                }
             }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show(
-                    string.Format("Error while trying to unpack using DDsavetool:\n{0}", ex.Message),
-                    "DDsavetool error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return false;
-            }
-            if (code != 0)
+
+            if (!isError && code != 0)
             {
                 MessageBox.Show(
                     CodeToMessage(code),
                     "Error unpacking .sav",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+                isError = true;
             }
-            return code == 0;
-        }
 
-        [DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int Repack([MarshalAs(UnmanagedType.LPStr)] string path);
-
-        public static bool RepackSav(string savPath)
-        {
-            int code = 0;
-            try
-            {
-                code = Repack(savPath);
-            }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show(
-                    string.Format("Error while trying to repack using DDsavetool:\n{0}", ex.Message),
-                    "DDsavetool error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return false;
-            }
-            if (code != 0)
-            {
-                MessageBox.Show(
-                    CodeToMessage(code),
-                    "Error repacking .sav",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
-            return code == 0;
-        }
-
-        [DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int Validate([MarshalAs(UnmanagedType.LPStr)] string path);
-
-        public static string ValidateSav(string savPath)
-        {
-            int code = 0;
-            try
-            {
-                code = Validate(savPath);
-            }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show(
-                    string.Format("Error while trying to validate a .sav using DDsavetool:\n{0}", ex.Message),
-                    "DDsavetool error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return "DLL error";
-            }
-            return CodeToMessage(code);
+            return unpackedSav;
         }
     }
 }
