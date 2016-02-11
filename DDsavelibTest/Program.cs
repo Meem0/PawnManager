@@ -9,7 +9,7 @@ namespace DDsavelibTest
         const int ALLOC_SIZE = 30 * 1024 * 1024;
 
         [DllImport("DDsavelib.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int UnpackTest([MarshalAs(UnmanagedType.LPStr)]string savPath, IntPtr unpackedSavPtr);
+        private static extern int Unpack([MarshalAs(UnmanagedType.LPStr)]string savPath, IntPtr unpackedSavPtr);
         
         static void Main(string[] args)
         {
