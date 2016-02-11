@@ -15,18 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DDsavetool.h">
+    <ClInclude Include="easyzlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="easyzlib.h">
+    <ClInclude Include="DDsavelib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DDsavetool.cpp">
+    <ClCompile Include="easyzlib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="easyzlib.c">
+    <ClCompile Include="DDsavelib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

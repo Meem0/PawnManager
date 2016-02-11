@@ -146,11 +146,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DDsavetool.h" />
+    <ClInclude Include="DDsavelib.h" />
     <ClInclude Include="easyzlib.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DDsavetool.cpp" />
+    <ClCompile Include="DDsavelib.cpp" />
     <ClCompile Include="easyzlib.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

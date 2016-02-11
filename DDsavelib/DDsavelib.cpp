@@ -1,7 +1,7 @@
 // DDsavetool.cpp : Defines the exported functions for the DLL application.
 //
 
-#include "DDsavetool.h"
+#include "DDsavelib.h"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -24,6 +24,10 @@ __declspec(dllexport) int ERR_READ = 1;
 __declspec(dllexport) int ERR_WRITE = 2;
 __declspec(dllexport) int ERR_FORMAT = 3;
 __declspec(dllexport) int ERR_UNPACK = 4;
+__declspec(dllexport) int ERR_STREAM = EZ_STREAM_ERROR;
+__declspec(dllexport) int ERR_DATA = EZ_DATA_ERROR;
+__declspec(dllexport) int ERR_MEMORY = EZ_MEM_ERROR;
+__declspec(dllexport) int ERR_BUFFER = EZ_BUF_ERROR;
 
 #pragma pack(push, 1)
 struct header_s
