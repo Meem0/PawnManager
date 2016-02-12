@@ -27,61 +27,55 @@ namespace DDsavelibTest
             Console.WriteLine("Validate result: {0}", result);
         }
 
-        static XElement TestUnpack(string path)
+        static XElement TestUnpack(string path, out string xmlText)
         {
             IntPtr unpackedSavPtr = Marshal.AllocHGlobal(AllocSize);
             int result = Unpack(path, unpackedSavPtr);
 
             Console.WriteLine("Unpack result: {0}", result);
 
-            string unpackedSav = Marshal.PtrToStringAnsi(unpackedSavPtr);
-
-
-            XElement root = XElement.Parse(unpackedSav, LoadOptions.PreserveWhitespace);
-            /*int itrs = 0;
-            int maxItrs = 50;
-            foreach (XElement current in root.Descendants())
-            {
-                Console.Write(current.Name);
-                foreach (XAttribute attribute in current.Attributes())
-                {
-                    Console.Write("{0}={1} ", attribute.Name, attribute.Value);
-                    ++itrs;
-                }
-                Console.WriteLine();
-
-                if (itrs > maxItrs)
-                    break;
-            }*/
+            xmlText = Marshal.PtrToStringAnsi(unpackedSavPtr);
+            
+            XElement root = XElement.Parse(xmlText, LoadOptions.PreserveWhitespace);
             
             return root;
         }
 
-        static void TestRepack(string path, XElement savRoot)
+        static void TestRepack(string path, string savText)
         {
-            string str = savRoot.ToString(SaveOptions.DisableFormatting);
-            int result = Repack(path, str, (uint)str.Length);
+            int result = Repack(path, savText, (uint)savText.Length);
             Console.WriteLine("Repack result: {0}", result);
         }
 
         static void Main(string[] args)
         {
-            XElement unpacked = TestUnpack(Path);
+            string xmlText;
+            XElement unpacked = TestUnpack(Path, out xmlText);
             string outputPath = Path + "_unpacked.xml";
-            File.WriteAllText(outputPath, unpacked.ToString(SaveOptions.DisableFormatting).Replace("\r", ""));
-
-            //Console.ReadKey();
-
+            File.WriteAllText(outputPath, xmlText);
+            
             if (unpacked != null)
             {
                 string repackPath = Path + "_repacked.sav";
-                TestRepack(repackPath, unpacked);
-                //Console.ReadKey();
-                XElement unpacked2 = TestUnpack(repackPath);
-                unpacked2.Save(repackPath + "_unpacked.xml", SaveOptions.DisableFormatting);
+                TestRepack(repackPath, xmlText);
+                XElement unpacked2 = TestUnpack(repackPath, out xmlText);
+                outputPath = repackPath + "_unpackedFromXML.xml";
+                unpacked2.Save(outputPath, SaveOptions.DisableFormatting);
+                File.WriteAllText(outputPath, xmlText);
             }
 
-            //Console.ReadKey();
+            /*string dllPath = Path + "_dll.xml";
+            string savDLL = File.ReadAllText(dllPath);
+            string xmlPath = Path + "_repacked.sav_unpackedFromXML.xml";
+            string savFromXML = File.ReadAllText(xmlPath);
+            Console.WriteLine("DLL: {0}\nXML: {1}", savDLL.GetHashCode(), savFromXML.GetHashCode());
+
+            TestRepack(dllPath + "_repacked.sav", savDLL);
+            TestRepack(xmlPath + "_repacked.sav", savFromXML);
+            
+            outputs were identical
+
+            */
         }
     }
 }
