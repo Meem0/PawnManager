@@ -12,8 +12,11 @@ namespace PawnManager
         const string DLLName = "DDsavelib.dll";
 
         [DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int Unpack([MarshalAs(UnmanagedType.LPStr)] string path, IntPtr output);
-        
+        private static extern int DLLUnpack([MarshalAs(UnmanagedType.LPStr)] string path, IntPtr output);
+
+        [DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int DLLValidate([MarshalAs(UnmanagedType.LPStr)] string path);
+
         static Dictionary<int, string> Errors = new Dictionary<int, string>
         {
             { 1, "Unable to read file" },
@@ -34,7 +37,7 @@ namespace PawnManager
             return ret;
         }
 
-        public static XElement UnpackSav(string savPath)
+        public static XElement Unpack(string savPath)
         {
             bool isError = false;
             int code = 0;
@@ -44,11 +47,11 @@ namespace PawnManager
                 IntPtr output = Marshal.AllocHGlobal(AllocSize);
                 try
                 {
-                    code = Unpack(savPath, output);
+                    code = DLLUnpack(savPath, output);
                     if (code == 0)
                     {
                         string unpackedText = Marshal.PtrToStringAnsi(output);
-                        unpackedSav = XElement.Parse(unpackedText);
+                        unpackedSav = XElement.Parse(unpackedText, LoadOptions.PreserveWhitespace);
                     }
                 }
                 catch (System.Xml.XmlException ex)
@@ -86,6 +89,25 @@ namespace PawnManager
             }
 
             return unpackedSav;
+        }
+
+        public static bool Validate(string savPath)
+        {
+            int errorCode = 0;
+            try
+            {
+                DLLValidate(savPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    string.Format("Error while validating .sav:\n{0}", ex.Message),
+                    "DDsavetool error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                errorCode = 1;
+            }
+            return errorCode == 0;
         }
     }
 }

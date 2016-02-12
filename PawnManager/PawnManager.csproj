@@ -75,6 +75,7 @@
     </ApplicationDefinition>
     <Compile Include="SavTab.cs" />
     <Compile Include="SavTool.cs" />
+    <Compile Include="XmlHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

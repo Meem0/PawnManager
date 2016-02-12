@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.IO;
+using System.Xml.Linq;
 
 namespace PawnManager
 {
@@ -17,156 +18,71 @@ namespace PawnManager
             }
         }
 
-        private string savPath = "";
-        public string SavPath
-        {
-            get { return savPath; }
-            set { ValidateAndSetSav(value, true); }
-        }
-
-        /// <summary>
-        /// Determines if a file is a valid .sav file, and whether it is packed or unpacked.
-        /// Sets SavPath if the input is valid, or if setIfInvalid is true.
-        /// </summary>
-        /// <param name="savPath">The path to the .sav file</param>
-        /// <param name="setIfInvalid">If true, sets SavPath even if the file is invalid</param>
-        /// <returns>True if SavPath was updated</returns>
-        public bool ValidateAndSetSav(string savPath, bool setIfInvalid)
-        {
-            savPath = savPath.Replace("\"", "");
-
-            bool validPacked = false;
-            bool validUnpacked = false;
-
-            if (PawnIO.ValidateSav(savPath))
-            {
-                validUnpacked = true;
-            }
-            /*else if (SavTool.ValidateSav(savPath) == null)
-            {
-                validPacked = true;
-            }*/
-            
-            if (setIfInvalid || validPacked || validUnpacked)
-            {
-                this.savPath = savPath;
-
-                bool validBefore = IsValidSav;
-                
-                IsValidPackedSav = validPacked;
-                IsValidUnpackedSav = validUnpacked;
-
-                NotifyPropertyChanged("SavPath");
-
-                if (validBefore != IsValidSav)
-                {
-                    NotifyPropertyChanged("IsValidSav");
-                }
-                
-                return IsValidSav;
-            }
-            else return false;
-        }
-
-        private bool isValidPackedSav;
-        public bool IsValidPackedSav
-        {
-            get { return isValidPackedSav; }
-            private set
-            {
-                if (value != isValidPackedSav)
-                {
-                    isValidPackedSav = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        private bool isValidUnpackedSav;
-        public bool IsValidUnpackedSav
-        {
-            get { return isValidUnpackedSav; }
-            private set
-            {
-                if (value != isValidUnpackedSav)
-                {
-                    isValidUnpackedSav = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
-
-        public bool IsValidSav { get { return IsValidPackedSav || IsValidUnpackedSav; } }
+        public string SavPath { get; set; } = "";
         
         public SavSlot SavSourcePawn { get; set; } = SavSlot.MainPawn;
 
         public Pawn Import()
         {
-            string extractedSavPath = SavPath;
-            if (IsValidPackedSav)
-            {
-                if (!SavTool.UnpackSav(SavPath))
-                {
-                    return null;
-                }
-                extractedSavPath += ".xml";
-            }
+            bool? isPacked;
+            XElement savRoot = LoadSav(out isPacked);
 
-            if (!PawnIO.DoesSavContainPawn(extractedSavPath, SavSourcePawn))
-            {
-                MessageBox.Show(
-                    "The selected Pawn is not present in the save file.",
-                    "Error importing Pawn",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                return null;
-            }
-
-            return PawnIO.LoadPawnSav(SavSourcePawn, extractedSavPath);
+            return savRoot == null ? null : PawnIO.LoadPawnSav(SavSourcePawn, savRoot);
         }
 
         public void Export(Pawn exportPawn)
         {
-            if (exportPawn != null)
+            bool? isPacked;
+            XElement savRoot = LoadSav(out isPacked);
+
+            if (savRoot == null)
             {
-                string extractedSavPath = SavPath;
-                if (IsValidPackedSav)
-                {
-                    if (!SavTool.UnpackSav(SavPath))
-                    {
-                        return;
-                    }
-                    extractedSavPath += ".xml";
-                }
+                return;
+            }
 
-                if (!PawnIO.DoesSavContainPawn(extractedSavPath, SavSourcePawn))
-                {
-                    MessageBox.Show(
-                        "Exporting to a Pawn slot you don't have yet will crash your game.  I'll see if it's possible to fix this later.",
-                        "Error exporting Pawn",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                    return;
-                }
+            PawnIO.SavePawnSav(exportPawn, SavSourcePawn, ref savRoot);
 
-                PawnIO.SavePawnSav(exportPawn, SavSourcePawn, extractedSavPath);
-                if (IsValidPackedSav)
-                {
-                    //SavTool.RepackSav(extractedSavPath);
-                }
+            if (isPacked == true)
+            {
+                // repack
+            }
+            else if (isPacked == false)
+            {
+                savRoot.Save(SavPath, SaveOptions.DisableFormatting);
             }
         }
-
-        public void Unpack()
+        
+        private XElement LoadSav(out bool? isPacked)
         {
-            SavTool.UnpackSav(SavPath);
-        }
+            isPacked = null;
 
-        public void Repack()
-        {
-            //SavTool.RepackSav(SavPath);
-        }
+            if (SavTool.Validate(SavPath))
+            {
+                isPacked = true;
+                return SavTool.Unpack(SavPath);
+            }
+            else
+            {
+                XElement ret = null;
 
+                try
+                {
+                    ret = XElement.Load(SavPath, LoadOptions.PreserveWhitespace);
+                    isPacked = false;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        string.Format("Error while unpacking .sav:\n{0}", ex.Message),
+                        "Error unpacking .sav",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+
+                return ret;
+            }
+        }
+        
         private const string DDDAID = "367500";
         private bool triedAlready = false;
         private string cachedSavPath = null;

@@ -13,28 +13,15 @@ namespace PawnManager
         Pawn1,
         Pawn2
     }
-
-    /// <summary>
-    /// The available rom Pawn files that correspond to level scaling
-    /// </summary>
-    public enum RomSlot
-    {
-        Rom0,  Rom1,  Rom2,  Rom3,  Rom4,  Rom5,  Rom6,  Rom7,  Rom8,  Rom9,  Rom10,
-        Rom11, Rom12, Rom13, Rom14, Rom15, Rom16, Rom17, Rom18, Rom19, Rom20, Rom21,
-        Rom22, Rom23, Rom24, Rom25, Rom26, Rom27, Rom28, Rom29, Rom30, Rom31, Rom32
-    }
     
+    /// <summary>
+    /// Contains the logic of saving and loading Pawns to and from various sources
+    /// </summary>
     public static class PawnIO
     {
-        #region global consts
-
         public const string PawnFilter = "Pawn file|*.xml|All Files|*.*";
         public const string SavFilter = "DDDA save file|*.xml;*.sav|All Files|*.*";
-
-        #endregion
-
-        #region interface
-
+        
         /// <summary>
         /// Load a Pawn from a Pawn file
         /// </summary>
@@ -80,73 +67,26 @@ namespace PawnManager
         /// Load a Pawn from the .sav file
         /// </summary>
         /// <param name="savSlot">The Pawn to load</param>
-        /// <param name="savFile">The path to the .sav file</param>
+        /// <param name="savRoot">The .sav file</param>
         /// <returns>The loaded Pawn, or null if no Pawn was loaded</returns>
-        public static Pawn LoadPawnSav(SavSlot savSlot, string savFile)
+        public static Pawn LoadPawnSav(SavSlot savSlot, XElement savRoot)
         {
-            XElement savRoot = XElement.Load(savFile);
             XElement savPawn = SavGetPawnEdit(savRoot, savSlot);
-
             return new Pawn() { EditClass = savPawn };
         }
-
+        
         /// <summary>
         /// Save a Pawn to the .sav file
         /// </summary>
         /// <param name="pawn">The Pawn to save</param>
         /// <param name="savSlot">The Pawn to save to</param>
-        /// <param name="savFile">The path to the .sav file</param>
-        public static void SavePawnSav(Pawn pawn, SavSlot savSlot, string savFile)
+        /// <param name="savRoot">The loaded .sav file</param>
+        public static void SavePawnSav(Pawn pawn, SavSlot savSlot, ref XElement savRoot)
         {
-            XElement savRoot = XElement.Load(savFile);
             XElement savPawn = SavGetPawnEdit(savRoot, savSlot);
-            
             savPawn.ReplaceWith(pawn.EditClass);
-            savRoot.Save(savFile);
         }
-
-        /// <summary>
-        /// Load a Pawn from romNoraPawnData.arc
-        /// </summary>
-        /// <param name="romSlot">The rom Pawn file to use</param>
-        /// <param name="index">The index in the rom Pawn file</param>
-        /// <returns>The loaded Pawn</returns>
-        public static Pawn LoadPawnRom(RomSlot romSlot, uint index)
-        {
-            throw new System.NotImplementedException("romPawn not supported");
-        }
-
-        /// <summary>
-        /// Save a Pawn to romNoraPawnData.arc
-        /// </summary>
-        /// <param name="pawn">The Pawn to save</param>
-        /// <param name="romSlot">The rom Pawn file to use</param>
-        /// <param name="index">The index in the rom Pawn file</param>
-        public static void SavePawnRom(Pawn pawn, RomSlot romSlot, uint index)
-        {
-            throw new System.NotImplementedException("romPawn not supported");
-        }
-
-        /// <summary>
-        /// Check if a file contains a valid unpacked .sav
-        /// </summary>
-        /// <param name="savPath">The file to validate</param>
-        /// <returns>True if the file contains a valid unpacked .sav</returns>
-        public static bool ValidateSav(string savPath)
-        {
-            try
-            {
-                XElement savRoot = XElement.Load(savPath);
-                SavGetPawnClass(savRoot, SavSlot.MainPawn);
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
+        
         /// <summary>
         /// Check if a file is a valid Pawn file
         /// </summary>
@@ -169,15 +109,7 @@ namespace PawnManager
 
             return true;
         }
-
-        public static bool DoesSavContainPawn(string savPath, SavSlot savSlot)
-        {
-            System.Console.WriteLine("DoesSavContainPawn {0}", savSlot.ToString());
-            XElement savRoot = XElement.Load(savPath);
-            XElement pawnEdit = SavGetPawnEdit(savRoot, savSlot);
-            return GetPawnName(pawnEdit).Length > 0;
-        }
-
+        
         public static string GetPawnName(XElement pawnEdit)
         {
             char[] nameArray = new char[25];
@@ -193,26 +125,15 @@ namespace PawnManager
             return new string(nameArray, 0, index);
         }
 
-        #endregion
-
-        #region implementation
-
         private static XElement SavGetPawnEdit(XElement savRoot, SavSlot savSlot)
         {
-            XElement pawnClass = SavGetPawnClass(savRoot, savSlot);
-            pawnClass = GetChildWithNameAttribute(pawnClass, "mEdit");
-            return pawnClass;
-        }
+            XElement pawnArray = savRoot.GetChildByName("mPlayerDataManual");
+            pawnArray = pawnArray.GetChildByName("mPlCmcEditAndParam");
+            pawnArray = pawnArray.GetChildByName("mCmc");
 
-        private static XElement SavGetPawnClass(XElement savRoot, SavSlot savSlot)
-        {
-            XElement pawnClass = null;
-            XElement pawnArray = GetChildWithNameAttribute(savRoot, "mPlayerDataManual");
-            pawnArray = GetChildWithNameAttribute(pawnArray, "mPlCmcEditAndParam");
-            pawnArray = GetChildWithNameAttribute(pawnArray, "mCmc");
-                
             int index = (int)savSlot;
             int currentIndex = 0;
+            XElement pawnClass = null;
             foreach (XElement child in pawnArray.Elements())
             {
                 if (currentIndex++ == index)
@@ -222,23 +143,8 @@ namespace PawnManager
                 }
             }
 
+            pawnClass = pawnClass.GetChildByName("mEdit");
             return pawnClass;
         }
-
-        private static XElement GetChildWithNameAttribute(XElement parent, string nameAttribute)
-        {
-            foreach (XElement child in parent.Elements())
-            {
-                if ((string)child.Attribute("name") == nameAttribute)
-                    return child;
-            }
-
-            throw new System.Xml.XmlException(string.Format(
-                "Element named \"{0}\" does not have a child named \"{1}\"",
-                nameAttribute,
-                (string)parent.Attribute("name")));
-        }
-
-        #endregion
     }
 }
