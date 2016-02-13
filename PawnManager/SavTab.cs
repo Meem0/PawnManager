@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.IO;
 using System.Xml.Linq;
 
@@ -18,33 +17,65 @@ namespace PawnManager
             }
         }
 
-        public string SavPath { get; set; } = "";
+        private string savPath = "";
+        public string SavPath
+        {
+            get { return savPath; }
+            set
+            {
+                savPath = value;
+                NotifyPropertyChanged();
+                IsSavPathValidFile = File.Exists(savPath);
+            }
+        }
+
+        private bool isSavPathValidFile;
+        public bool IsSavPathValidFile
+        {
+            get { return isSavPathValidFile; }
+            private set
+            {
+                isSavPathValidFile = value;
+                NotifyPropertyChanged();
+            }
+        }
         
         public SavSlot SavSourcePawn { get; set; } = SavSlot.MainPawn;
 
-        public Pawn Import()
+        /// <summary>
+        /// Loads the .sav file specified by SavPath, using DDsavelib if it is packed,
+        /// and returns the Pawn in the slot specified by SavSourcePawn.
+        /// Throws an exception if anything fails.
+        /// </summary>
+        /// <returns>The loaded Pawn</returns>
+        public IPawn Import()
         {
             bool? isPacked;
-            XElement savRoot = LoadSav(out isPacked);
+            string savText = LoadSav(out isPacked);
+            XElement savRoot = XElement.Parse(savText);
 
-            return savRoot == null ? null : PawnIO.LoadPawnSav(SavSourcePawn, savRoot);
+            return PawnIO.LoadPawnSav(SavSourcePawn, savRoot);
         }
 
-        public void Export(Pawn exportPawn)
+        /// <summary>
+        /// Loads the .sav file specified by SavPath, using DDsavelib if it is packed,
+        /// replaces the Pawn in the slot specified by SavSourcePawn with the given Pawn,
+        /// then writes the modified .sav back, repacking it using DDsavelib if it was originally packed.
+        /// Throws an exception if anything fails.
+        /// </summary>
+        /// <param name="exportPawn">The Pawn to export to the .sav file</param>
+        public void Export(IPawn exportPawn)
         {
             bool? isPacked;
-            XElement savRoot = LoadSav(out isPacked);
-
-            if (savRoot == null)
-            {
-                return;
-            }
+            string savText = LoadSav(out isPacked);
+            XElement savRoot = XElement.Parse(savText, LoadOptions.PreserveWhitespace);
 
             PawnIO.SavePawnSav(exportPawn, SavSourcePawn, ref savRoot);
 
             if (isPacked == true)
             {
-                // repack
+                string savTextEdited = savRoot.ToString(SaveOptions.DisableFormatting);
+                SavTool.RepackSav(SavPath, savTextEdited);
             }
             else if (isPacked == false)
             {
@@ -52,78 +83,60 @@ namespace PawnManager
             }
         }
         
-        private XElement LoadSav(out bool? isPacked)
+        private string LoadSav(out bool? isPacked)
         {
+            if (!File.Exists(SavPath))
+            {
+                throw new Exception(string.Format("File {0} does not exist", SavPath));
+            }
+
             isPacked = null;
 
-            if (SavTool.Validate(SavPath))
+            if (SavTool.ValidateSav(SavPath))
             {
                 isPacked = true;
-                return SavTool.Unpack(SavPath);
+                return SavTool.UnpackSav(SavPath);
             }
             else
             {
-                XElement ret = null;
-
-                try
-                {
-                    ret = XElement.Load(SavPath, LoadOptions.PreserveWhitespace);
-                    isPacked = false;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        string.Format("Error while unpacking .sav:\n{0}", ex.Message),
-                        "Error unpacking .sav",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                }
-
-                return ret;
+                string unpackedText = File.ReadAllText(SavPath);
+                isPacked = false;
+                return unpackedText;
             }
         }
         
         private const string DDDAID = "367500";
-        private bool triedAlready = false;
-        private string cachedSavPath = null;
+        /// <summary>
+        /// Get the path to DDDA.sav that the game uses.
+        /// Throws an exception if it can't be found.
+        /// </summary>
+        /// <returns>The path to DDDA.sav</returns>
         public string GetDefaultSavPath()
         {
-            if (cachedSavPath != null)
-                return cachedSavPath;
-            if (triedAlready)
-                return null;
-
             // from http://forums.steampowered.com/forums/showthread.php?t=2208578
             
             Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.CurrentUser;
-
             if (regKey == null)
             {
-                triedAlready = true;
-                return null;
+                throw new Exception("Could not get CurrentUser RegKey");
             }
 
             regKey = regKey.OpenSubKey(@"Software\Valve\Steam");
-            
             if (regKey == null)
             {
-                triedAlready = true;
-                return null;
+                throw new Exception("Could not open Steam RegKey");
             }
             
             object regKeyValue = regKey.GetValue("SteamPath");
             if (regKeyValue == null)
             {
-                triedAlready = true;
-                return null;
+                throw new Exception("Could not get SteamPath RegKey value");
             }
 
             string searchRootPath = regKeyValue.ToString() + "/userdata/";
-
             if (!Directory.Exists(searchRootPath))
             {
-                triedAlready = true;
-                return null;
+                throw new Exception(string.Format("Could not find directory {0}", searchRootPath));
             }
 
             string savDir = null;
@@ -139,12 +152,25 @@ namespace PawnManager
 
             if (savDir == null)
             {
-                triedAlready = true;
-                return null;
+                throw new Exception(string.Format("Could not find directory {0}", DDDAID));
             }
 
-            cachedSavPath = savDir + "/remote/DDDA.sav";
-            return cachedSavPath;
+            string savPath = savDir + "/remote/DDDA.sav";
+            if (!File.Exists(savPath))
+            {
+                throw new Exception(string.Format("File {0} does not exist", savPath));
+            }
+
+            // capitalize the damn drive letter
+            if (savPath.Length > 0)
+            {
+                var sb = new System.Text.StringBuilder(savPath);
+                sb[0] = char.ToUpper(sb[0]);
+                sb.Replace('/', '\\');
+                savPath = sb.ToString();
+            }
+
+            return savPath;
         }
     }
 }

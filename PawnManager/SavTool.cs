@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Xml.Linq;
 
 namespace PawnManager
 {
@@ -12,10 +10,15 @@ namespace PawnManager
         const string DLLName = "DDsavelib.dll";
 
         [DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int DLLUnpack([MarshalAs(UnmanagedType.LPStr)] string path, IntPtr output);
+        private static extern int Unpack([MarshalAs(UnmanagedType.LPStr)]string savPath, IntPtr unpackedSavPtr);
 
         [DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int DLLValidate([MarshalAs(UnmanagedType.LPStr)] string path);
+        private static extern int Repack([MarshalAs(UnmanagedType.LPStr)]string outputPath,
+                                            [MarshalAs(UnmanagedType.LPStr)]string xmlData,
+                                            uint dataSize);
+
+        [DllImport(DLLName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int Validate([MarshalAs(UnmanagedType.LPStr)]string savPath);
 
         static Dictionary<int, string> Errors = new Dictionary<int, string>
         {
@@ -37,40 +40,53 @@ namespace PawnManager
             return ret;
         }
 
-        public static XElement Unpack(string savPath)
+        /// <summary>
+        /// Writes a packed .sav file, given the unpacked XML text.
+        /// May throw an exception from accessing the DLL, or if repacking failed.
+        /// </summary>
+        /// <param name="savPath">The path to the file to write</param>
+        /// <param name="savText">The unpacked XML</param>
+        public static void RepackSav(string savPath, string savText)
         {
-            bool isError = false;
             int code = 0;
-            XElement unpackedSav = null;
+            try
+            {
+                code = Repack(savPath, savText, (uint)savText.Length);
+            }
+            catch (Exception ex)
+            {
+                ThrowDDsavelibException(ex);
+            }
+            if (code != 0)
+            {
+                throw new Exception(CodeToMessage(code));
+            }
+        }
+
+        /// <summary>
+        /// Gets the unpacked XML from a packed .sav file.
+        /// May throw an exception from accessing the DLL, or if unpacking failed.
+        /// </summary>
+        /// <param name="savPath">The path to the .sav file</param>
+        /// <returns>The unpacked XML of the .sav file</returns>
+        public static string UnpackSav(string savPath)
+        {
+            int code = 0;
+            string unpackedText = "";
 
             {
                 IntPtr output = Marshal.AllocHGlobal(AllocSize);
                 try
                 {
-                    code = DLLUnpack(savPath, output);
+                    code = Unpack(savPath, output);
                     if (code == 0)
                     {
-                        string unpackedText = Marshal.PtrToStringAnsi(output);
-                        unpackedSav = XElement.Parse(unpackedText, LoadOptions.PreserveWhitespace);
+                        unpackedText = Marshal.PtrToStringAnsi(output);
                     }
-                }
-                catch (System.Xml.XmlException ex)
-                {
-                    isError = true;
-                    MessageBox.Show(
-                        string.Format("Error while parsing unpacked .sav as XML:\n{0}", ex.Message),
-                        "XML error",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
                 }
                 catch (Exception ex)
                 {
-                    isError = true;
-                    MessageBox.Show(
-                        string.Format("Error while trying to unpack using DDsavetool:\n{0}", ex.Message),
-                        "DDsavetool error",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
+                    ThrowDDsavelibException(ex);
                 }
                 finally
                 {
@@ -78,36 +94,42 @@ namespace PawnManager
                 }
             }
 
-            if (!isError && code != 0)
+            if (code != 0)
             {
-                MessageBox.Show(
-                    CodeToMessage(code),
-                    "Error unpacking .sav",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                isError = true;
+                throw new Exception(CodeToMessage(code));
             }
-
-            return unpackedSav;
+            
+            return unpackedText;
         }
 
-        public static bool Validate(string savPath)
+        /// <summary>
+        /// Checks if a file is a valid packed DDDA .sav file.
+        /// May throw an exception from accessing the DLL.
+        /// </summary>
+        /// <param name="savPath">The path to the .sav file</param>
+        /// <returns>True if the file is a valid packed DDDA .sav file</returns>
+        public static bool ValidateSav(string savPath)
         {
             int errorCode = 0;
             try
             {
-                DLLValidate(savPath);
+                errorCode = Validate(savPath);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    string.Format("Error while validating .sav:\n{0}", ex.Message),
-                    "DDsavetool error",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-                errorCode = 1;
+                ThrowDDsavelibException(ex);
             }
             return errorCode == 0;
+        }
+
+        private static void ThrowDDsavelibException(Exception ex)
+        {
+            throw new Exception(string.Format(
+                "DDsavelib error:\n{0}\n" +
+                "Ensure {1} is in the same folder as the executable.",
+                ex.Message,
+                DLLName),
+                ex);
         }
     }
 }

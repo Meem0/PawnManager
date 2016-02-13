@@ -81,7 +81,10 @@ void crc32tab()
 }
 
 // if maxRead == 0, reads to end of file
-int ReadFile(const char *path, unsigned char **data, unsigned int *dataSize, unsigned int maxRead = 0)
+int ReadFile(	const char *path,
+				unsigned char **outFileData,
+				unsigned int *outDataSize,
+				unsigned int maxRead = 0)
 {
 	FILE *file;
 	fopen_s(&file, path, "rb");
@@ -96,124 +99,33 @@ int ReadFile(const char *path, unsigned char **data, unsigned int *dataSize, uns
 	fseek(file, 0, SEEK_END);
 	fgetpos(file, &fpos);
 	fseek(file, 0, SEEK_SET);
-	*dataSize = (unsigned int)fpos;
+	*outDataSize = (unsigned int)fpos;
 
-	if (maxRead > 0 && maxRead < *dataSize)
+	if (maxRead > 0 && maxRead < *outDataSize)
 	{
-		*dataSize = maxRead;
+		*outDataSize = maxRead;
 	}
 
 	//Create buffer for new file
-	*data = new unsigned char[*dataSize];
+	*outFileData = new unsigned char[*outDataSize];
 
 	//Read in file
-	fread(*data, 1, *dataSize, file);
+	fread(*outFileData, 1, *outDataSize, file);
 	fclose(file);
 	return 0;
 }
 
-
-
-
-//////////////////////////////////////////////////////////////////////////
-// old stuff
-
-
-
-
-
-
-bool UnpackSaveOld(header_s *header, unsigned char *data, unsigned char **txtData, unsigned int *l)
+int UnpackSave(	header_s *packedHeader,
+				unsigned char *packedData,
+				unsigned char **outUnpackedText,
+				unsigned int *outUnpackedSize)
 {
-	*txtData = new unsigned char[header->realSize];
-	*l = header->realSize;
-	int okay = ezuncompress(*txtData, (long *)l, &data[sizeof(header_s)], (long)header->compressedSize);
-	delete[]data;
-	if (okay != 0)
-	{
-		if (okay == EZ_STREAM_ERROR)
-			printf("Error: Uncompress failed. Stream error.\n");
-		else if (okay == EZ_DATA_ERROR)
-			printf("Error: Uncompress failed. Data error.\n");
-		else if (okay == EZ_MEM_ERROR)
-			printf("Error: Uncompress failed. Memory error.\n");
-		else if (okay == EZ_BUF_ERROR)
-			printf("Error: Uncompress failed. Buffer error.\n");
-		delete[] * txtData;
-		return 0;
-	}
-	return 1;
-}
-
-int UnpackOld(const char *path, unsigned char **outputTextData)
-{
-	unsigned char *data = 0;
-	unsigned int dataSize = 0;
-	if (ReadFile(path, &data, &dataSize))
-		return ERR_READ;
-
-	//Header
-	header_s *header = (header_s *)data;
-	if (header->u1 != 21)
-	{
-		printf("Error: Not a valid savegame.\n");
-		return ERR_FORMAT;
-	}
-
-	//Uncompress data
-	unsigned char *txtData = 0;
-	unsigned int l = 0;
-	if (!UnpackSaveOld(header, data, &txtData, &l))
-		return -1;
-
-	//Output text file
-	char txtPath[MAXPATH];
-	memset(txtPath, 0, MAXPATH);
-	sprintf_s(txtPath, MAXPATH, "%s.xml", path);
-	FILE *file;
-	fopen_s(&file, txtPath, "wb");
-	if (!file)
-	{
-		printf("Error: Could not open file %s for writing.\n", txtPath);
-		delete[]txtData;
-		return -1;
-	}
-	fwrite(txtData, 1, l, file);
-	fclose(file);
-
-	*outputTextData = txtData;
-
-	//Finish
-	//delete[]txtData;
-	printf("Unpacked save to %s\n", txtPath);
-	return 0;
-}
-
-
-
-
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////
-// end old stuff
-
-
-
-
-
-
-
-
-
-
-int UnpackSave(header_s *header, unsigned char *data, unsigned char **txtData, unsigned int *l)
-{
-	*l = header->realSize;
-	int errcode = ezuncompress(*txtData, (long *)l, &data[sizeof(header_s)], (long)header->compressedSize);
-	delete[]data;
+	*outUnpackedSize = packedHeader->realSize;
+	int errcode = ezuncompress(	*outUnpackedText,
+								(long *)outUnpackedSize,
+								&packedData[sizeof(header_s)],
+								(long)packedHeader->compressedSize);
+	delete[]packedData;
 	if (errcode)
 	{
 		return errcode;
@@ -221,58 +133,29 @@ int UnpackSave(header_s *header, unsigned char *data, unsigned char **txtData, u
 	return 0;
 }
 
-__declspec(dllexport) int Unpack(const char *path, char *output)
+__declspec(dllexport) int Unpack(const char *pathPackedSav, char *outUnpackedText)
 {
-	unsigned char *oldOutput = nullptr;
-	UnpackOld(path, &oldOutput);
-
-
-	unsigned char *data = 0;
-	unsigned int dataSize = 0;
-	int errcode = ReadFile(path, &data, &dataSize);
+	unsigned char *packedData = 0;
+	unsigned int packedDataSize = 0;
+	int errcode = ReadFile(pathPackedSav, &packedData, &packedDataSize);
 	if (errcode)
 		return errcode;
 
 	//Header
-	header_s *header = (header_s *)data;
-	if (header->u1 != 21)
+	header_s *packedHeader = (header_s *)packedData;
+	if (packedHeader->u1 != 21)
 	{
 		return ERR_FORMAT;
 	}
 
 	//Uncompress data
-	unsigned int l = 0;
-
-	unsigned char *unpackedText = reinterpret_cast<unsigned char *>(output);
-
-	errcode = UnpackSave(header, data, &unpackedText, &l);
+	unsigned int unpackedTextSize = 0;
+	errcode = UnpackSave(	packedHeader,
+							packedData,
+							reinterpret_cast<unsigned char **>(&outUnpackedText),
+							&unpackedTextSize);
 	if (errcode)
 		return errcode;
-
-	for (unsigned int i = 0; i < l; ++i)
-	{
-		if (oldOutput[i] != unpackedText[i])
-		{
-			printf("woh\n");
-		}
-	}
-
-	//Output text file
-	char txtPath[MAXPATH];
-	memset(txtPath, 0, MAXPATH);
-	sprintf_s(txtPath, MAXPATH, "%s_dll.xml", path);
-	FILE *file;
-	fopen_s(&file, txtPath, "wb");
-	if (!file)
-	{
-		printf("Error: Could not open file %s for writing.\n", txtPath);
-		return -1;
-	}
-	fwrite(unpackedText, 1, l, file);
-	fclose(file);
-	printf("Unpacked DLL TEST save to %s\n", txtPath);
-
-	delete[] oldOutput;
 
 	return 0;
 }

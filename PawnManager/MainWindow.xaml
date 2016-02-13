@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PawnManager"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="PawnManager by Meem0" Height="400" Width="500">
+        Title="Pawn Manager by Meem0" Height="400" Width="500">
     <Window.Resources>
         <local:RadioButtonCheckedConverter x:Key="RadioConverter" />
+        <local:BooleanAndConverter x:Key="BoolAndConverter" />
     </Window.Resources>
     <Grid>
         <DockPanel VerticalAlignment="Top" Height="40">
@@ -37,17 +38,9 @@
                                 <Button x:Name="butSavLoadDefault" DockPanel.Dock="Right" Click="butSavLoadDefault_Click" Content="Load default"
                                         Width="75" Margin="0,0,5,0"
                                         ToolTip="Attempt to load your DDDA.sav from Steam/userdata/.../367500/remote/" />
-                                <Button x:Name="butSavUnpack" DockPanel.Dock="Right" Click="butSavUnpack_Click" Content="Unpack"
-                                        Width="65" Margin="5,0"
-                                        IsEnabled="{Binding SavTab.IsValidPackedSav}"
-                                        ToolTip="Unpack the currently loaded .sav file, if it is packed.  This is purely a convenience."/>
-                                <Button x:Name="butSavRepack" DockPanel.Dock="Right" Click="butSavRepack_Click" Content="Repack"
-                                        Width="65" Margin="5,0"
-                                        IsEnabled="{Binding SavTab.IsValidUnpackedSav}"
-                                        ToolTip="Repack the currently loaded .sav file, if it is unpacked.  This is purely a convenience."/>
                                 <Button x:Name="butSavOpenDir" DockPanel.Dock="Right" Click="butSavOpenDir_Click"  Content="Open folder"
                                         Width="75" Margin="5,0"
-                                        IsEnabled="{Binding SavTab.IsValidSav}"
+                                        IsEnabled="{Binding SavTab.IsSavPathValidFile}"
                                         ToolTip="Open the containing folder of the currently loaded .sav file."/>
                             </StackPanel>
                         </UniformGrid>
@@ -88,14 +81,19 @@
                     </GroupBox>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10">
                         <Button x:Name="butSavExport" Height="64" Width="90" Click="butSavExport_Click"
-                                IsEnabled="{Binding IsPawnLoadedAndSavValid}"
                                 ToolTip="Replace the selected 'source Pawn' in the loaded .sav file with the loaded Pawn.">
+                            <Button.IsEnabled>
+                                <MultiBinding Converter="{StaticResource BoolAndConverter}">
+                                    <Binding Path="SavTab.IsSavPathValidFile" />
+                                    <Binding Path="IsPawnLoaded" />
+                                </MultiBinding>
+                            </Button.IsEnabled>
                             <TextBlock TextWrapping="Wrap" TextAlignment="Center" Width="70">
                                 Export Pawn to Save
                             </TextBlock>
                         </Button>
                         <Button x:Name="butSavImport" Height="64" Width="90" Margin="10,0" Click="butSavImport_Click"
-                                IsEnabled="{Binding SavTab.IsValidSav}"
+                                IsEnabled="{Binding SavTab.IsSavPathValidFile}"
                                 ToolTip="Replace the loaded Pawn with the selected 'source Pawn' in the loaded .sav file.">
                             <TextBlock TextWrapping="Wrap" TextAlignment="Center">
                                 Import Pawn from Save

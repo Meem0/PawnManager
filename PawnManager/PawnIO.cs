@@ -1,5 +1,5 @@
-﻿using Microsoft.Win32;
-using System.Windows;
+﻿using System;
+using Microsoft.Win32;
 using System.Xml.Linq;
 
 namespace PawnManager
@@ -15,7 +15,8 @@ namespace PawnManager
     }
     
     /// <summary>
-    /// Contains the logic of saving and loading Pawns to and from various sources
+    /// Contains all the logic that involves reading and writing Pawns to and from files
+    /// and requires knowledge of the internals of Pawns.
     /// </summary>
     public static class PawnIO
     {
@@ -27,7 +28,7 @@ namespace PawnManager
         /// </summary>
         /// <param name="pawnFilePath">The path to the Pawn file</param>
         /// <returns>The loaded Pawn</returns>
-        public static Pawn LoadPawn()
+        public static IPawn LoadPawn()
         {
             Pawn ret = null;
 
@@ -39,7 +40,16 @@ namespace PawnManager
             if (dialogResult == true)
             {
                 ret = new Pawn();
-                ret.EditClass = XElement.Load(openDialog.FileName);
+                try
+                {
+                    ret.EditClass = XElement.Load(openDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(
+                        string.Format("{0} is not a valid Pawn file.", openDialog.FileName),
+                        ex);
+                }
             }
 
             return ret;
@@ -49,7 +59,7 @@ namespace PawnManager
         /// Save a Pawn to a Pawn file
         /// </summary>
         /// <param name="pawn">The Pawn to save</param>
-        public static void SavePawn(Pawn pawn)
+        public static void SavePawn(IPawn pawn)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.Filter = PawnFilter;
@@ -58,8 +68,10 @@ namespace PawnManager
             bool? dialogResult = saveDialog.ShowDialog();
             if (dialogResult == true)
             {
-                pawn.EditClass.SetAttributeValue("version", 1);
-                System.IO.File.WriteAllText(saveDialog.FileName, pawn.EditClass.ToString());
+                Pawn pawnImp = (Pawn)pawn;
+
+                pawnImp.EditClass.SetAttributeValue("version", 1);
+                System.IO.File.WriteAllText(saveDialog.FileName, pawnImp.EditClass.ToString());
             }
         }
 
@@ -69,10 +81,15 @@ namespace PawnManager
         /// <param name="savSlot">The Pawn to load</param>
         /// <param name="savRoot">The .sav file</param>
         /// <returns>The loaded Pawn, or null if no Pawn was loaded</returns>
-        public static Pawn LoadPawnSav(SavSlot savSlot, XElement savRoot)
+        public static IPawn LoadPawnSav(SavSlot savSlot, XElement savRoot)
         {
             XElement savPawn = SavGetPawnEdit(savRoot, savSlot);
-            return new Pawn() { EditClass = savPawn };
+            Pawn ret = new Pawn() { EditClass = savPawn };
+            if (ret.Name.Length == 0)
+            {
+                throw new Exception("The .sav file does not contain a Pawn in that slot.");
+            }
+            return ret;
         }
         
         /// <summary>
@@ -81,55 +98,26 @@ namespace PawnManager
         /// <param name="pawn">The Pawn to save</param>
         /// <param name="savSlot">The Pawn to save to</param>
         /// <param name="savRoot">The loaded .sav file</param>
-        public static void SavePawnSav(Pawn pawn, SavSlot savSlot, ref XElement savRoot)
+        public static void SavePawnSav(IPawn pawn, SavSlot savSlot, ref XElement savRoot)
         {
             XElement savPawn = SavGetPawnEdit(savRoot, savSlot);
-            savPawn.ReplaceWith(pawn.EditClass);
-        }
-        
-        /// <summary>
-        /// Check if a file is a valid Pawn file
-        /// </summary>
-        /// <param name="savPath">The file to validate</param>
-        /// <returns>True if the file is a valid Pawn file</returns>
-        public static bool ValidatePawnFile(string pawnPath)
-        {
-            try
-            {
-                XElement pawnRoot = XElement.Load(pawnPath);
-                if (pawnRoot.Attribute("mEdit") == null)
-                {
-                    return false;
-                }
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
-
-            return true;
-        }
-        
-        public static string GetPawnName(XElement pawnEdit)
-        {
-            char[] nameArray = new char[25];
-            XElement nameArrayElement = pawnEdit.Element("array");
-            int index = 0;
-            foreach (XElement letter in nameArrayElement.Elements())
-            {
-                nameArray[index] = (char)int.Parse(letter.Attribute("value").Value);
-                if (nameArray[index] == '\0')
-                    break;
-                ++index;
-            }
-            return new string(nameArray, 0, index);
+            savPawn.ReplaceWith(((Pawn)pawn).EditClass);
         }
 
         private static XElement SavGetPawnEdit(XElement savRoot, SavSlot savSlot)
         {
-            XElement pawnArray = savRoot.GetChildByName("mPlayerDataManual");
-            pawnArray = pawnArray.GetChildByName("mPlCmcEditAndParam");
-            pawnArray = pawnArray.GetChildByName("mCmc");
+            XElement pawnArray = null;
+
+            try
+            {
+                pawnArray = savRoot.GetChildByName("mPlayerDataManual");
+                pawnArray = pawnArray.GetChildByName("mPlCmcEditAndParam");
+                pawnArray = pawnArray.GetChildByName("mCmc");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid save file.", ex);
+            }
 
             int index = (int)savSlot;
             int currentIndex = 0;

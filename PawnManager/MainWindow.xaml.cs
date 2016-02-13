@@ -24,8 +24,8 @@ namespace PawnManager
 
         public SavTab SavTab { get; private set; }
 
-        private Pawn loadedPawn = null;
-        public Pawn LoadedPawn
+        private IPawn loadedPawn = null;
+        public IPawn LoadedPawn
         {
             get { return loadedPawn; }
             set
@@ -35,33 +35,35 @@ namespace PawnManager
                     loadedPawn = value;
                     NotifyPropertyChanged();
                     NotifyPropertyChanged("IsPawnLoaded");
-                    NotifyPropertyChanged("IsPawnLoadedAndSavValid");
                 }
             }
         }
 
         public bool IsPawnLoaded { get { return LoadedPawn != null; } }
-
-        public bool IsPawnLoadedAndSavValid { get { return IsPawnLoaded && SavTab.IsValidSav; } }
-
+        
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
 
             SavTab = new SavTab();
-            SavTab.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
-            {
-                if (e.PropertyName == "IsValidSav")
-                {
-                    NotifyPropertyChanged("IsPawnLoadedAndSavValid");
-                }
-            };
         }
 
         private void butLoad_Click(object sender, RoutedEventArgs e)
         {
-            Pawn result = PawnIO.LoadPawn();
+            IPawn result = null;
+            try
+            {
+                result = PawnIO.LoadPawn();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error loading Pawn",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
             if (result != null)
             {
                 LoadedPawn = result;
@@ -72,14 +74,37 @@ namespace PawnManager
         {
             if (LoadedPawn != null)
             {
-                PawnIO.SavePawn(LoadedPawn);
+                try
+                {
+                    PawnIO.SavePawn(LoadedPawn);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        ex.Message,
+                        "Error loading Pawn",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
             }
         }
 
         private void butSavImport_Click(object sender, RoutedEventArgs e)
         {
             Cursor = Cursors.Wait;
-            Pawn result = SavTab.Import();
+            IPawn result = null;
+            try
+            {
+                result = SavTab.Import();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error importing from .sav",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
             if (result != null)
             {
                 LoadedPawn = result;
@@ -90,7 +115,18 @@ namespace PawnManager
         private void butSavExport_Click(object sender, RoutedEventArgs e)
         {
             Cursor = Cursors.Wait;
-            SavTab.Export(LoadedPawn);
+            try
+            {
+                SavTab.Export(LoadedPawn);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error exporting to .sav",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
             Cursor = Cursors.Arrow;
         }
 
@@ -103,52 +139,23 @@ namespace PawnManager
             bool? result = openDialog.ShowDialog();
             if (result == true)
             {
-                if (!SavTab.ValidateAndSetSav(openDialog.FileName, false))
-                {
-                    MessageBox.Show(
-                        "Selected file is not a valid packed or unpacked DDDA save",
-                        ".sav error",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                }
+                SavTab.SavPath = openDialog.FileName;
             }
         }
         
-        private void butSavUnpack_Click(object sender, RoutedEventArgs e)
-        {
-            Cursor = Cursors.Wait;
-            SavTab.Unpack();
-            Cursor = Cursors.Arrow;
-        }
-
-        private void butSavRepack_Click(object sender, RoutedEventArgs e)
-        {
-            Cursor = Cursors.Wait;
-            SavTab.Repack();
-            Cursor = Cursors.Arrow;
-        }
-
         private void butSavLoadDefault_Click(object sender, RoutedEventArgs e)
         {
-            string savPath = SavTab.GetDefaultSavPath();
-            if (savPath == null)
+            try
+            {
+                SavTab.SavPath = SavTab.GetDefaultSavPath();
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Unable to find your save file.\nIf it's where it should be, please let Meem0 know, along with the actual path to your save file.",
+                    ex.Message,
                     "Error loading default .sav",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
-            }
-            else
-            {
-                if (!SavTab.ValidateAndSetSav(savPath, false))
-                {
-                    MessageBox.Show(
-                        string.Format("Unable to open your .sav file: {0}", savPath),
-                        "Error loading default .sav",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                }
             }
         }
 
@@ -177,6 +184,25 @@ namespace PawnManager
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value.Equals(true) ? parameter : Binding.DoNothing;
+        }
+    }
+
+    public class BooleanAndConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            foreach (object value in values)
+            {
+                if ((value is bool) && (bool)value == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
         }
     }
 }
