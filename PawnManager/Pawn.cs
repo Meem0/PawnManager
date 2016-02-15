@@ -1,47 +1,42 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace PawnManager
 {
+    public abstract class PawnParameter
+    {
+        /// <summary>
+        /// The user-facing label that describes the parameter
+        /// </summary>
+        public string Label { get; set; } = "Label";
+
+        /// <summary>
+        /// The value that the user can edit
+        /// </summary>
+        public abstract object Value { get; }
+
+        /// <summary>
+        /// The internal key used by the config file and Pawn files
+        /// </summary>
+        public string Key { get; set; } = "";
+    }
+
+    public class PawnParameterName : PawnParameter
+    {
+        public override object Value { get { return Name; } }
+
+        /// <summary>
+        /// The Pawn's name
+        /// </summary>
+        public string Name { get; set; }
+
+    }
+
     public class Pawn : IPawn
     {
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        private XElement editClass;
-        public XElement EditClass
-        {
-            get { return editClass; }
-            set
-            {
-                editClass = value;
-                UpdateName();
-            }
-        }
-        
-        private void UpdateName()
-        {
-            if (editClass == null)
-            {
-                Name = "";
-            }
-            else
-            {
-                Name = GetPawnName(EditClass);
-            }
-        }
-
-        private static string GetPawnName(XElement pawnEdit)
-        {
-            char[] nameArray = new char[25];
-            XElement nameArrayElement = pawnEdit.Element("array");
-            int index = 0;
-            foreach (XElement letter in nameArrayElement.Elements())
-            {
-                nameArray[index] = (char)int.Parse(letter.Attribute("value").Value);
-                if (nameArray[index] == '\0')
-                    break;
-                ++index;
-            }
-            return new string(nameArray, 0, index);
-        }
+        private List<PawnParameter> parameters;
     }
 }
