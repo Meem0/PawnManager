@@ -101,37 +101,56 @@ namespace PawnManager
         public static void SavePawnSav(IPawn pawn, SavSlot savSlot, ref XElement savRoot)
         {
             XElement savPawn = SavGetPawnEdit(savRoot, savSlot);
-            savPawn.ReplaceWith(((Pawn)pawn).EditClass);
+            XElement exportPawn = ((Pawn)pawn).EditClass;
+
+            try
+            {
+                exportPawn.Attribute("name").Value = savSlot == SavSlot.MainPawn ? "mEditPawn" : "mEdit";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid Pawn.", ex);
+            }
+
+            savPawn.ReplaceWith(exportPawn);
         }
 
         private static XElement SavGetPawnEdit(XElement savRoot, SavSlot savSlot)
         {
-            XElement pawnArray = null;
+            XElement pawnClass = null;
 
             try
             {
-                pawnArray = savRoot.GetChildByName("mPlayerDataManual");
-                pawnArray = pawnArray.GetChildByName("mPlCmcEditAndParam");
-                pawnArray = pawnArray.GetChildByName("mCmc");
+                if (savSlot == SavSlot.MainPawn)
+                {
+                    pawnClass = savRoot.GetChildByName("mSystemData");
+                    pawnClass = pawnClass.GetChildByName("mEditPawn");
+                }
+                else
+                {
+                    XElement pawnArray = savRoot.GetChildByName("mPlayerDataManual");
+                    pawnArray = pawnArray.GetChildByName("mPlCmcEditAndParam");
+                    pawnArray = pawnArray.GetChildByName("mCmc");
+
+                    int index = (int)savSlot;
+                    int currentIndex = 0;
+                    foreach (XElement child in pawnArray.Elements())
+                    {
+                        if (currentIndex++ == index)
+                        {
+                            pawnClass = child;
+                            break;
+                        }
+                    }
+
+                    pawnClass = pawnClass.GetChildByName("mEdit");
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception("Invalid save file.", ex);
             }
 
-            int index = (int)savSlot;
-            int currentIndex = 0;
-            XElement pawnClass = null;
-            foreach (XElement child in pawnArray.Elements())
-            {
-                if (currentIndex++ == index)
-                {
-                    pawnClass = child;
-                    break;
-                }
-            }
-
-            pawnClass = pawnClass.GetChildByName("mEdit");
             return pawnClass;
         }
     }
