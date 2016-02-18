@@ -16,40 +16,6 @@ namespace PawnManager
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-
-        public class PawnData : INotifyPropertyChanged
-        {
-            public string Key { get; set; } = "";
-
-            private object value;
-
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            public object Value
-            {
-                get { return value; }
-                set
-                {
-                    this.value = value;
-                    if (PropertyChanged != null)
-                        PropertyChanged(this, new PropertyChangedEventArgs("Value"));
-                }
-            }
-        }
-
-        public List<PawnData> TestItems { get; set; }
-            = new List<PawnData>
-        {
-            new PawnData { Key = "key1", Value = "walnut" },
-            new PawnData { Key = "key2", Value = 2 },
-            new PawnData { Key = "key3", Value = "pineapple" },
-            new PawnData { Key = "key4", Value = "grape" },
-            new PawnData { Key = "key5", Value = 8 },
-            new PawnData { Key = "key6", Value = "orange" },
-            new PawnData { Key = "key7", Value = "coconut" } 
-        };
-        
-
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -84,6 +50,8 @@ namespace PawnManager
             DataContext = this;
 
             SavTab = new SavTab();
+
+
         }
 
         private void butLoad_Click(object sender, RoutedEventArgs e)
@@ -253,48 +221,6 @@ namespace PawnManager
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
-        }
-    }
-
-    public class PawnReadTemplateSelector : System.Windows.Controls.DataTemplateSelector
-    {
-        public DataTemplate SliderTemplate { get; set; }
-        public DataTemplate StringTemplate { get; set; }
-
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
-            MainWindow.PawnData pawnData = item as MainWindow.PawnData;
-
-            if (pawnData != null)
-            {
-                if (pawnData.Value is int)
-                    return SliderTemplate;
-                else
-                    return StringTemplate;
-            }
-
-            return null;
-        }
-    }
-
-    public class PawnEditTemplateSelector : System.Windows.Controls.DataTemplateSelector
-    {
-        public DataTemplate SliderTemplate { get; set; }
-        public DataTemplate StringTemplate { get; set; }
-
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
-            MainWindow.PawnData pawnData = item as MainWindow.PawnData;
-
-            if (pawnData != null)
-            {
-                if (pawnData.Value is int)
-                    return SliderTemplate;
-                else
-                    return StringTemplate;
-            }
-
-            return null;
         }
     }
 }

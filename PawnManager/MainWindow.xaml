@@ -104,64 +104,49 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Edit Pawn">
-                <DataGrid x:Name="EditGrid" AutoGenerateColumns="False" ItemsSource="{Binding TestItems}"
-                          CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" SelectionMode="Single">
+                <TreeView>
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type local:PawnParameterClass}"
+                                                  ItemsSource="{Binding Path=Children}">
+                            <TextBlock Text="{Binding Path=Label}" />
+                        </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type local:PawnParameterName}">
+                            <TextBox Text="{Binding Path=Name}" MaxLength="{Binding Path=MaxNameLength}" />
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type local:PawnParameterRange}">
+                            <Slider Minimum="{Binding Path=Minimum}" Maximum="{Binding Path=Maximum}"
+                                    IsSnapToTickEnabled="True" TickFrequency="1"
+                                    Value="{Binding Path=Value, Converter={StaticResource IntToDoubleConverter}}" />
+                        </DataTemplate>
 
-                    <DataGrid.Resources>
-                        <DataTemplate x:Key="ReadSliderTemplate">
-                            <DockPanel>
-                                <Label>R</Label>
-                                <Label Width="30">
-                                    <Binding ElementName="numSlider" Path="Value"/>
-                                </Label>
-                                <Slider Name="numSlider" Margin="5"
-                                        Minimum="0" Maximum="15"
-                                        IsSnapToTickEnabled="True" TickFrequency="1" IsEnabled="False"
-                                        Value="{Binding Value, Mode=TwoWay, Converter={StaticResource IntToDoubleConverter}}" />
-                            </DockPanel>
-                        </DataTemplate>
-                        <DataTemplate x:Key="EditSliderTemplate">
-                            <DockPanel>
-                                <Label>E</Label>
-                                <Label Width="30">
-                                    <Binding ElementName="numSlider" Path="Value"/>
-                                </Label>
-                                <Slider Name="numSlider" Margin="5"
-                                            Minimum="0" Maximum="15"
-                                            IsSnapToTickEnabled="True" TickFrequency="1" IsEnabled="True"
-                                            Value="{Binding Value, Mode=TwoWay, Converter={StaticResource IntToDoubleConverter}}" />
-                            </DockPanel>
-                        </DataTemplate>
-                        <DataTemplate x:Key="ReadStringTemplate">
-                            <DockPanel>
-                                <Label>R</Label>
-                                <TextBlock Text="{Binding Value}" />
-                            </DockPanel>
-                        </DataTemplate>
-                        <DataTemplate x:Key="EditStringTemplate">
-                            <DockPanel>
-                                <Label>E</Label>
-                                <TextBox Text="{Binding Value}" BorderThickness="0" />
-                            </DockPanel>
-                        </DataTemplate>
-                        <local:PawnReadTemplateSelector
-                            x:Key="PawnReadTemplateSelector"
-                            SliderTemplate="{StaticResource ReadSliderTemplate}"
-                            StringTemplate="{StaticResource ReadStringTemplate}"/>
-                        <local:PawnEditTemplateSelector
-                            x:Key="PawnEditTemplateSelector"
-                            SliderTemplate="{StaticResource EditSliderTemplate}"
-                            StringTemplate="{StaticResource EditStringTemplate}"/>
-                    </DataGrid.Resources>
-                    
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Keys" Binding="{Binding Key}" IsReadOnly="True" Width="0.3*" />
-                        <DataGridTemplateColumn Header="Values" Width="0.4*"
-                                                CellTemplateSelector="{StaticResource PawnReadTemplateSelector}"
-                                                CellEditingTemplateSelector="{StaticResource PawnEditTemplateSelector}" />
-                        <DataGridTextColumn Header="String edit values" Binding="{Binding Value}" IsReadOnly="False" Width="0.3*" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <!--<local:PawnParameterName x:Key="Name1">
+                            <local:PawnParameterName.Label>Name 1</local:PawnParameterName.Label>
+                            <local:PawnParameterName.Name>walnuts</local:PawnParameterName.Name>
+                        </local:PawnParameterName>
+                        <local:PawnParameterRange x:Key="Range1">
+                            <local:PawnParameterRange.Label>Range 1</local:PawnParameterRange.Label>
+                            <local:PawnParameterRange.Value>8</local:PawnParameterRange.Value>
+                            <local:PawnParameterRange.Minimum>0</local:PawnParameterRange.Minimum>
+                            <local:PawnParameterRange.Maximum>15</local:PawnParameterRange.Maximum>
+                        </local:PawnParameterRange>
+                        <local:PawnParameterName x:Key="Name2">
+                            <local:PawnParameterName.Label>Name 2</local:PawnParameterName.Label>
+                            <local:PawnParameterName.Name>peanuts</local:PawnParameterName.Name>
+                        </local:PawnParameterName>
+                        <local:PawnParameterRange x:Key="Range2">
+                            <local:PawnParameterRange.Label>Range 2</local:PawnParameterRange.Label>
+                            <local:PawnParameterRange.Value>130</local:PawnParameterRange.Value>
+                            <local:PawnParameterRange.Minimum>50</local:PawnParameterRange.Minimum>
+                            <local:PawnParameterRange.Maximum>200</local:PawnParameterRange.Maximum>
+                        </local:PawnParameterRange>
+                        <local:PawnParameterName x:Key="Name3">
+                            <local:PawnParameterName.Label>Name 3</local:PawnParameterName.Label>
+                            <local:PawnParameterName.Name>pineapples</local:PawnParameterName.Name>
+                        </local:PawnParameterName>-->
+                    </TreeView.Resources>
+
+                </TreeView>
+
             </TabItem>
         </TabControl>
     </Grid>

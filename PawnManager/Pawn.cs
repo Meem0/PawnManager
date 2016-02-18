@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Xml.Linq;
 
 namespace PawnManager
 {
@@ -10,33 +12,61 @@ namespace PawnManager
         /// The user-facing label that describes the parameter
         /// </summary>
         public string Label { get; set; } = "Label";
-
-        /// <summary>
-        /// The value that the user can edit
-        /// </summary>
-        public abstract object Value { get; }
-
+        
         /// <summary>
         /// The internal key used by the config file and Pawn files
         /// </summary>
         public string Key { get; set; } = "";
     }
 
+    public class PawnParameterClass : PawnParameter
+    {
+        private ObservableCollection<PawnParameter> children;
+        public ObservableCollection<PawnParameter> Children
+        {
+            get { return children; }
+            set { children = (ObservableCollection<PawnParameter>)value; }
+        }
+    }
+
     public class PawnParameterName : PawnParameter
     {
-        public override object Value { get { return Name; } }
-
+        private string name = "";
         /// <summary>
         /// The Pawn's name
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return name; }
+            set { this.name = (string)value; }
+        }
+        
+        private const int maxNameLength = 25;
+        public int MaxNameLength
+        {
+            get { return maxNameLength; }
+        }
+    }
 
+    public class PawnParameterRange : PawnParameter
+    {
+        private int value = 0;
+        public int Value
+        {
+            get { return value; }
+            set { this.value = (int)value; }
+        }
+
+        public int Minimum { get; set; }
+        public int Maximum { get; set; }
     }
 
     public class Pawn : IPawn
     {
         public string Name { get; }
 
-        private List<PawnParameter> parameters;
+        public PawnParameterClass RootClass { get; set; }
+
+        public XElement EditClass { get; set; }
     }
 }
