@@ -69,30 +69,30 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="src\app\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IPawn.cs" />
-    <Compile Include="SavTab.cs" />
-    <Compile Include="SavTool.cs" />
-    <Compile Include="XmlHelper.cs" />
-    <Page Include="MainWindow.xaml">
+    <Compile Include="src\IPawn.cs" />
+    <Compile Include="src\SavTab.cs" />
+    <Compile Include="src\SavTool.cs" />
+    <Compile Include="src\XmlHelper.cs" />
+    <Page Include="src\window\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="src\app\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="src\window\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pawn.cs" />
-    <Compile Include="PawnIO.cs" />
+    <Compile Include="src\Pawn.cs" />
+    <Compile Include="src\PawnIO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -117,7 +117,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="src\app\App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icon.ico" />
