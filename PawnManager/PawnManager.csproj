@@ -69,7 +69,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="src\app\App.xaml">
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
@@ -77,15 +77,15 @@
     <Compile Include="src\SavTab.cs" />
     <Compile Include="src\SavTool.cs" />
     <Compile Include="src\XmlHelper.cs" />
-    <Page Include="src\window\MainWindow.xaml">
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="src\app\App.xaml.cs">
+    <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="src\window\MainWindow.xaml.cs">
+    <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -117,7 +117,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\app\App.config" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icon.ico" />
