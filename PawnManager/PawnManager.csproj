@@ -74,6 +74,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="src\IPawn.cs" />
+    <Compile Include="src\PawnParser.cs" />
     <Compile Include="src\SavTab.cs" />
     <Compile Include="src\SavTool.cs" />
     <Compile Include="src\XmlHelper.cs" />
