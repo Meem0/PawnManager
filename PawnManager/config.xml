@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <root>
-  <info>
+  <edit>
     <category>
-      <key>appearance</key>
       <label>Appearance</label>
       <parameter>
         <key>name</key>
@@ -90,7 +89,82 @@
         </option>
       </options>
     </parameter>
-  </info>
+    <category>
+      <label>Job levels</label>
+      <parameter>
+        <key>joblevel1</key>
+        <label>Fighter level</label>
+        <slider>
+          <min>1</min>
+          <max>10</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>joblevel2</key>
+        <label>Strider level</label>
+        <slider>
+          <min>1</min>
+          <max>10</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>joblevel3</key>
+        <label>Mage level</label>
+        <slider>
+          <min>1</min>
+          <max>10</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>joblevel4</key>
+        <label>Assassin level</label>
+        <slider>
+          <min>1</min>
+          <max>10</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>joblevel5</key>
+        <label>Mystic Knight level</label>
+        <slider>
+          <min>1</min>
+          <max>10</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>joblevel6</key>
+        <label>Magic Archer level</label>
+        <slider>
+          <min>1</min>
+          <max>10</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>joblevel7</key>
+        <label>Warrior level</label>
+        <slider>
+          <min>1</min>
+          <max>10</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>joblevel8</key>
+        <label>Ranger level</label>
+        <slider>
+          <min>1</min>
+          <max>10</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>joblevel9</key>
+        <label>Sorcerer level</label>
+        <slider>
+          <min>1</min>
+          <max>10</max>
+        </slider>
+      </parameter>
+    </category>
+  </edit>
   <sav>
     <class>
       <name>mEdit</name>
@@ -125,6 +199,19 @@
         <name>mJob</name>
         <key>vocation</key>
       </data>
+      <array>
+        <name>mJobLevel</name>
+        <key></key>
+        <key>joblevel1</key>
+        <key>joblevel2</key>
+        <key>joblevel3</key>
+        <key>joblevel4</key>
+        <key>joblevel5</key>
+        <key>joblevel6</key>
+        <key>joblevel7</key>
+        <key>joblevel8</key>
+        <key>joblevel9</key>
+      </array>
     </class>
   </sav>
 </root>

@@ -9,6 +9,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+
 namespace PawnManager
 {
     /// <summary>
@@ -24,11 +28,11 @@ namespace PawnManager
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
+        
         public SavTab SavTab { get; private set; }
 
-        private IPawn loadedPawn = null;
-        public IPawn LoadedPawn
+        private Pawn loadedPawn = null;
+        public Pawn LoadedPawn
         {
             get { return loadedPawn; }
             set
@@ -43,20 +47,21 @@ namespace PawnManager
         }
 
         public bool IsPawnLoaded { get { return LoadedPawn != null; } }
-        
+
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
-
+            
             SavTab = new SavTab();
-
-
+            
+            XElement config = XElement.Load("../PawnManager/config.xml");
+            PawnIO.SetConfig(config);
         }
 
         private void butLoad_Click(object sender, RoutedEventArgs e)
         {
-            IPawn result = null;
+            Pawn result = null;
             try
             {
                 result = PawnIO.LoadPawn();
@@ -97,7 +102,7 @@ namespace PawnManager
         private void butSavImport_Click(object sender, RoutedEventArgs e)
         {
             Cursor = Cursors.Wait;
-            IPawn result = null;
+            Pawn result = null;
             try
             {
                 result = SavTab.Import();
@@ -147,7 +152,7 @@ namespace PawnManager
                 SavTab.SavPath = openDialog.FileName;
             }
         }
-        
+
         private void butSavLoadDefault_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -172,7 +177,7 @@ namespace PawnManager
                 savDir = savDir.Substring(0, substrLength);
             if (System.IO.Directory.Exists(savDir))
             {
-                savDir = savDir.Replace('/','\\');
+                savDir = savDir.Replace('/', '\\');
                 System.Diagnostics.Process.Start("explorer.exe", savDir);
             }
         }

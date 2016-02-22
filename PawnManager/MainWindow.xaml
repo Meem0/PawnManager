@@ -106,47 +106,33 @@
             <TabItem Header="Edit Pawn">
                 <TreeView>
                     <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type local:PawnParameterClass}"
-                                                  ItemsSource="{Binding Path=Children}">
-                            <TextBlock Text="{Binding Path=Label}" />
+                        <HierarchicalDataTemplate DataType="{x:Type local:PawnCategory}"
+                                                  ItemsSource="{Binding Path=Children, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBlock Text="{Binding Path=Label, UpdateSourceTrigger=PropertyChanged}" />
                         </HierarchicalDataTemplate>
                         <DataTemplate DataType="{x:Type local:PawnParameterName}">
-                            <TextBox Text="{Binding Path=Name}" MaxLength="{Binding Path=MaxNameLength}" />
+                            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" MaxLength="{Binding Path=MaxNameLength}"
+                                     Width="100"/>
                         </DataTemplate>
-                        <DataTemplate DataType="{x:Type local:PawnParameterRange}">
-                            <Slider Minimum="{Binding Path=Minimum}" Maximum="{Binding Path=Maximum}"
+                        <DataTemplate DataType="{x:Type local:PawnParameterSlider}">
+                            <Slider Minimum="{Binding Path=Minimum, UpdateSourceTrigger=PropertyChanged}"
+                                    Maximum="{Binding Path=Maximum, UpdateSourceTrigger=PropertyChanged}"
                                     IsSnapToTickEnabled="True" TickFrequency="1"
-                                    Value="{Binding Path=Value, Converter={StaticResource IntToDoubleConverter}}" />
+                                    Value="{Binding Path=Value, Converter={StaticResource IntToDoubleConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                    Width="100"/>
                         </DataTemplate>
-
-                        <!--<local:PawnParameterName x:Key="Name1">
-                            <local:PawnParameterName.Label>Name 1</local:PawnParameterName.Label>
-                            <local:PawnParameterName.Name>walnuts</local:PawnParameterName.Name>
-                        </local:PawnParameterName>
-                        <local:PawnParameterRange x:Key="Range1">
-                            <local:PawnParameterRange.Label>Range 1</local:PawnParameterRange.Label>
-                            <local:PawnParameterRange.Value>8</local:PawnParameterRange.Value>
-                            <local:PawnParameterRange.Minimum>0</local:PawnParameterRange.Minimum>
-                            <local:PawnParameterRange.Maximum>15</local:PawnParameterRange.Maximum>
-                        </local:PawnParameterRange>
-                        <local:PawnParameterName x:Key="Name2">
-                            <local:PawnParameterName.Label>Name 2</local:PawnParameterName.Label>
-                            <local:PawnParameterName.Name>peanuts</local:PawnParameterName.Name>
-                        </local:PawnParameterName>
-                        <local:PawnParameterRange x:Key="Range2">
-                            <local:PawnParameterRange.Label>Range 2</local:PawnParameterRange.Label>
-                            <local:PawnParameterRange.Value>130</local:PawnParameterRange.Value>
-                            <local:PawnParameterRange.Minimum>50</local:PawnParameterRange.Minimum>
-                            <local:PawnParameterRange.Maximum>200</local:PawnParameterRange.Maximum>
-                        </local:PawnParameterRange>
-                        <local:PawnParameterName x:Key="Name3">
-                            <local:PawnParameterName.Label>Name 3</local:PawnParameterName.Label>
-                            <local:PawnParameterName.Name>pineapples</local:PawnParameterName.Name>
-                        </local:PawnParameterName>-->
+                        <DataTemplate DataType="{x:Type local:PawnParameterDropDown}">
+                            <ComboBox ItemsSource="{Binding Path=Options}" DisplayMemberPath="Label"
+                                      SelectedIndex="{Binding Path=Value}"
+                                      Width="100"/>
+                        </DataTemplate>
                     </TreeView.Resources>
 
+                    <TreeViewItem Name="PawnEditTreeRoot"
+                                  Header="{Binding Path=LoadedPawn.Name}"
+                                  ItemsSource="{Binding Path=LoadedPawn.Root.Children}" />
+                    
                 </TreeView>
-
             </TabItem>
         </TabControl>
     </Grid>

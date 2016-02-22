@@ -48,7 +48,7 @@ namespace PawnManager
         /// Throws an exception if anything fails.
         /// </summary>
         /// <returns>The loaded Pawn</returns>
-        public IPawn Import()
+        public Pawn Import()
         {
             bool? isPacked;
             string savText = LoadSav(out isPacked);
@@ -64,13 +64,13 @@ namespace PawnManager
         /// Throws an exception if anything fails.
         /// </summary>
         /// <param name="exportPawn">The Pawn to export to the .sav file</param>
-        public void Export(IPawn exportPawn)
+        public void Export(Pawn exportPawn)
         {
             bool? isPacked;
             string savText = LoadSav(out isPacked);
             XElement savRoot = XElement.Parse(savText, LoadOptions.PreserveWhitespace);
 
-            PawnIO.SavePawnSav(exportPawn, SavSourcePawn, ref savRoot);
+            PawnIO.SavePawnSav(exportPawn, SavSourcePawn, savRoot);
 
             if (isPacked == true)
             {

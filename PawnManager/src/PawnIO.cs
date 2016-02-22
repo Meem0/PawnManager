@@ -1,6 +1,10 @@
 ﻿using System;
-using Microsoft.Win32;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Linq;
+using System.Xml.Serialization;
+using Microsoft.Win32;
 
 namespace PawnManager
 {
@@ -20,15 +24,32 @@ namespace PawnManager
     /// </summary>
     public static class PawnIO
     {
-        public const string PawnFilter = "Pawn file|*.xml|All Files|*.*";
+        public const string PawnFilter = "Pawn file|*.pawn|All Files|*.*";
         public const string SavFilter = "DDDA save file|*.xml;*.sav|All Files|*.*";
+
+        private static PawnParser pawnParser;
         
+        /// <summary>
+        /// Initializes the object using the given config.
+        /// Throws an exception if parsing the config fails.
+        /// </summary>
+        /// <param name="config">
+        /// Contains the instructions for parsing the .sav file,
+        /// as well as information on how to display Pawn parameters to the user,
+        /// such as labels, slider ranges, and drop-down options.
+        /// </param>
+        public static void SetConfig(XElement config)
+        {
+            pawnParser = new PawnParser();
+            pawnParser.SetConfig(config);
+        }
+
         /// <summary>
         /// Load a Pawn from a Pawn file
         /// </summary>
         /// <param name="pawnFilePath">The path to the Pawn file</param>
         /// <returns>The loaded Pawn</returns>
-        public static IPawn LoadPawn()
+        public static Pawn LoadPawn()
         {
             Pawn ret = null;
 
@@ -39,10 +60,13 @@ namespace PawnManager
             bool? dialogResult = openDialog.ShowDialog();
             if (dialogResult == true)
             {
-                ret = new Pawn();
                 try
                 {
-                    ret.EditClass = XElement.Load(openDialog.FileName);
+                    using (FileStream stream = File.OpenRead(openDialog.FileName))
+                    {
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        ret = (Pawn)formatter.Deserialize(stream);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -59,19 +83,21 @@ namespace PawnManager
         /// Save a Pawn to a Pawn file
         /// </summary>
         /// <param name="pawn">The Pawn to save</param>
-        public static void SavePawn(IPawn pawn)
+        public static void SavePawn(Pawn pawn)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.Filter = PawnFilter;
             saveDialog.Title = "Save Pawn file";
+            saveDialog.FileName = pawn.Name;
 
             bool? dialogResult = saveDialog.ShowDialog();
             if (dialogResult == true)
             {
-                Pawn pawnImp = (Pawn)pawn;
-
-                pawnImp.EditClass.SetAttributeValue("version", 1);
-                System.IO.File.WriteAllText(saveDialog.FileName, pawnImp.EditClass.ToString());
+                using (FileStream stream = File.OpenWrite(saveDialog.FileName))
+                {
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    formatter.Serialize(stream, pawn);
+                }
             }
         }
 
@@ -81,69 +107,44 @@ namespace PawnManager
         /// <param name="savSlot">The Pawn to load</param>
         /// <param name="savRoot">The .sav file</param>
         /// <returns>The loaded Pawn, or null if no Pawn was loaded</returns>
-        public static IPawn LoadPawnSav(SavSlot savSlot, XElement savRoot)
+        public static Pawn LoadPawnSav(SavSlot savSlot, XElement savRoot)
         {
-            XElement savPawn = SavGetPawnEdit(savRoot, savSlot);
-            Pawn ret = new Pawn() { EditClass = savPawn };
-            if (ret.Name.Length == 0)
-            {
-                throw new Exception("The .sav file does not contain a Pawn in that slot.");
-            }
+            XElement pawnSavXElement = SavGetPawn(savRoot, savSlot);
+            Pawn ret = pawnParser.LoadPawnFromSav(pawnSavXElement);
             return ret;
         }
-        
+
         /// <summary>
         /// Save a Pawn to the .sav file
         /// </summary>
         /// <param name="pawn">The Pawn to save</param>
         /// <param name="savSlot">The Pawn to save to</param>
         /// <param name="savRoot">The loaded .sav file</param>
-        public static void SavePawnSav(IPawn pawn, SavSlot savSlot, ref XElement savRoot)
+        public static void SavePawnSav(Pawn pawn, SavSlot savSlot, XElement savRoot)
         {
-            XElement savPawn = SavGetPawnEdit(savRoot, savSlot);
-            XElement exportPawn = ((Pawn)pawn).EditClass;
-
-            try
-            {
-                exportPawn.Attribute("name").Value = savSlot == SavSlot.MainPawn ? "mEditPawn" : "mEdit";
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Invalid Pawn.", ex);
-            }
-
-            savPawn.ReplaceWith(exportPawn);
+            XElement savPawnXElement = SavGetPawn(savRoot, savSlot);
+            pawnParser.ExportPawnToSav(pawn, savPawnXElement);
         }
 
-        private static XElement SavGetPawnEdit(XElement savRoot, SavSlot savSlot)
+        private static XElement SavGetPawn(XElement savRoot, SavSlot savSlot)
         {
             XElement pawnClass = null;
 
             try
             {
-                if (savSlot == SavSlot.MainPawn)
-                {
-                    pawnClass = savRoot.GetChildByName("mSystemData");
-                    pawnClass = pawnClass.GetChildByName("mEditPawn");
-                }
-                else
-                {
-                    XElement pawnArray = savRoot.GetChildByName("mPlayerDataManual");
-                    pawnArray = pawnArray.GetChildByName("mPlCmcEditAndParam");
-                    pawnArray = pawnArray.GetChildByName("mCmc");
+                XElement pawnArray = savRoot.GetChildByName("mPlayerDataManual");
+                pawnArray = pawnArray.GetChildByName("mPlCmcEditAndParam");
+                pawnArray = pawnArray.GetChildByName("mCmc");
 
-                    int index = (int)savSlot;
-                    int currentIndex = 0;
-                    foreach (XElement child in pawnArray.Elements())
+                int index = (int)savSlot;
+                int currentIndex = 0;
+                foreach (XElement child in pawnArray.Elements())
+                {
+                    if (currentIndex++ == index)
                     {
-                        if (currentIndex++ == index)
-                        {
-                            pawnClass = child;
-                            break;
-                        }
+                        pawnClass = child;
+                        break;
                     }
-
-                    pawnClass = pawnClass.GetChildByName("mEdit");
                 }
             }
             catch (Exception ex)

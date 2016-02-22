@@ -1,72 +1,369 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml.Linq;
 
 namespace PawnManager
 {
-    public abstract class PawnParameter
+    [Serializable()]
+    public abstract class PawnElement : INotifyPropertyChanged
     {
-        /// <summary>
-        /// The user-facing label that describes the parameter
-        /// </summary>
-        public string Label { get; set; } = "Label";
-        
-        /// <summary>
-        /// The internal key used by the config file and Pawn files
-        /// </summary>
-        public string Key { get; set; } = "";
+        protected PawnElement() { }
+        protected PawnElement(PawnElement other)
+        {
+            Label = string.Copy(other.Label);
+        }
+
+        public abstract PawnElement Copy();
+
+        public abstract IEnumerable<PawnParameter> DescendantParameters();
+
+        private string label = "";
+
+        public string Label
+        {
+            get { return label; }
+            set { label = value; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 
-    public class PawnParameterClass : PawnParameter
+    [Serializable()]
+    public class PawnCategory : PawnElement
     {
-        private ObservableCollection<PawnParameter> children;
-        public ObservableCollection<PawnParameter> Children
+        public PawnCategory() { }
+        public PawnCategory(PawnCategory other) : base(other)
+        {
+            Children = new ObservableCollection<PawnElement>();
+            foreach (PawnElement element in other.Children)
+            {
+                Children.Add(element.Copy());
+            }
+            NotifyPropertyChanged("Children");
+        }
+
+        public override PawnElement Copy()
+        {
+            return new PawnCategory(this);
+        }
+
+        public override IEnumerable<PawnParameter> DescendantParameters()
+        {
+            foreach (PawnElement child in Children)
+            {
+                foreach (PawnParameter descendantParameter in child.DescendantParameters())
+                {
+                    yield return descendantParameter;
+                }
+            }
+        }
+
+        private ObservableCollection<PawnElement> children;
+        public ObservableCollection<PawnElement> Children
         {
             get { return children; }
-            set { children = (ObservableCollection<PawnParameter>)value; }
+            set
+            {
+                children = value;
+                NotifyPropertyChanged();
+            }
         }
     }
 
-    public class PawnParameterName : PawnParameter
+    [Serializable()]
+    public abstract class PawnParameter : PawnElement
     {
-        private string name = "";
-        /// <summary>
-        /// The Pawn's name
-        /// </summary>
-        public string Name
+        public PawnParameter() { }
+        public PawnParameter(PawnParameter other) : base (other)
         {
-            get { return name; }
-            set { this.name = (string)value; }
+            Key = string.Copy(other.Key);
         }
-        
-        private const int maxNameLength = 25;
-        public int MaxNameLength
-        {
-            get { return maxNameLength; }
-        }
-    }
 
-    public class PawnParameterRange : PawnParameter
-    {
-        private int value = 0;
-        public int Value
+        public abstract void ExportValueToSav(XElement xElement);
+        public abstract void SetValueFromSav(XElement xElement);
+
+        public override IEnumerable<PawnParameter> DescendantParameters()
+        {
+            yield return this;
+        }
+
+        private string key = "";
+        public string Key
+        {
+            get { return key; }
+            set { key = value; }
+        }
+
+        private object value = null;
+        public object Value
         {
             get { return value; }
-            set { this.value = (int)value; }
+            set
+            {
+                this.value = value;
+                NotifyPropertyChanged();
+            }
         }
-
-        public int Minimum { get; set; }
-        public int Maximum { get; set; }
     }
 
-    public class Pawn : IPawn
+    [Serializable()]
+    public class PawnParameterName : PawnParameter
     {
-        public string Name { get; }
+        public PawnParameterName()
+        {
+            Value = "";
+        }
+        public PawnParameterName(PawnParameterName other) : base(other)
+        {
+            Value = string.Copy((string)other.Value);
+        }
 
-        public PawnParameterClass RootClass { get; set; }
+        public override PawnElement Copy()
+        {
+            return new PawnParameterName(this);
+        }
 
-        public XElement EditClass { get; set; }
+        public override void ExportValueToSav(XElement xElement)
+        {
+            string name = (string)Value;
+            int letterIndex = 0;
+            foreach (XElement letterElement in xElement.Elements())
+            {
+                XAttribute letterAttribute = letterElement.GetValueAttribute();
+                if (letterIndex < name.Length)
+                {
+                    letterAttribute.Value = ((int)name[letterIndex]).ToString();
+                    ++letterIndex;
+                }
+                else if (letterAttribute.Value == "0")
+                {
+                    break;
+                }
+                else
+                {
+                    letterAttribute.Value = "0";
+                }
+            }
+        }
+
+        public override void SetValueFromSav(XElement xElement)
+        {
+            StringBuilder sb = new StringBuilder(MaxLength);
+            try
+            {
+                foreach (XElement letterElement in xElement.Elements())
+                {
+                    int value = letterElement.GetParsedValueAttribute();
+                    if (value == 0)
+                    {
+                        break;
+                    }
+                    sb.Append((char)value);
+                }
+                Value = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new System.Xml.XmlException(".sav file contained an invalid Pawn name.", ex);
+            }
+        }
+
+        public const int MaxLength = 25;
+    }
+
+    [Serializable()]
+    public class PawnParameterDropDown : PawnParameter
+    {
+        public PawnParameterDropDown()
+        {
+            Value = 0;
+        }
+        public PawnParameterDropDown(PawnParameterDropDown other) : base(other)
+        {
+            Value = other.Value;
+            // no need for deep copy since the options for a given drop down are the same for all Pawns
+            Options = other.Options;
+        }
+
+        public override PawnElement Copy()
+        {
+            return new PawnParameterDropDown(this);
+        }
+
+        public override void ExportValueToSav(XElement xElement)
+        {
+            xElement.GetValueAttribute().Value = ((int)Value).ToString();
+        }
+
+        public override void SetValueFromSav(XElement xElement)
+        {
+            Value = xElement.GetParsedValueAttribute();
+        }
+
+        [Serializable()]
+        public class Option : INotifyPropertyChanged
+        {
+            private string label;
+            public string Label
+            {
+                get { return label; }
+                set
+                {
+                    label = value;
+                    NotifyPropertyChanged();
+                }
+            }
+
+            private int value;
+            public int Value
+            {
+                get { return value; }
+                set
+                {
+                    this.value = value;
+                    NotifyPropertyChanged();
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+            {
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                }
+            }
+        }
+
+        private ObservableCollection<Option> options;
+        public ObservableCollection<Option> Options
+        {
+            get { return options; }
+            set
+            {
+                options = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+    
+    [Serializable()]
+    public class PawnParameterSlider : PawnParameter
+    {
+        public PawnParameterSlider()
+        {
+            Value = 0;
+        }
+        public PawnParameterSlider(PawnParameterSlider other) : base(other)
+        {
+            Value = other.Value;
+            Minimum = other.Minimum;
+            Maximum = other.Maximum;
+        }
+
+        public override PawnElement Copy()
+        {
+            return new PawnParameterSlider(this);
+        }
+
+        public override void ExportValueToSav(XElement xElement)
+        {
+            xElement.GetValueAttribute().Value = ((int)Value).ToString();
+        }
+
+        public override void SetValueFromSav(XElement xElement)
+        {
+            Value = xElement.GetParsedValueAttribute();
+        }
+
+        private int minimum;
+        public int Minimum
+        {
+            get { return minimum; }
+            set { minimum = value; }
+        }
+
+        private int maximum;
+        public int Maximum
+        {
+            get { return maximum; }
+            set { maximum = value; }
+        }
+    }
+
+    [Serializable()]
+    public class Pawn : INotifyPropertyChanged
+    {
+        public Pawn() { }
+        public Pawn(Pawn other)
+        {
+            Initialize(new PawnCategory(other.root));
+        }
+
+        public void Initialize(PawnCategory rootCategory)
+        {
+            root = rootCategory;
+
+            parameterDict = new Dictionary<string, PawnParameter>();
+            foreach (PawnParameter parameter in root.DescendantParameters())
+            {
+                if (nameParameter == null && parameter is PawnParameterName)
+                {
+                    nameParameter = (PawnParameterName)parameter;
+                    NotifyPropertyChanged("Name");
+                }
+                parameterDict.Add(parameter.Key, parameter);
+            }
+            NotifyPropertyChanged("Root");
+        }
+
+        public PawnParameter GetParameter(string key)
+        {
+            PawnParameter ret = null;
+            parameterDict.TryGetValue(key, out ret);
+            return ret;
+        }
+        
+        public string Name
+        {
+            get
+            {
+                if (nameParameter != null)
+                {
+                    return nameParameter.Value as string;
+                }
+                return null;
+            }
+        }
+
+        private PawnCategory root;
+        public PawnCategory Root
+        {
+            get { return root; }
+        }
+
+        private Dictionary<string, PawnParameter> parameterDict;
+
+        private PawnParameterName nameParameter = null;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

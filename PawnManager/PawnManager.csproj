@@ -73,7 +73,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="src\IPawn.cs" />
     <Compile Include="src\PawnParser.cs" />
     <Compile Include="src\SavTab.cs" />
     <Compile Include="src\SavTool.cs" />
@@ -136,7 +135,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="config.xml" />
+    <Resource Include="config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
