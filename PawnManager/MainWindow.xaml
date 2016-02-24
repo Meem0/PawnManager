@@ -110,6 +110,12 @@
                                                   ItemsSource="{Binding Path=Children, UpdateSourceTrigger=PropertyChanged}">
                             <TextBlock Text="{Binding Path=Label, UpdateSourceTrigger=PropertyChanged}" />
                         </HierarchicalDataTemplate>
+                        <DataTemplate DataType="{x:Type local:PawnParameter}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=Label}" />
+                                
+                            </StackPanel>
+                        </DataTemplate>
                         <DataTemplate DataType="{x:Type local:PawnParameterName}">
                             <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" MaxLength="{Binding Path=MaxNameLength}"
                                      Width="100"/>

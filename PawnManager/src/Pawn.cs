@@ -203,12 +203,40 @@ namespace PawnManager
 
         public override void ExportValueToSav(XElement xElement)
         {
-            xElement.GetValueAttribute().Value = ((int)Value).ToString();
+            int index = (int)Value;
+            if (index < 0 || Options.Count <= index)
+            {
+                throw new Exception(string.Format(
+                    "Parameter {0} has invalid value: {1}",
+                    Label,
+                    index));
+            }
+            xElement.GetValueAttribute().Value = Options[index].ToString();
         }
 
         public override void SetValueFromSav(XElement xElement)
         {
-            Value = xElement.GetParsedValueAttribute();
+            // linear search for the Option with the value from the XML
+            // start a bit before the index equal to the value, to optimize
+            // cases where the Options have values {1, 2, 3, ... }
+            int optionValue = xElement.GetParsedValueAttribute();
+            int searchIndex = Math.Max(0, optionValue - 2);
+            int numSearched = 0;
+            while (numSearched < Options.Count)
+            {
+                if (Options[searchIndex].Value == optionValue)
+                {
+                    Value = searchIndex;
+                    return;
+                }
+                searchIndex = (searchIndex + 1) % Options.Count;
+                ++numSearched;
+            }
+
+            throw new System.Xml.XmlException(string.Format(
+                "Parameter {0} does not have an option with value: {1}",
+                Label,
+                optionValue));
         }
 
         [Serializable()]
