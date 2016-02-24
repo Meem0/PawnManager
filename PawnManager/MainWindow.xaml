@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:PawnManager"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:tree="clr-namespace:PawnManager.TreeList"
         Title="Pawn Manager by Meem0" Height="400" Width="500">
     <Window.Resources>
         <local:RadioButtonCheckedConverter x:Key="RadioConverter" />
@@ -104,7 +105,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Edit Pawn">
-                <TreeView>
+                <!--<TreeView>
                     <TreeView.Resources>
                         <HierarchicalDataTemplate DataType="{x:Type local:PawnCategory}"
                                                   ItemsSource="{Binding Path=Children, UpdateSourceTrigger=PropertyChanged}">
@@ -138,7 +139,10 @@
                                   Header="{Binding Path=LoadedPawn.Name}"
                                   ItemsSource="{Binding Path=LoadedPawn.Root.Children}" />
                     
-                </TreeView>
+                </TreeView>-->
+                <tree:TreeList>
+                    
+                </tree:TreeList>
             </TabItem>
         </TabControl>
     </Grid>

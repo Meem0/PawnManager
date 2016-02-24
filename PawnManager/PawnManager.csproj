@@ -76,6 +76,13 @@
     <Compile Include="src\PawnParser.cs" />
     <Compile Include="src\SavTab.cs" />
     <Compile Include="src\SavTool.cs" />
+    <Compile Include="src\Tree\Collection.cs" />
+    <Compile Include="src\Tree\Converters.cs" />
+    <Compile Include="src\Tree\ITreeModel.cs" />
+    <Compile Include="src\Tree\RowExpander.cs" />
+    <Compile Include="src\Tree\TreeList.cs" />
+    <Compile Include="src\Tree\TreeListItem.cs" />
+    <Compile Include="src\Tree\TreeNode.cs" />
     <Compile Include="src\XmlHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
