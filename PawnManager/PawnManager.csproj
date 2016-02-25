@@ -74,6 +74,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="src\PawnParser.cs" />
+    <Compile Include="src\PawnTreeList.xaml.cs">
+      <DependentUpon>PawnTreeList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="src\Pawn\PawnElement.cs" />
     <Compile Include="src\SavTab.cs" />
     <Compile Include="src\SavTool.cs" />
     <Compile Include="src\Tree\Collection.cs" />
@@ -96,13 +100,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="src\Tree\TreeStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="src\PawnTreeList.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\Pawn.cs" />
+    <Compile Include="src\Pawn\Pawn.cs" />
     <Compile Include="src\PawnIO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

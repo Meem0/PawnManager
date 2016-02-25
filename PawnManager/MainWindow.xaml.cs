@@ -9,10 +9,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-
 namespace PawnManager
 {
     /// <summary>
@@ -41,14 +37,8 @@ namespace PawnManager
                 {
                     loadedPawn = value;
 
-                    PawnTreeList.Model = LoadedPawn;
-                    IEnumerable<PawnElement> itemsSource = null;
-                    if (LoadedPawn != null)
-                    {
-                        itemsSource = LoadedPawn.Root;
-                    }
-                    PawnTreeList.ItemsSource = itemsSource;
-
+                    PawnEditTreeTab.TreeList.Model = LoadedPawn;
+                    
                     NotifyPropertyChanged();
                     NotifyPropertyChanged("IsPawnLoaded");
                 }
@@ -203,19 +193,6 @@ namespace PawnManager
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value.Equals(true) ? parameter : Binding.DoNothing;
-        }
-    }
-
-    public class IntToDoubleConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return System.Convert.ToDouble(value);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return System.Convert.ToInt32((double)value);
         }
     }
 

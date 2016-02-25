@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="PawnManager.PawnTreeList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PawnManager"
+             xmlns:tree="clr-namespace:PawnManager.TreeList"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <tree:TreeList x:Name="TreeList">
+        <tree:TreeList.Resources>
+            <local:IntToDoubleConverter x:Key="IntToDoubleConverter" />
+        </tree:TreeList.Resources>
+        <tree:TreeList.View>
+            <GridView>
+                <GridView.Columns>
+                    <GridViewColumn Width="150" Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <tree:RowExpander />
+                                    <TextBlock Text="{Binding Label}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Value">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.Resources>
+                                        <HierarchicalDataTemplate DataType="{x:Type local:PawnCategory}"
+                                                                  ItemsSource="{Binding Path=Children, UpdateSourceTrigger=PropertyChanged}">
+                                            <TextBlock Text="{Binding Path=Label, UpdateSourceTrigger=PropertyChanged}" />
+                                        </HierarchicalDataTemplate>
+                                        <DataTemplate DataType="{x:Type local:PawnParameter}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Path=Label}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type local:PawnParameterName}">
+                                            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                                                     MaxLength="{Binding Path=MaxNameLength}" Width="100"/>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type local:PawnParameterSlider}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Value}" />
+                                                <Slider Minimum="{Binding Path=Minimum, UpdateSourceTrigger=PropertyChanged}"
+                                                    Maximum="{Binding Path=Maximum, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsSnapToTickEnabled="True" TickFrequency="1" Width="100"
+                                                    Value="{Binding Path=Value, Converter={StaticResource IntToDoubleConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type local:PawnParameterDropDown}">
+                                            <ComboBox ItemsSource="{Binding Path=Options}" SelectedIndex="{Binding Path=Value}"
+                                                      DisplayMemberPath="Label" Width="100"/>
+                                        </DataTemplate>
+                                    </ContentControl.Resources>
+                                </ContentControl>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView.Columns>
+            </GridView>
+        </tree:TreeList.View>
+    </tree:TreeList>
+</UserControl>

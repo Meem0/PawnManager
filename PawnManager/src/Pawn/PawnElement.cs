@@ -1,12 +1,11 @@
-﻿using PawnManager.TreeList;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml.Linq;
-using System.Collections;
 
 namespace PawnManager
 {
@@ -97,7 +96,7 @@ namespace PawnManager
     public abstract class PawnParameter : PawnElement
     {
         public PawnParameter() { }
-        public PawnParameter(PawnParameter other) : base (other)
+        public PawnParameter(PawnParameter other) : base(other)
         {
             Key = string.Copy(other.Key);
         }
@@ -297,7 +296,7 @@ namespace PawnManager
             }
         }
     }
-    
+
     [Serializable()]
     public class PawnParameterSlider : PawnParameter
     {
@@ -339,83 +338,6 @@ namespace PawnManager
         {
             get { return maximum; }
             set { maximum = value; }
-        }
-    }
-
-    [Serializable()]
-    public class Pawn : INotifyPropertyChanged, ITreeModel
-    {
-        public Pawn() { }
-        public Pawn(Pawn other)
-        {
-            Initialize(new PawnCategory(other.root));
-        }
-
-        public void Initialize(PawnCategory rootCategory)
-        {
-            root = rootCategory;
-
-            parameterDict = new Dictionary<string, PawnParameter>();
-            foreach (PawnParameter parameter in root.DescendantParameters())
-            {
-                if (nameParameter == null && parameter is PawnParameterName)
-                {
-                    nameParameter = (PawnParameterName)parameter;
-                    NotifyPropertyChanged("Name");
-                }
-                parameterDict.Add(parameter.Key, parameter);
-            }
-            NotifyPropertyChanged("Root");
-        }
-
-        public PawnParameter GetParameter(string key)
-        {
-            PawnParameter ret = null;
-            parameterDict.TryGetValue(key, out ret);
-            return ret;
-        }
-        
-        public string Name
-        {
-            get
-            {
-                if (nameParameter != null)
-                {
-                    return nameParameter.Value as string;
-                }
-                return null;
-            }
-        }
-
-        private PawnCategory root;
-        public PawnCategory Root
-        {
-            get { return root; }
-        }
-
-        private Dictionary<string, PawnParameter> parameterDict;
-
-        private PawnParameterName nameParameter = null;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public IEnumerable GetChildren(object parent)
-        {
-            PawnCategory parentCategory = parent as PawnCategory;
-            return parentCategory == null ? null : parentCategory.Children;
-        }
-
-        public bool HasChildren(object parent)
-        {
-            PawnCategory parentCategory = parent as PawnCategory;
-            return parentCategory != null && parentCategory.Children.Count > 0;
         }
     }
 }
