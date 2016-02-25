@@ -40,6 +40,15 @@ namespace PawnManager
                 if (value != loadedPawn)
                 {
                     loadedPawn = value;
+
+                    PawnTreeList.Model = LoadedPawn;
+                    IEnumerable<PawnElement> itemsSource = null;
+                    if (LoadedPawn != null)
+                    {
+                        itemsSource = LoadedPawn.Root;
+                    }
+                    PawnTreeList.ItemsSource = itemsSource;
+
                     NotifyPropertyChanged();
                     NotifyPropertyChanged("IsPawnLoaded");
                 }

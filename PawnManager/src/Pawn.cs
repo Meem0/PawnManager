@@ -1,10 +1,12 @@
-﻿using System;
+﻿using PawnManager.TreeList;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml.Linq;
+using System.Collections;
 
 namespace PawnManager
 {
@@ -40,7 +42,7 @@ namespace PawnManager
     }
 
     [Serializable()]
-    public class PawnCategory : PawnElement
+    public class PawnCategory : PawnElement, IEnumerable, IEnumerable<PawnElement>
     {
         public PawnCategory() { }
         public PawnCategory(PawnCategory other) : base(other)
@@ -78,6 +80,16 @@ namespace PawnManager
                 children = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return Children.GetEnumerator();
+        }
+
+        IEnumerator<PawnElement> IEnumerable<PawnElement>.GetEnumerator()
+        {
+            return Children.GetEnumerator();
         }
     }
 
@@ -331,7 +343,7 @@ namespace PawnManager
     }
 
     [Serializable()]
-    public class Pawn : INotifyPropertyChanged
+    public class Pawn : INotifyPropertyChanged, ITreeModel
     {
         public Pawn() { }
         public Pawn(Pawn other)
@@ -392,6 +404,18 @@ namespace PawnManager
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public IEnumerable GetChildren(object parent)
+        {
+            PawnCategory parentCategory = parent as PawnCategory;
+            return parentCategory == null ? null : parentCategory.Children;
+        }
+
+        public bool HasChildren(object parent)
+        {
+            PawnCategory parentCategory = parent as PawnCategory;
+            return parentCategory != null && parentCategory.Children.Count > 0;
         }
     }
 }
