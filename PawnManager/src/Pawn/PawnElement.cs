@@ -122,13 +122,17 @@ namespace PawnManager
             get { return value; }
             set
             {
-                this.value = value;
+                this.value = ApplyValueConstraints(value);
                 NotifyPropertyChanged();
             }
         }
+        
+        protected virtual object ApplyValueConstraints(object value)
+        {
+            return value;
+        }
     }
-
-    [Serializable()]
+    
     public class PawnParameterName : PawnParameter
     {
         public PawnParameterName()
@@ -143,6 +147,19 @@ namespace PawnManager
         public override PawnElement Copy()
         {
             return new PawnParameterName(this);
+        }
+
+        private const int maxNameLength = 25;
+        public int MaxNameLength { get { return maxNameLength; } }
+
+        protected override object ApplyValueConstraints(object value)
+        {
+            string str = value as string;
+            if (str == null)
+            {
+                return "";
+            }
+            return str.Substring(0, Math.Min(str.Length, MaxNameLength));
         }
 
         public override void ExportValueToSav(XElement xElement)
@@ -170,7 +187,7 @@ namespace PawnManager
 
         public override void SetValueFromSav(XElement xElement)
         {
-            StringBuilder sb = new StringBuilder(MaxLength);
+            StringBuilder sb = new StringBuilder(MaxNameLength);
             try
             {
                 foreach (XElement letterElement in xElement.Elements())
@@ -189,8 +206,6 @@ namespace PawnManager
                 throw new System.Xml.XmlException(".sav file contained an invalid Pawn name.", ex);
             }
         }
-
-        public const int MaxLength = 25;
     }
 
     [Serializable()]
@@ -210,6 +225,15 @@ namespace PawnManager
         public override PawnElement Copy()
         {
             return new PawnParameterDropDown(this);
+        }
+
+        protected override object ApplyValueConstraints(object value)
+        {
+            if (!(value is int))
+            {
+                return 0;
+            }
+            return Extensions.Clamp((int)value, 0, Options.Count - 1);
         }
 
         public override void ExportValueToSav(XElement xElement)
@@ -285,7 +309,7 @@ namespace PawnManager
             }
         }
 
-        private ObservableCollection<Option> options;
+        private ObservableCollection<Option> options = new ObservableCollection<Option>();
         public ObservableCollection<Option> Options
         {
             get { return options; }
@@ -314,6 +338,26 @@ namespace PawnManager
         public override PawnElement Copy()
         {
             return new PawnParameterSlider(this);
+        }
+
+        protected override object ApplyValueConstraints(object value)
+        {
+            int num = 0;
+
+            if (value is int)
+            {
+                num = (int)value;
+            }
+            else
+            {
+                string numStr = value as string;
+                if (numStr == null || !int.TryParse(numStr, out num))
+                {
+                    return Minimum;
+                }
+            }
+
+            return Extensions.Clamp(num, Minimum, Maximum);
         }
 
         public override void ExportValueToSav(XElement xElement)

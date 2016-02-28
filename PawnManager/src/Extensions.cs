@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace PawnManager
 {
-    public static class XmlHelper
+    public static class Extensions
     {
         public static XElement GetChildByName(this XElement parent, string nameAttribute)
         {
@@ -75,6 +75,11 @@ namespace PawnManager
                     extraInfo),
                     ex);
             }
+        }
+
+        public static int Clamp(int value, int min, int max)
+        {
+            return value < min ? min : value > max ? max : value;
         }
     }
 }

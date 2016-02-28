@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PawnManager"
              xmlns:tree="clr-namespace:PawnManager.TreeList"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d">
     <tree:TreeList x:Name="TreeList">
         <tree:TreeList.Resources>
             <local:IntToDoubleConverter x:Key="IntToDoubleConverter" />
@@ -14,7 +13,7 @@
         <tree:TreeList.View>
             <GridView>
                 <GridView.Columns>
-                    <GridViewColumn Width="150" Header="Name">
+                    <GridViewColumn Header="Name" Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -24,36 +23,29 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Value">
+                    <GridViewColumn Header="Value" Width="200">
                         <GridViewColumn.CellTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="PawnParameter">
                                 <ContentControl Content="{Binding}">
                                     <ContentControl.Resources>
-                                        <HierarchicalDataTemplate DataType="{x:Type local:PawnCategory}"
-                                                                  ItemsSource="{Binding Path=Children, UpdateSourceTrigger=PropertyChanged}">
-                                            <TextBlock Text="{Binding Path=Label, UpdateSourceTrigger=PropertyChanged}" />
-                                        </HierarchicalDataTemplate>
-                                        <DataTemplate DataType="{x:Type local:PawnParameter}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Path=Label}" />
-                                            </StackPanel>
+                                        <DataTemplate DataType="{x:Type local:PawnCategory}">
                                         </DataTemplate>
                                         <DataTemplate DataType="{x:Type local:PawnParameterName}">
-                                            <TextBox Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
-                                                     MaxLength="{Binding Path=MaxNameLength}" Width="100"/>
+                                            <TextBox Text="{Binding Path=Value}"
+                                                     MaxLength="{Binding Path=MaxNameLength}" />
                                         </DataTemplate>
                                         <DataTemplate DataType="{x:Type local:PawnParameterSlider}">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Value}" />
-                                                <Slider Minimum="{Binding Path=Minimum, UpdateSourceTrigger=PropertyChanged}"
-                                                    Maximum="{Binding Path=Maximum, UpdateSourceTrigger=PropertyChanged}"
-                                                    IsSnapToTickEnabled="True" TickFrequency="1" Width="100"
-                                                    Value="{Binding Path=Value, Converter={StaticResource IntToDoubleConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBox Text="{Binding Value}" Width="30" Margin="0,0,5,0" />
+                                                <Slider Minimum="{Binding Path=Minimum}"
+                                                        Maximum="{Binding Path=Maximum}"
+                                                        IsSnapToTickEnabled="True" TickFrequency="1" Width="150"
+                                                        Value="{Binding Path=Value, Converter={StaticResource IntToDoubleConverter}}" />
                                             </StackPanel>
                                         </DataTemplate>
                                         <DataTemplate DataType="{x:Type local:PawnParameterDropDown}">
                                             <ComboBox ItemsSource="{Binding Path=Options}" SelectedIndex="{Binding Path=Value}"
-                                                      DisplayMemberPath="Label" Width="100"/>
+                                                      DisplayMemberPath="Label" Width="180" />
                                         </DataTemplate>
                                     </ContentControl.Resources>
                                 </ContentControl>
