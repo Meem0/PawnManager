@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
+using Microsoft.Win32;
 
 namespace PawnManager
 {
@@ -24,29 +25,24 @@ namespace PawnManager
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        
+
+        public const string PawnFilter = "Pawn file|*.xml|All Files|*.*";
+        public const string SavFilter = "DDDA save file|*.xml;*.sav|All Files|*.*";
+
         public SavTab SavTab { get; private set; }
 
-        private Pawn loadedPawn = null;
-        public Pawn LoadedPawn
+        private PawnModel pawnModel = null;
+        public PawnModel PawnModel
         {
-            get { return loadedPawn; }
-            set
-            {
-                if (value != loadedPawn)
-                {
-                    loadedPawn = value;
-
-                    PawnEditTreeTab.TreeList.Model = LoadedPawn;
-                    
-                    NotifyPropertyChanged();
-                    NotifyPropertyChanged("IsPawnLoaded");
-                }
-            }
+            get { return pawnModel; }
         }
-
-        public bool IsPawnLoaded { get { return LoadedPawn != null; } }
-
+        private void SetLoadedPawn(PawnData pawnData)
+        {
+            PawnEditTreeTab.TreeList.Model = null;
+            pawnModel.LoadedPawn = pawnData;
+            PawnEditTreeTab.TreeList.Model = PawnModel;
+        }
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -55,37 +51,26 @@ namespace PawnManager
             SavTab = new SavTab();
             
             XElement config = XElement.Load("../PawnManager/config.xml");
-            PawnIO.SetConfig(config);
-        }
+            PawnTemplateCategory template = PawnIO.ParseConfig(config);
 
+            pawnModel = new PawnModel(template);
+
+            PawnEditTreeTab.TreeList.Model = pawnModel;
+        }
+        
         private void butLoad_Click(object sender, RoutedEventArgs e)
         {
-            Pawn result = null;
-            try
-            {
-                result = PawnIO.LoadPawn();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    ex.Message,
-                    "Error loading Pawn",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
-            if (result != null)
-            {
-                LoadedPawn = result;
-            }
-        }
+            PawnData result = null;
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.Filter = PawnFilter;
+            openDialog.Title = "Open Pawn file";
 
-        private void butSave_Click(object sender, RoutedEventArgs e)
-        {
-            if (LoadedPawn != null)
+            bool? dialogResult = openDialog.ShowDialog();
+            if (dialogResult == true)
             {
                 try
                 {
-                    PawnIO.SavePawn(LoadedPawn);
+                    result = PawnIO.LoadPawn(openDialog.FileName);
                 }
                 catch (Exception ex)
                 {
@@ -96,12 +81,44 @@ namespace PawnManager
                         MessageBoxImage.Error);
                 }
             }
+            if (result != null)
+            {
+                SetLoadedPawn(result);
+            }
+        }
+
+        private void butSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (PawnModel.LoadedPawn != null)
+            {
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.Filter = PawnFilter;
+                saveDialog.Title = "Save Pawn file";
+                saveDialog.FileName = PawnModel.Name;
+
+                bool? dialogResult = saveDialog.ShowDialog();
+                if (dialogResult == true)
+                {
+                    try
+                    {
+                        PawnIO.SavePawn(PawnModel.LoadedPawn, saveDialog.FileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(
+                            ex.Message,
+                            "Error loading Pawn",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
+                }
+            }
         }
 
         private void butSavImport_Click(object sender, RoutedEventArgs e)
         {
             Cursor = Cursors.Wait;
-            Pawn result = null;
+            PawnData result = null;
             try
             {
                 result = SavTab.Import();
@@ -116,7 +133,7 @@ namespace PawnManager
             }
             if (result != null)
             {
-                LoadedPawn = result;
+                SetLoadedPawn(result);
             }
             Cursor = Cursors.Arrow;
         }
@@ -126,7 +143,7 @@ namespace PawnManager
             Cursor = Cursors.Wait;
             try
             {
-                SavTab.Export(LoadedPawn);
+                SavTab.Export(PawnModel.LoadedPawn);
             }
             catch (Exception ex)
             {
@@ -142,7 +159,7 @@ namespace PawnManager
         private void butSavBrowse_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openDialog = new Microsoft.Win32.OpenFileDialog();
-            openDialog.Filter = PawnIO.SavFilter;
+            openDialog.Filter = SavFilter;
             openDialog.Title = "Browse for save file";
 
             bool? result = openDialog.ShowDialog();
@@ -214,4 +231,38 @@ namespace PawnManager
             throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
         }
     }
+
+    public class TestNode
+    {
+        public string Name { get; set; }
+        public object Value { get; set; }
+    }
+
+    public class TestInt
+    {
+        public TestInt(int num)
+        {
+            Num = num;
+        }
+        public int Num { get; set; }
+    }
+
+    public class TestString
+    {
+        public TestString(string str)
+        {
+            Str = str;
+        }
+        public string Str { get; set; }
+    }
+
+    public class TestChar
+    {
+        public TestChar(char ch)
+        {
+            Ch = ch;
+        }
+        public int Ch { get; set; }
+    }
+
 }

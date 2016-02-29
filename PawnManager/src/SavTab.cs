@@ -48,7 +48,7 @@ namespace PawnManager
         /// Throws an exception if anything fails.
         /// </summary>
         /// <returns>The loaded Pawn</returns>
-        public Pawn Import()
+        public PawnData Import()
         {
             bool? isPacked;
             string savText = LoadSav(out isPacked);
@@ -64,7 +64,7 @@ namespace PawnManager
         /// Throws an exception if anything fails.
         /// </summary>
         /// <param name="exportPawn">The Pawn to export to the .sav file</param>
-        public void Export(Pawn exportPawn)
+        public void Export(PawnData exportPawn)
         {
             bool? isPacked;
             string savText = LoadSav(out isPacked);

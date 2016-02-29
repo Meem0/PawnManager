@@ -28,23 +28,24 @@
                             <DataTemplate DataType="PawnParameter">
                                 <ContentControl Content="{Binding}">
                                     <ContentControl.Resources>
-                                        <DataTemplate DataType="{x:Type local:PawnCategory}">
+                                        <DataTemplate DataType="{x:Type local:PawnTreeCategory}">
                                         </DataTemplate>
-                                        <DataTemplate DataType="{x:Type local:PawnParameterName}">
+                                        <DataTemplate DataType="{x:Type local:PawnTreeParameterName}">
                                             <TextBox Text="{Binding Path=Value}"
-                                                     MaxLength="{Binding Path=MaxNameLength}" />
+                                                     MaxLength="{Binding Path=Template.MaxNameLength}" />
                                         </DataTemplate>
-                                        <DataTemplate DataType="{x:Type local:PawnParameterSlider}">
+                                        <DataTemplate DataType="{x:Type local:PawnTreeParameterSlider}">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBox Text="{Binding Value}" Width="30" Margin="0,0,5,0" />
-                                                <Slider Minimum="{Binding Path=Minimum}"
-                                                        Maximum="{Binding Path=Maximum}"
+                                                <Slider Minimum="{Binding Path=Template.Minimum}"
+                                                        Maximum="{Binding Path=Template.Maximum}"
                                                         IsSnapToTickEnabled="True" TickFrequency="1" Width="150"
                                                         Value="{Binding Path=Value, Converter={StaticResource IntToDoubleConverter}}" />
                                             </StackPanel>
                                         </DataTemplate>
-                                        <DataTemplate DataType="{x:Type local:PawnParameterDropDown}">
-                                            <ComboBox ItemsSource="{Binding Path=Options}" SelectedIndex="{Binding Path=Value}"
+                                        <DataTemplate DataType="{x:Type local:PawnTreeParameterDropDown}">
+                                            <ComboBox ItemsSource="{Binding Path=Template.Options}"
+                                                      SelectedIndex="{Binding Path=Value}"
                                                       DisplayMemberPath="Label" Width="180" />
                                         </DataTemplate>
                                     </ContentControl.Resources>

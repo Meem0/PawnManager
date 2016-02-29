@@ -15,10 +15,10 @@
             <Button x:Name="butLoad" Content="Load" DockPanel.Dock="Right" Height="23" Width="65" Margin="5,0" Click="butLoad_Click"
                     ToolTip="Load a Pawn from a Pawn file made by this application."/>
             <Button x:Name="butSave" Content="Save" DockPanel.Dock="Right" Height="23" Width="65" Margin="5,0" Click="butSave_Click"
-                    IsEnabled="{Binding IsPawnLoaded}" 
+                    IsEnabled="{Binding PawnModel.IsPawnLoaded}" 
                     ToolTip="Save a Pawn to a Pawn file used by this application only."/>
             <Label x:Name="labelLoadedPawn" VerticalAlignment="Center" Margin="5,0">
-                <Binding Path="LoadedPawn.Name"/>
+                <Binding Path="PawnModel.Name"/>
             </Label>
         </DockPanel>
         <TabControl x:Name="tabControl" Margin="0,45,0,0">
@@ -86,7 +86,7 @@
                             <Button.IsEnabled>
                                 <MultiBinding Converter="{StaticResource BoolAndConverter}">
                                     <Binding Path="SavTab.IsSavPathValidFile" />
-                                    <Binding Path="IsPawnLoaded" />
+                                    <Binding Path="PawnModel.IsPawnLoaded" />
                                 </MultiBinding>
                             </Button.IsEnabled>
                             <TextBlock TextWrapping="Wrap" TextAlignment="Center" Width="70">
