@@ -4,24 +4,32 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:PawnManager"
         xmlns:tree="clr-namespace:PawnManager.TreeList"
-        Title="Pawn Manager by Meem0" Height="400" Width="500">
+        Title="Pawn Manager by Meem0" Height="450" Width="500">
     <Window.Resources>
         <local:RadioButtonCheckedConverter x:Key="RadioConverter" />
         <local:BooleanAndConverter x:Key="BoolAndConverter" />
     </Window.Resources>
     <Grid>
-        <DockPanel VerticalAlignment="Top" Height="40">
-            <Label Content="Currently loaded Pawn:" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-            <Button x:Name="butLoad" Content="Load" DockPanel.Dock="Right" Height="23" Width="65" Margin="5,0" Click="butLoad_Click"
-                    ToolTip="Load a Pawn from a Pawn file made by this application."/>
-            <Button x:Name="butSave" Content="Save" DockPanel.Dock="Right" Height="23" Width="65" Margin="5,0" Click="butSave_Click"
+        <UniformGrid VerticalAlignment="Top" Rows="2" Height="80">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Currently loaded Pawn:" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                <Label x:Name="labelLoadedPawn" VerticalAlignment="Center" Margin="5,0">
+                    <Binding Path="PawnModel.Name"/>
+                </Label>
+            </StackPanel>
+            <DockPanel>
+                <Button x:Name="butSave" Content="Save Pawn" DockPanel.Dock="Left" Height="23" Width="80" Margin="5,0" Click="butSave_Click"
                     IsEnabled="{Binding PawnModel.IsPawnLoaded}" 
                     ToolTip="Save a Pawn to a Pawn file used by this application only."/>
-            <Label x:Name="labelLoadedPawn" VerticalAlignment="Center" Margin="5,0">
-                <Binding Path="PawnModel.Name"/>
-            </Label>
-        </DockPanel>
-        <TabControl x:Name="tabControl" Margin="0,45,0,0">
+                <Button x:Name="butLoad" Content="Load Pawn" DockPanel.Dock="Left" Height="23" Width="80" Margin="5,0" Click="butLoad_Click"
+                    ToolTip="Load a Pawn from a Pawn file made by this application."/>
+                <Button HorizontalAlignment="Right" Width="85" Height="23" Margin="5,0"
+                        Content="Update config" IsEnabled="{Binding IsConfigUpdateAvailable}"
+                        x:Name="butUpdateConfig" Click="butUpdateConfig_Click"
+                        ToolTip="A new update for the config file is available!  This will give you more options in the Edit Pawn tab: either more fields to edit, or more options for fields like skills."/>
+            </DockPanel>
+        </UniformGrid>
+        <TabControl x:Name="tabControl" Margin="0,85,0,0">
             <TabItem>
                 <TabItem.Header>
                     <TextBlock Text=".sav file" ToolTip="Import and export a Pawn from a .sav file." />

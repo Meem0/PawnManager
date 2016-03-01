@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using Microsoft.Win32;
+using System.Net;
 
 namespace PawnManager
 {
@@ -28,8 +28,23 @@ namespace PawnManager
 
         public const string PawnFilter = "Pawn file|*.xml|All Files|*.*";
         public const string SavFilter = "DDDA save file|*.xml;*.sav|All Files|*.*";
+        private const string ConfigURL = "https://raw.githubusercontent.com/Meem0/PawnManager/master/PawnManager/config.xml";
+        private const string ConfigFileName = "config.xml";
 
         public SavTab SavTab { get; private set; }
+
+        private XElement pendingUpdatedConfig;
+        public XElement PendingUpdatedConfig
+        {
+            get { return pendingUpdatedConfig; }
+            set
+            {
+                pendingUpdatedConfig = value;
+                NotifyPropertyChanged("IsConfigUpdateAvailable");
+            }
+        }
+        public bool IsConfigUpdateAvailable { get { return PendingUpdatedConfig != null; } }
+        private int configFileVersion = -1;
 
         private PawnModel pawnModel = null;
         public PawnModel PawnModel
@@ -49,13 +64,90 @@ namespace PawnManager
             DataContext = this;
             
             SavTab = new SavTab();
-            
-            XElement config = XElement.Load("../PawnManager/config.xml");
+
+            InitializeConfig();
+        }
+
+        private void InitializeConfig()
+        {
+            XElement config = null;
+            try
+            {
+                config = XElement.Load(ConfigFileName);
+            }
+            catch { }
+
+            if (config != null)
+            {
+                SetConfig(config);
+                (new Thread(CheckForNewConfig)).Start();
+            }
+            else
+            {
+                bool success = false;
+                MessageBoxResult result =
+                    MessageBox.Show(
+                        "Could not open config.xml.  Would you like to try to get the latest one from online?",
+                        "Error reading config",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Error);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    CheckForNewConfig();
+                    if (PendingUpdatedConfig != null)
+                    {
+                        XElement newConfig = PendingUpdatedConfig;
+                        PendingUpdatedConfig = null;
+                        SetConfig(newConfig);
+                        success = true;
+                    }
+                }
+
+                if (!success)
+                {
+                    Application.Current.Shutdown();
+                }
+            }
+        }
+
+        private int? GetConfigVersion(XElement config)
+        {
+            int? ret = null;
+            try
+            {
+                ret = int.Parse(config.Attribute("version").Value);
+            }
+            catch { }
+            return ret;
+        }
+
+        private void SetConfig(XElement config)
+        {
+            int? version = GetConfigVersion(config);
+            configFileVersion = version.HasValue ? version.Value : 0;
+
             PawnTemplateCategory template = PawnIO.ParseConfig(config);
 
             pawnModel = new PawnModel(template);
-
             PawnEditTreeTab.TreeList.Model = pawnModel;
+        }
+
+        private void CheckForNewConfig()
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                string result = client.DownloadString(ConfigURL);
+
+                XElement updateConfig = XElement.Parse(result);
+                int? version = GetConfigVersion(updateConfig);
+                if (version.HasValue && version.Value > configFileVersion)
+                {
+                    PendingUpdatedConfig = updateConfig;
+                }
+            }
+            catch { }
         }
         
         private void butLoad_Click(object sender, RoutedEventArgs e)
@@ -158,7 +250,7 @@ namespace PawnManager
 
         private void butSavBrowse_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openDialog = new Microsoft.Win32.OpenFileDialog();
+            OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.Filter = SavFilter;
             openDialog.Title = "Browse for save file";
 
@@ -195,6 +287,25 @@ namespace PawnManager
             {
                 savDir = savDir.Replace('/', '\\');
                 System.Diagnostics.Process.Start("explorer.exe", savDir);
+            }
+        }
+
+        private void butUpdateConfig_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show(
+                "This will unload the current Pawn.  Make sure any changes are saved.  Are you sure you want to update?",
+                "Update config file?",
+                MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                if (PendingUpdatedConfig != null)
+                {
+                    XElement newConfig = PendingUpdatedConfig;
+                    PendingUpdatedConfig = null;
+
+                    SetConfig(newConfig);
+                }
             }
         }
     }
