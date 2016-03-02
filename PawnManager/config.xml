@@ -34,16 +34,16 @@
         <key>face</key>
         <label>Face type</label>
         <slider>
-          <min>0</min>
-          <max>40</max>
+          <min>50</min>
+          <max>89</max>
         </slider>
       </parameter>
       <parameter>
         <key>eye</key>
         <label>Eye type</label>
         <slider>
-          <min>0</min>
-          <max>40</max>
+          <min>50</min>
+          <max>89</max>
         </slider>
       </parameter>
       <parameter>
@@ -51,7 +51,7 @@
         <label>Eye separation</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>4</max>
         </slider>
       </parameter>
       <parameter>
@@ -59,7 +59,7 @@
         <label>Eye height</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>4</max>
         </slider>
       </parameter>
       <parameter>
@@ -67,7 +67,7 @@
         <label>Eye size</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>3</max>
         </slider>
       </parameter>
       <parameter>
@@ -75,7 +75,7 @@
         <label>Right eye colour</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>29</max>
         </slider>
       </parameter>
       <parameter>
@@ -83,7 +83,7 @@
         <label>Left eye colour</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>29</max>
         </slider>
       </parameter>
       <parameter>
@@ -91,7 +91,7 @@
         <label>Eyebrow type</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>3</max>
         </slider>
       </parameter>
       <parameter>
@@ -99,7 +99,7 @@
         <label>Eyebrow separation</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>3</max>
         </slider>
       </parameter>
       <parameter>
@@ -107,15 +107,15 @@
         <label>Eyebrow height</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>4</max>
         </slider>
       </parameter>
       <parameter>
         <key>nose</key>
         <label>Nose type</label>
         <slider>
-          <min>0</min>
-          <max>15</max>
+          <min>50</min>
+          <max>89</max>
         </slider>
       </parameter>
       <parameter>
@@ -123,7 +123,7 @@
         <label>Nose height</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>4</max>
         </slider>
       </parameter>
       <parameter>
@@ -131,15 +131,15 @@
         <label>Nose size</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>3</max>
         </slider>
       </parameter>
       <parameter>
         <key>mouth</key>
         <label>Mouth type</label>
         <slider>
-          <min>0</min>
-          <max>15</max>
+          <min>50</min>
+          <max>89</max>
         </slider>
       </parameter>
       <parameter>
@@ -147,15 +147,15 @@
         <label>Mouth height</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>4</max>
         </slider>
       </parameter>
       <parameter>
         <key>ear</key>
         <label>Ear type</label>
         <slider>
-          <min>0</min>
-          <max>15</max>
+          <min>50</min>
+          <max>89</max>
         </slider>
       </parameter>
       <parameter>
@@ -163,7 +163,7 @@
         <label>Ear height</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>3</max>
         </slider>
       </parameter>
       <parameter>
@@ -171,7 +171,7 @@
         <label>Ear depth</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>3</max>
         </slider>
       </parameter>
       <parameter>
@@ -179,7 +179,7 @@
         <label>bodySlender</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>4</max>
         </slider>
       </parameter>
       <parameter>
@@ -187,7 +187,7 @@
         <label>bodyMuscle</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>3</max>
         </slider>
       </parameter>
       <parameter>
@@ -195,47 +195,47 @@
         <label>Breast size</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>4</max>
         </slider>
       </parameter>
       <parameter>
         <key>HumanBodyAll</key>
         <label>HumanBodyAll</label>
         <slider>
-          <min>0</min>
-          <max>15</max>
+          <min>50</min>
+          <max>94</max>
         </slider>
       </parameter>
       <parameter>
         <key>humanHead</key>
         <label>humanHead</label>
         <slider>
-          <min>0</min>
-          <max>15</max>
+          <min>50</min>
+          <max>94</max>
         </slider>
       </parameter>
       <parameter>
         <key>humanBody</key>
         <label>humanBody</label>
         <slider>
-          <min>0</min>
-          <max>15</max>
+          <min>50</min>
+          <max>94</max>
         </slider>
       </parameter>
       <parameter>
         <key>humanArm</key>
         <label>humanArm</label>
         <slider>
-          <min>0</min>
-          <max>15</max>
+          <min>50</min>
+          <max>94</max>
         </slider>
       </parameter>
       <parameter>
         <key>humanLeg</key>
         <label>humanLeg</label>
         <slider>
-          <min>0</min>
-          <max>15</max>
+          <min>50</min>
+          <max>94</max>
         </slider>
       </parameter>
       <parameter>
@@ -243,7 +243,7 @@
         <label>movement</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>4</max>
         </slider>
       </parameter>
       <parameter>
@@ -251,7 +251,7 @@
         <label>posture</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>3</max>
         </slider>
       </parameter>
       <parameter>
@@ -259,7 +259,7 @@
         <label>wrinkle</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>3</max>
         </slider>
       </parameter>
       <parameter>
@@ -275,15 +275,15 @@
         <label>scar</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>12</max>
         </slider>
       </parameter>
       <parameter>
         <key>skinColour</key>
-        <label>skinColour</label>
+        <label>Skin colour</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>29</max>
         </slider>
       </parameter>
       <parameter>
@@ -291,7 +291,7 @@
         <label>eyebrowColour</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>20</max>
         </slider>
       </parameter>
       <parameter>
@@ -299,7 +299,7 @@
         <label>makeupColour</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>20</max>
         </slider>
       </parameter>
       <parameter>
@@ -315,7 +315,7 @@
         <label>Hair colour</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>19</max>
         </slider>
       </parameter>
       <parameter>
@@ -323,7 +323,7 @@
         <label>Beard type</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>33</max>
         </slider>
       </parameter>
       <parameter>
@@ -331,7 +331,7 @@
         <label>Beard colour</label>
         <slider>
           <min>0</min>
-          <max>15</max>
+          <max>20</max>
         </slider>
       </parameter>
     </category>
