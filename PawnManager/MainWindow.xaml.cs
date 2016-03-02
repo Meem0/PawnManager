@@ -308,6 +308,17 @@ namespace PawnManager
                 }
             }
         }
+        
+        private void butOptionsInfo_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(
+                "Then help out!  No programming knowledge required!\n\n" +
+                "The config.xml file contains the instructions that tell PawnManager what fields to show here, " +
+                "and what what constraints to put on the fields, such as the range of values for a slider or " +
+                "the list of options for a drop-down.",
+                "I want more options!",
+                MessageBoxButton.OK);
+        }
     }
 
 

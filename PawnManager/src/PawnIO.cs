@@ -161,6 +161,7 @@ namespace PawnManager
             {
                 try
                 {
+
                     xElement.GetValueAttribute().Value = ((int)parameter.Value).ToString();
                 }
                 catch (Exception ex)
@@ -427,6 +428,7 @@ namespace PawnManager
         private const string ElementNameEditTypeDropDown = "options";
         private const string ElementNameEditTypeDropDownOption = "option";
         private const string ElementNameEditTypeDropDownOptionValue = "value";
+        private const string ElementNameEditTypeDropDownDisableCustom = "disableCustom";
         private const string ElementNameEditTypeSlider = "slider";
         private const string ElementNameEditTypeSliderMin = "min";
         private const string ElementNameEditTypeSliderMax = "max";
@@ -498,6 +500,12 @@ namespace PawnManager
         private static PawnTemplateParameterDropDown ParseEditElementDropDown(XElement xElement)
         {
             PawnTemplateParameterDropDown dropDown = new PawnTemplateParameterDropDown();
+
+            if (xElement.Parent.Element(ElementNameEditTypeDropDownDisableCustom) == null)
+            {
+                dropDown.AddOption(new PawnTemplateParameterDropDown.Option { Label = "Custom", Value = -2 });
+                dropDown.AllowCustom = true;
+            }
 
             foreach (XElement optionElement in xElement.Elements())
             {

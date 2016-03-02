@@ -11,6 +11,7 @@
       <parameter>
         <key>gender</key>
         <label>Gender</label>
+        <disableCustom />
         <options>
           <option>
             <label>Male</label>
@@ -338,6 +339,7 @@
     <parameter>
       <key>vocation</key>
       <label>Vocation</label>
+      <disableCustom />
       <options>
         <option>
           <label>Fighter</label>
@@ -451,6 +453,72 @@
           <max>10</max>
         </slider>
       </parameter>
+    </category>
+    <category>
+      <label>Skills</label>
+      <category>
+        <label>Sword</label>
+        <parameter>
+          <key>swordSkill1</key>
+          <label>Sword skill 1</label>
+          <options>
+            <option>
+              <label>Unassigned</label>
+              <value>-1</value>
+            </option>
+          </options>
+        </parameter>
+        <parameter>
+          <key>swordSkill1</key>
+          <label>Sword skill 2</label>
+          <options>
+            <option>
+              <label>Unassigned</label>
+              <value>-1</value>
+            </option>
+          </options>
+        </parameter>
+        <parameter>
+          <key>swordSkill1</key>
+          <label>Sword skill 3</label>
+          <options>
+            <option>
+              <label>Unassigned</label>
+              <value>-1</value>
+            </option>
+          </options>
+        </parameter>
+        <parameter>
+          <key>swordSkill1</key>
+          <label>Sword skill 4</label>
+          <options>
+            <option>
+              <label>Unassigned</label>
+              <value>-1</value>
+            </option>
+          </options>
+        </parameter>
+        <parameter>
+          <key>swordSkill1</key>
+          <label>Sword skill 5</label>
+          <options>
+            <option>
+              <label>Unassigned</label>
+              <value>-1</value>
+            </option>
+          </options>
+        </parameter>
+        <parameter>
+          <key>swordSkill1</key>
+          <label>Sword skill 6</label>
+          <options>
+            <option>
+              <label>Unassigned</label>
+              <value>-1</value>
+            </option>
+          </options>
+        </parameter>
+      </category>
     </category>
   </edit>
   <sav>
@@ -639,6 +707,24 @@
         <key>joblevel7</key>
         <key>joblevel8</key>
         <key>joblevel9</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::SWORD]</name>
+        <key>skillSword1</key>
+        <key>skillSword2</key>
+        <key>skillSword3</key>
+        <key>skillSword4</key>
+        <key>skillSword5</key>
+        <key>skillSword6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::Mace]</name>
+        <key>skillMace1</key>
+        <key>skillMace2</key>
+        <key>skillMace3</key>
+        <key>skillMace4</key>
+        <key>skillMace5</key>
+        <key>skillMace6</key>
       </array>
     </class>
   </sav>

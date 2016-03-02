@@ -112,7 +112,13 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Edit Pawn">
-                <local:PawnTreeList x:Name="PawnEditTreeTab" />
+                <DockPanel>
+                    <local:PawnTreeList DockPanel.Dock="Top" x:Name="PawnEditTreeTab" />
+                    <Button DockPanel.Dock="Bottom" Width="150"
+                            VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                            x:Name="butOptionsInfo" Click="butOptionsInfo_Click"
+                            Content="I want more options!" />
+                </DockPanel>
             </TabItem>
         </TabControl>
     </Grid>

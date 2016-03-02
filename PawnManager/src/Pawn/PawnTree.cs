@@ -78,6 +78,19 @@ namespace PawnManager
             }
         }
 
+        public int ParameterValue
+        {
+            get { return (int)PawnParameter.Value; }
+            set
+            {
+                if (Template.AllowCustom || Template.GetOptionIndexFromValue(value) >= 0)
+                {
+                    PawnParameter.Value = value;
+                    NotifyPropertyChanged("Value");
+                }
+            }
+        }
+
         protected override object GetValueForUI()
         {
             int index = Template.GetOptionIndexFromValue((int)PawnParameter.Value);
@@ -86,22 +99,28 @@ namespace PawnManager
 
         protected override void SetValueFromUI(object value)
         {
-            if (Template.Options.Count < 1)
+            if (Template.Options.Count == 0)
             {
-                PawnParameter.Value = 0;
                 return;
             }
 
-            int index = 0;
             if (value is int)
             {
-                index = Extensions.Clamp((int)value, 0, Template.Options.Count - 1);
-            }
+                int index = (int)value;
 
-            PawnParameter.Value = Template.Options[index].Value;
+                if (Template.AllowCustom && index == 0)
+                {
+                    return;
+                }
+
+                index = Extensions.Clamp(index, 0, Template.Options.Count - 1);
+
+                PawnParameter.Value = Template.Options[index].Value;
+                NotifyPropertyChanged("ParameterValue");
+            }
         }
     }
-
+    
     public class PawnTreeParameterName : PawnTreeParameter
     {
         public PawnTemplateParameterName Template { get; set; }

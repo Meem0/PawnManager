@@ -58,7 +58,9 @@ namespace PawnManager
             public string Label { get; set; } = "";
             public int Value { get; set; }
         }
-        
+
+        public bool AllowCustom { get; set; } = false;
+
         public List<Option> Options { get; } = new List<Option>();
         private Dictionary<int, int> optionValuesToIndex
           = new Dictionary<int, int>();
@@ -71,8 +73,11 @@ namespace PawnManager
 
         public int GetOptionIndexFromValue(int optionValue)
         {
-            int index = -1;
-            optionValuesToIndex.TryGetValue(optionValue, out index);
+            int index;
+            if (!optionValuesToIndex.TryGetValue(optionValue, out index))
+            {
+                index = -1;
+            }
             return index;
         }
 
