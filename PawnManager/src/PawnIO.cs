@@ -161,7 +161,6 @@ namespace PawnManager
             {
                 try
                 {
-
                     xElement.GetValueAttribute().Value = ((int)parameter.Value).ToString();
                 }
                 catch (Exception ex)
@@ -407,7 +406,7 @@ namespace PawnManager
         #endregion
 
         #region config parsing
-
+        
         private const string ElementNameKey = "key";
         
         private static string GetElementKey(XElement xElement)
@@ -420,6 +419,7 @@ namespace PawnManager
 
         #region element names
 
+        private const string ElementNameOptionsDict = "optionsDict";
         private const string ElementNameEditParseTreeRoot = "edit";
         private const string ElementNameEditParameter = "parameter";
         private const string ElementNameEditParameterContainer = "category";
@@ -435,8 +435,17 @@ namespace PawnManager
 
         #endregion
 
+        private static Dictionary<string, List<PawnTemplateParameterDropDown.Option>> OptionsDict
+                 = new Dictionary<string, List<PawnTemplateParameterDropDown.Option>>();
+
         private static PawnTemplateCategory ParsePawnTemplate(XElement config)
         {
+            XElement optionsDictXml = config.Element(ElementNameOptionsDict);
+            if (optionsDictXml != null)
+            {
+                ParseOptionsDict(optionsDictXml);
+            }
+
             XElement editTreeXml = config.Element(ElementNameEditParseTreeRoot);
             if (editTreeXml == null)
             {
@@ -506,28 +515,50 @@ namespace PawnManager
                 dropDown.AddOption(new PawnTemplateParameterDropDown.Option { Label = "Custom", Value = -2 });
                 dropDown.AllowCustom = true;
             }
-
-            foreach (XElement optionElement in xElement.Elements())
+            
+            XElement keyElement = xElement.Element(ElementNameKey);
+            if (keyElement != null)
             {
-                if (optionElement.Name != ElementNameEditTypeDropDownOption)
+                try
                 {
-                    throw new XmlException(string.Format(
-                        "{0} is not a valid child of {1}",
-                        optionElement.Name,
-                        ElementNameEditTypeDropDown));
+                    List<PawnTemplateParameterDropDown.Option> optionsList = OptionsDict[keyElement.Value];
+                    foreach (PawnTemplateParameterDropDown.Option option in optionsList)
+                    {
+                        dropDown.AddOption(option);
+                    }
                 }
-                PawnTemplateParameterDropDown.Option option = new PawnTemplateParameterDropDown.Option();
-                option.Label = GetEditElementLabel(optionElement);
-                try { option.Value = (int)optionElement.Element(ElementNameEditTypeDropDownOptionValue); }
                 catch (Exception ex)
                 {
                     throw new XmlException(string.Format(
-                        "Invalid {0} element in edit config: {1}",
-                        ElementNameEditTypeDropDownOption,
-                        optionElement.ToString()),
+                        "Invalid option key in config file: {0}.",
+                        keyElement.Value),
                         ex);
                 }
-                dropDown.AddOption(option);
+            }
+            else
+            {
+                foreach (XElement optionElement in xElement.Elements())
+                {
+                    if (optionElement.Name != ElementNameEditTypeDropDownOption)
+                    {
+                        throw new XmlException(string.Format(
+                            "{0} is not a valid child of {1}",
+                            optionElement.Name,
+                            ElementNameEditTypeDropDown));
+                    }
+                    PawnTemplateParameterDropDown.Option option = new PawnTemplateParameterDropDown.Option();
+                    option.Label = GetEditElementLabel(optionElement);
+                    try { option.Value = (int)optionElement.Element(ElementNameEditTypeDropDownOptionValue); }
+                    catch (Exception ex)
+                    {
+                        throw new XmlException(string.Format(
+                            "Invalid {0} element in edit config: {1}",
+                            ElementNameEditTypeDropDownOption,
+                            optionElement.ToString()),
+                            ex);
+                    }
+                    dropDown.AddOption(option);
+                }
             }
 
             return dropDown;
@@ -557,6 +588,32 @@ namespace PawnManager
         {
             XElement labelElement = xElement.Element(ElementNameEditLabel);
             return labelElement == null ? "" : labelElement.Value;
+        }
+
+        private static void ParseOptionsDict(XElement xElement)
+        {
+            try
+            {
+                foreach (XElement optionListElement in xElement.Elements(ElementNameEditTypeDropDown))
+                {
+                    List<PawnTemplateParameterDropDown.Option> optionsList
+                        = new List<PawnTemplateParameterDropDown.Option>();
+                    foreach (XElement optionElement in optionListElement.Elements(ElementNameEditTypeDropDownOption))
+                    {
+                        optionsList.Add(new PawnTemplateParameterDropDown.Option
+                        {
+                            Label = optionElement.Element(ElementNameEditLabel).Value,
+                            Value = int.Parse(optionElement.Element(ElementNamePawnFileValue).Value)
+                        });
+                    }
+
+                    OptionsDict.Add(optionListElement.Element(ElementNameKey).Value, optionsList);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new XmlException("Config file contains invalid options dictionary.", ex);
+            }
         }
 
         #endregion

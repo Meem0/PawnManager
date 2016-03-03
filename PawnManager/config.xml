@@ -459,63 +459,45 @@
       <category>
         <label>Sword</label>
         <parameter>
-          <key>swordSkill1</key>
+          <key>skillSword1</key>
           <label>Sword skill 1</label>
           <options>
-            <option>
-              <label>Unassigned</label>
-              <value>-1</value>
-            </option>
+            <key>skillSword</key>
           </options>
         </parameter>
         <parameter>
-          <key>swordSkill1</key>
+          <key>skillSword2</key>
           <label>Sword skill 2</label>
           <options>
-            <option>
-              <label>Unassigned</label>
-              <value>-1</value>
-            </option>
+            <key>skillSword</key>
           </options>
         </parameter>
         <parameter>
-          <key>swordSkill1</key>
+          <key>skillSword3</key>
           <label>Sword skill 3</label>
           <options>
-            <option>
-              <label>Unassigned</label>
-              <value>-1</value>
-            </option>
+            <key>skillSword</key>
           </options>
         </parameter>
         <parameter>
-          <key>swordSkill1</key>
+          <key>skillSword4</key>
           <label>Sword skill 4</label>
           <options>
-            <option>
-              <label>Unassigned</label>
-              <value>-1</value>
-            </option>
+            <key>skillSword</key>
           </options>
         </parameter>
         <parameter>
-          <key>swordSkill1</key>
+          <key>skillSword5</key>
           <label>Sword skill 5</label>
           <options>
-            <option>
-              <label>Unassigned</label>
-              <value>-1</value>
-            </option>
+            <key>skillSword</key>
           </options>
         </parameter>
         <parameter>
-          <key>swordSkill1</key>
+          <key>skillSword6</key>
           <label>Sword skill 6</label>
           <options>
-            <option>
-              <label>Unassigned</label>
-              <value>-1</value>
-            </option>
+            <key>skillSword</key>
           </options>
         </parameter>
       </category>
@@ -728,4 +710,13 @@
       </array>
     </class>
   </sav>
+  <optionsDict>
+    <options>
+      <key>skillSword</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+  </optionsDict>
 </root>

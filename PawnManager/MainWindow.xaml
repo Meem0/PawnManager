@@ -113,11 +113,11 @@
             </TabItem>
             <TabItem Header="Edit Pawn">
                 <DockPanel>
-                    <local:PawnTreeList DockPanel.Dock="Top" x:Name="PawnEditTreeTab" />
-                    <Button DockPanel.Dock="Bottom" Width="150"
+                    <Button DockPanel.Dock="Bottom" Width="150" Height="23"
                             VerticalAlignment="Bottom" HorizontalAlignment="Left"
                             x:Name="butOptionsInfo" Click="butOptionsInfo_Click"
                             Content="I want more options!" />
+                    <local:PawnTreeList DockPanel.Dock="Top" x:Name="PawnEditTreeTab" />
                 </DockPanel>
             </TabItem>
         </TabControl>
