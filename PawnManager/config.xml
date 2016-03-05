@@ -501,6 +501,321 @@
           </options>
         </parameter>
       </category>
+      <category>
+        <label>Mace</label>
+        <parameter>
+          <key>skillMace1</key>
+          <label>Mace skill 1</label>
+          <options>
+            <key>skillMace</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillMace2</key>
+          <label>Mace skill 2</label>
+          <options>
+            <key>skillMace</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillMace3</key>
+          <label>Mace skill 3</label>
+          <options>
+            <key>skillMace</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillMace4</key>
+          <label>Mace skill 4</label>
+          <options>
+            <key>skillMace</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillMace5</key>
+          <label>Mace skill 5</label>
+          <options>
+            <key>skillMace</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillMace6</key>
+          <label>Mace skill 6</label>
+          <options>
+            <key>skillMace</key>
+          </options>
+        </parameter>
+      </category>
+      <category>
+        <label>Greatsword</label>
+        <parameter>
+          <key>skillGSword1</key>
+          <label>Greatsword skill 1</label>
+          <options>
+            <key>skillGSword</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillGSword2</key>
+          <label>Greatsword skill 2</label>
+          <options>
+            <key>skillGSword</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillGSword3</key>
+          <label>Greatsword skill 3</label>
+          <options>
+            <key>skillGSword</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillGSword4</key>
+          <label>Greatsword skill 4</label>
+          <options>
+            <key>skillGSword</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillGSword5</key>
+          <label>Greatsword skill 5</label>
+          <options>
+            <key>skillGSword</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillGSword6</key>
+          <label>Greatsword skill 6</label>
+          <options>
+            <key>skillGSword</key>
+          </options>
+        </parameter>
+      </category>
+      <category>
+        <label>Dagger</label>
+        <parameter>
+          <key>skillDagger1</key>
+          <label>Dagger skill 1</label>
+          <options>
+            <key>skillDagger</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillDagger2</key>
+          <label>Dagger skill 2</label>
+          <options>
+            <key>skillDagger</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillDagger3</key>
+          <label>Dagger skill 3</label>
+          <options>
+            <key>skillDagger</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillDagger4</key>
+          <label>Dagger skill 4</label>
+          <options>
+            <key>skillDagger</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillDagger5</key>
+          <label>Dagger skill 5</label>
+          <options>
+            <key>skillDagger</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillDagger6</key>
+          <label>Dagger skill 6</label>
+          <options>
+            <key>skillDagger</key>
+          </options>
+        </parameter>
+      </category>
+      <category>
+        <label>Wand</label>
+        <parameter>
+          <key>skillWand1</key>
+          <label>Wand skill 1</label>
+          <options>
+            <key>skillWand</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillWand2</key>
+          <label>Wand skill 2</label>
+          <options>
+            <key>skillWand</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillWand3</key>
+          <label>Wand skill 3</label>
+          <options>
+            <key>skillWand</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillWand4</key>
+          <label>Wand skill 4</label>
+          <options>
+            <key>skillWand</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillWand5</key>
+          <label>Wand skill 5</label>
+          <options>
+            <key>skillWand</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillWand6</key>
+          <label>Wand skill 6</label>
+          <options>
+            <key>skillWand</key>
+          </options>
+        </parameter>
+      </category>
+      <category>
+        <label>Hammer</label>
+        <parameter>
+          <key>skillHammer1</key>
+          <label>Hammer skill 1</label>
+          <options>
+            <key>skillHammer</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillHammer2</key>
+          <label>Hammer skill 2</label>
+          <options>
+            <key>skillHammer</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillHammer3</key>
+          <label>Hammer skill 3</label>
+          <options>
+            <key>skillHammer</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillHammer4</key>
+          <label>Hammer skill 4</label>
+          <options>
+            <key>skillHammer</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillHammer5</key>
+          <label>Hammer skill 5</label>
+          <options>
+            <key>skillHammer</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillHammer6</key>
+          <label>Hammer skill 6</label>
+          <options>
+            <key>skillHammer</key>
+          </options>
+        </parameter>
+      </category>
+      <category>
+        <label>Shield</label>
+        <parameter>
+          <key>skillShield1</key>
+          <label>Shield skill 1</label>
+          <options>
+            <key>skillShield</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillShield2</key>
+          <label>Shield skill 2</label>
+          <options>
+            <key>skillShield</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillShield3</key>
+          <label>Shield skill 3</label>
+          <options>
+            <key>skillShield</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillShield4</key>
+          <label>Shield skill 4</label>
+          <options>
+            <key>skillShield</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillShield5</key>
+          <label>Shield skill 5</label>
+          <options>
+            <key>skillShield</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillShield6</key>
+          <label>Shield skill 6</label>
+          <options>
+            <key>skillShield</key>
+          </options>
+        </parameter>
+      </category>
+      <category>
+        <label>Bow</label>
+        <parameter>
+          <key>skillBow1</key>
+          <label>Bow skill 1</label>
+          <options>
+            <key>skillBow</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillBow2</key>
+          <label>Bow skill 2</label>
+          <options>
+            <key>skillBow</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillBow3</key>
+          <label>Bow skill 3</label>
+          <options>
+            <key>skillBow</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillBow4</key>
+          <label>Bow skill 4</label>
+          <options>
+            <key>skillBow</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillBow5</key>
+          <label>Bow skill 5</label>
+          <options>
+            <key>skillBow</key>
+          </options>
+        </parameter>
+        <parameter>
+          <key>skillBow6</key>
+          <label>Bow skill 6</label>
+          <options>
+            <key>skillBow</key>
+          </options>
+        </parameter>
+      </category>
     </category>
   </edit>
   <sav>
@@ -700,7 +1015,7 @@
         <key>skillSword6</key>
       </array>
       <array>
-        <name>mWeaponSkill[nWeapon::Mace]</name>
+        <name>mWeaponSkill[nWeapon::MACE]</name>
         <key>skillMace1</key>
         <key>skillMace2</key>
         <key>skillMace3</key>
@@ -708,11 +1023,164 @@
         <key>skillMace5</key>
         <key>skillMace6</key>
       </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::GSWORD]</name>
+        <key>skillGSword1</key>
+        <key>skillGSword2</key>
+        <key>skillGSword3</key>
+        <key>skillGSword4</key>
+        <key>skillGSword5</key>
+        <key>skillGSword6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::DAGGER]</name>
+        <key>skillDagger1</key>
+        <key>skillDagger2</key>
+        <key>skillDagger3</key>
+        <key>skillDagger4</key>
+        <key>skillDagger5</key>
+        <key>skillDagger6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::WAND]</name>
+        <key>skillWand1</key>
+        <key>skillWand2</key>
+        <key>skillWand3</key>
+        <key>skillWand4</key>
+        <key>skillWand5</key>
+        <key>skillWand6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::WAND_DX]</name>
+        <key>skillWandDX1</key>
+        <key>skillWandDX2</key>
+        <key>skillWandDX3</key>
+        <key>skillWandDX4</key>
+        <key>skillWandDX5</key>
+        <key>skillWandDX6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::HAMMER]</name>
+        <key>skillHammer1</key>
+        <key>skillHammer2</key>
+        <key>skillHammer3</key>
+        <key>skillHammer4</key>
+        <key>skillHammer5</key>
+        <key>skillHammer6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::SHIELD]</name>
+        <key>skillShield1</key>
+        <key>skillShield2</key>
+        <key>skillShield3</key>
+        <key>skillShield4</key>
+        <key>skillShield5</key>
+        <key>skillShield6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::SHIELD_L]</name>
+        <key>skillShieldL1</key>
+        <key>skillShieldL2</key>
+        <key>skillShieldL3</key>
+        <key>skillShieldL4</key>
+        <key>skillShieldL5</key>
+        <key>skillShieldL6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::BOW]</name>
+        <key>skillBow1</key>
+        <key>skillBow2</key>
+        <key>skillBow3</key>
+        <key>skillBow4</key>
+        <key>skillBow5</key>
+        <key>skillBow6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::BOW_L]</name>
+        <key>skillBowL1</key>
+        <key>skillBowL2</key>
+        <key>skillBowL3</key>
+        <key>skillBowL4</key>
+        <key>skillBowL5</key>
+        <key>skillBowL6</key>
+      </array>
+      <array>
+        <name>mWeaponSkill[nWeapon::BOW_MG]</name>
+        <key>skillBowMG1</key>
+        <key>skillBowMG2</key>
+        <key>skillBowMG3</key>
+        <key>skillBowMG4</key>
+        <key>skillBowMG5</key>
+        <key>skillBowMG6</key>
+      </array>
     </class>
   </sav>
   <optionsDict>
     <options>
       <key>skillSword</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+    <options>
+      <key>skillMace</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+    <options>
+      <key>skillGSword</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+    <options>
+      <key>skillDagger</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+    <options>
+      <key>skillWand</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+    <options>
+      <key>skillWandDX</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+    <options>
+      <key>skillHammer</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+    <options>
+      <key>skillShield</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+    <options>
+      <key>skillBow</key>
+      <option>
+        <label>Unassigned</label>
+        <value>-1</value>
+      </option>
+    </options>
+    <options>
+      <key>skillBowMG</key>
       <option>
         <label>Unassigned</label>
         <value>-1</value>
