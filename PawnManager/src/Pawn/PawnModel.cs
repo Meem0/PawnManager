@@ -82,7 +82,7 @@ namespace PawnManager
             {
                 if (nameParameter != null)
                 {
-                    return nameParameter.Value as string;
+                    return nameParameter.Name;
                 }
                 return "";
             }

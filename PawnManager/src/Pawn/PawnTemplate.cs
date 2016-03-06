@@ -89,12 +89,71 @@ namespace PawnManager
     
     public class PawnTemplateParameterSlider : PawnTemplateParameter
     {
+        public Converter ValueConverter { get; set; }
         public int Minimum { get; set; }
         public int Maximum { get; set; }
+        public int UIMinimum
+        {
+            get
+            {
+                return Math.Min(ValueConverter.ConvertValueToUI(Minimum),
+                                ValueConverter.ConvertValueToUI(Maximum));
+            }
+        }
+        public int UIMaximum
+        {
+            get
+            {
+                return Math.Max(ValueConverter.ConvertValueToUI(Minimum),
+                                ValueConverter.ConvertValueToUI(Maximum));
+            }
+        }
 
         public override PawnTreeParameter CreateTreeParameter()
         {
             return new PawnTreeParameterSlider { Template = this };
+        }
+
+        public class Converter
+        {
+            public virtual int ConvertUIToValue(int uiValue) { return uiValue; }
+            public virtual int ConvertValueToUI(int value) { return value; }
+        }
+
+        public class ConverterPlusOne : Converter
+        {
+            public override int ConvertUIToValue(int uiValue)
+            {
+                return uiValue - 1;
+            }
+
+            public override int ConvertValueToUI(int value)
+            {
+                return value + 1;
+            }
+        }
+
+        public class ConverterXOffset : Converter
+        {
+            public override int ConvertUIToValue(int uiValue)
+            {
+                return 5 - uiValue;
+            }
+
+            public override int ConvertValueToUI(int value)
+            {
+                return 5 - value;
+            }
+        }
+
+        public static Converter CreateConverterFromKey(string key)
+        {
+            switch (key)
+            {
+                case "plusOne": return new ConverterPlusOne();
+                case "xOffset": return new ConverterXOffset();
+                default: return new Converter();
+            }
         }
     }
 }

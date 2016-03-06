@@ -40,35 +40,25 @@ namespace PawnManager
         /// <summary>
         /// A reference to one of the values in the Pawn data dictionary
         /// </summary>
-        public PawnParameter @PawnParameter { get; set; }
-
-        /// <summary>
-        /// The value bound to the UI tree
-        /// </summary>
-        public object Value
-        {
-            get { return GetValueForUI(); }
-            set
-            {
-                SetValueFromUI(value);
-                NotifyPropertyChanged();
-            }
-        }
-
-        protected virtual object GetValueForUI()
-        {
-            return PawnParameter.Value;
-        }
-
-        protected virtual void SetValueFromUI(object value)
-        {
-            PawnParameter.Value = value;
-        }
+        public virtual PawnParameter @PawnParameter { get; set; }
     }
 
     public class PawnTreeParameterDropDown : PawnTreeParameter
     {
         public PawnTemplateParameterDropDown Template { get; set; }
+
+        public override PawnParameter PawnParameter
+        {
+            get
+            {
+                return base.PawnParameter;
+            }
+            set
+            {
+                value.Value = value.Value.ToInt();
+                base.PawnParameter = value;
+            }
+        }
 
         public override string Label
         {
@@ -78,45 +68,59 @@ namespace PawnManager
             }
         }
 
-        public int ParameterValue
+        /// <summary>
+        /// Gets or sets the index of the currently selected drop-down option.
+        /// For use by the UI.
+        /// </summary>
+        public int DropDownIndex
         {
-            get { return (int)PawnParameter.Value; }
+            get
+            {
+                int index = Template.GetOptionIndexFromValue(PawnParameter.Value.ToInt());
+                return index < 0 ? 0 : index;
+            }
             set
             {
-                if (Template.AllowCustom || Template.GetOptionIndexFromValue(value) >= 0)
-                {
-                    PawnParameter.Value = value;
-                    NotifyPropertyChanged("Value");
-                }
-            }
-        }
-
-        protected override object GetValueForUI()
-        {
-            int index = Template.GetOptionIndexFromValue((int)PawnParameter.Value);
-            return index < 0 ? 0 : index;
-        }
-
-        protected override void SetValueFromUI(object value)
-        {
-            if (Template.Options.Count == 0)
-            {
-                return;
-            }
-
-            if (value is int)
-            {
-                int index = (int)value;
-
-                if (Template.AllowCustom && index == 0)
+                // When allowing custom values, the Option with index 0 is "Custom".
+                // We don't want that to be selectable.
+                if (Template.AllowCustom && value == 0)
                 {
                     return;
                 }
 
-                index = Extensions.Clamp(index, 0, Template.Options.Count - 1);
+                value = Extensions.Clamp(value, 0, Template.Options.Count - 1);
 
-                PawnParameter.Value = Template.Options[index].Value;
-                NotifyPropertyChanged("ParameterValue");
+                PawnParameter.Value = Template.Options[value].Value;
+
+                NotifyPropertyChanged();
+                NotifyPropertyChanged("TextBoxValue");
+            }
+        }
+
+        /// <summary>
+        /// The value displayed in the textbox.
+        /// This is the actual value used by the .sav file,
+        /// so that users can research values that don't have drop-down options yet.
+        /// </summary>
+        public string TextBoxValue
+        {
+            get { return PawnParameter.Value.ToInt().ToString(); }
+            set
+            {
+                int num;
+                if (!int.TryParse(value, out num))
+                {
+                    return;
+                }
+
+                if (!Template.AllowCustom)
+                {
+                    num = Extensions.Clamp(num, 0, Template.Options.Count - 1);
+                }
+                PawnParameter.Value = num;
+
+                NotifyPropertyChanged();
+                NotifyPropertyChanged("DropDownIndex");
             }
         }
     }
@@ -132,17 +136,18 @@ namespace PawnManager
                 return Template.Label;
             }
         }
-
-        protected override void SetValueFromUI(object value)
+        
+        public string Name
         {
-            string str = value as string;
-            if (str == null)
+            get { return PawnParameter.Value as string; }
+            set
             {
-                PawnParameter.Value = "";
-            }
-            else
-            {
-                PawnParameter.Value = str.Substring(0, Math.Min(str.Length, Template.MaxNameLength));
+                if (value == null)
+                {
+                    value = "";
+                }
+                PawnParameter.Value = value.Substring(0, Math.Min(value.Length, Template.MaxNameLength));
+                NotifyPropertyChanged();
             }
         }
     }
@@ -151,6 +156,19 @@ namespace PawnManager
     {
         public PawnTemplateParameterSlider Template { get; set; }
 
+        public override PawnParameter PawnParameter
+        {
+            get
+            {
+                return base.PawnParameter;
+            }
+            set
+            {
+                value.Value = value.Value.ToInt();
+                base.PawnParameter = value;
+            }
+        }
+
         public override string Label
         {
             get
@@ -158,25 +176,35 @@ namespace PawnManager
                 return Template.Label;
             }
         }
-        
-        protected override void SetValueFromUI(object value)
+
+        public int Value
         {
-            int num = 0;
-
-            if (value is int)
+            get
             {
-                num = (int)value;
+                return Template.ValueConverter.ConvertValueToUI(PawnParameter.Value.ToInt(Template.Minimum));
             }
-            else
+            set
             {
-                string numStr = value as string;
-                if (numStr == null || !int.TryParse(numStr, out num))
+                value = Template.ValueConverter.ConvertUIToValue(value);
+                PawnParameter.Value = Extensions.Clamp(value, Template.Minimum, Template.Maximum);
+
+                NotifyPropertyChanged();
+                NotifyPropertyChanged("TextBoxValue");
+            }
+        }
+
+        public string TextBoxValue
+        {
+            get { return Value.ToString(); }
+            set
+            {
+                int num;
+                if (!int.TryParse(value, out num))
                 {
-                    num = Template.Minimum;
+                    return;
                 }
+                Value = num;
             }
-
-            PawnParameter.Value = Extensions.Clamp(num, Template.Minimum, Template.Maximum);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Globalization;
 using System.ComponentModel;
+using System.Globalization;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
@@ -8,7 +9,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Microsoft.Win32;
-using System.Net;
 
 namespace PawnManager
 {
@@ -65,7 +65,20 @@ namespace PawnManager
             
             SavTab = new SavTab();
 
-            InitializeConfig();
+            try
+            {
+                InitializeConfig();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format(
+                    "{0}\n\nPawnManager requires the config file.  Sorry, but I have to close now.",
+                    ex.Message),
+                    "Error reading config",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                Application.Current.Shutdown();
+            }
         }
 
         private void InitializeConfig()
@@ -97,9 +110,7 @@ namespace PawnManager
                     CheckForNewConfig();
                     if (PendingUpdatedConfig != null)
                     {
-                        XElement newConfig = PendingUpdatedConfig;
-                        PendingUpdatedConfig = null;
-                        SetConfig(newConfig);
+                        ApplyUpdatedConfig();
                         success = true;
                     }
                 }
@@ -122,6 +133,23 @@ namespace PawnManager
             return ret;
         }
 
+        private void ApplyUpdatedConfig()
+        {
+            if (PendingUpdatedConfig == null)
+            {
+                return;
+            }
+            
+            XElement newConfig = PendingUpdatedConfig;
+            // set PendingUpdatedConfig to null as soon as possible,
+            // because there may be race conditions around calling this function twice
+            // before PendingUpdatedConfig was set to null...
+            PendingUpdatedConfig = null;
+
+            SetConfig(newConfig);
+            newConfig.Save(ConfigFileName);
+        }
+
         private void SetConfig(XElement config)
         {
             int? version = GetConfigVersion(config);
@@ -131,6 +159,8 @@ namespace PawnManager
 
             pawnModel = new PawnModel(template);
             PawnEditTreeTab.TreeList.Model = pawnModel;
+
+            NotifyPropertyChanged("PawnModel");
         }
 
         private void CheckForNewConfig()
@@ -147,7 +177,17 @@ namespace PawnManager
                     PendingUpdatedConfig = updateConfig;
                 }
             }
-            catch { }
+            catch (WebException ex)
+            {
+                throw new WebException(string.Format(
+                    "An Internet error occurred:\n{0}",
+                    ex.Message),
+                    ex);
+            }
+            catch (Exception ex)
+            {
+                throw new System.Xml.XmlException("Invalid config file.", ex);
+            }
         }
         
         private void butLoad_Click(object sender, RoutedEventArgs e)
@@ -299,13 +339,7 @@ namespace PawnManager
 
             if (result == MessageBoxResult.Yes)
             {
-                if (PendingUpdatedConfig != null)
-                {
-                    XElement newConfig = PendingUpdatedConfig;
-                    PendingUpdatedConfig = null;
-
-                    SetConfig(newConfig);
-                }
+                ApplyUpdatedConfig();
             }
         }
         
@@ -313,9 +347,11 @@ namespace PawnManager
         {
             MessageBox.Show(
                 "Then help out!  No programming knowledge required!\n\n" +
-                "The config.xml file contains the instructions that tell PawnManager what fields to show here, " +
-                "and what what constraints to put on the fields, such as the range of values for a slider or " +
-                "the list of options for a drop-down.",
+                "The config.xml file determines what you can edit in the Edit tab.  " +
+                "It tells PawnManager to display \"eye type\" as a slider with 40 possible values, " +
+                "and that \"vocation\" should be a drop-down with the options \"Fighter,\" \"Strider,\" etc.\n\n" +
+                "But it's too much work for Meem0 to research the game's ID number for every single skill and inclination!  " +
+                "So check out the PawnManager Nexus page to learn what you can do to help!",
                 "I want more options!",
                 MessageBoxButton.OK);
         }
@@ -353,38 +389,4 @@ namespace PawnManager
             throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
         }
     }
-
-    public class TestNode
-    {
-        public string Name { get; set; }
-        public object Value { get; set; }
-    }
-
-    public class TestInt
-    {
-        public TestInt(int num)
-        {
-            Num = num;
-        }
-        public int Num { get; set; }
-    }
-
-    public class TestString
-    {
-        public TestString(string str)
-        {
-            Str = str;
-        }
-        public string Str { get; set; }
-    }
-
-    public class TestChar
-    {
-        public TestChar(char ch)
-        {
-            Ch = ch;
-        }
-        public int Ch { get; set; }
-    }
-
 }

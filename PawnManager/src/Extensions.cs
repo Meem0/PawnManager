@@ -81,5 +81,16 @@ namespace PawnManager
         {
             return value < min ? min : value > max ? max : value;
         }
+
+        public static int ToInt(this object value, int defaultValue = 0)
+        {
+            int ret = defaultValue;
+            try
+            {
+                ret = Convert.ToInt32(value);
+            }
+            catch { }
+            return ret;
+        }
     }
 }

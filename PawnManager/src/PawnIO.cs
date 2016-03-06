@@ -161,7 +161,7 @@ namespace PawnManager
             {
                 try
                 {
-                    xElement.GetValueAttribute().Value = ((int)parameter.Value).ToString();
+                    xElement.GetValueAttribute().Value = (parameter.Value.ToInt()).ToString();
                 }
                 catch (Exception ex)
                 {
@@ -319,7 +319,7 @@ namespace PawnManager
                         PawnParameter pawnParameter = pawn.GetParameter(Keys[i]);
                         if (pawnParameter != null)
                         {
-                            LoadParameterToSav(pawnParameter, xElement);
+                            LoadParameterToSav(pawnParameter, childElement);
                         }
                     }
                     ++i;
@@ -430,6 +430,7 @@ namespace PawnManager
         private const string ElementNameEditTypeDropDownOptionValue = "value";
         private const string ElementNameEditTypeDropDownDisableCustom = "disableCustom";
         private const string ElementNameEditTypeSlider = "slider";
+        private const string ElementNameEditTypeSliderConverter = "converter";
         private const string ElementNameEditTypeSliderMin = "min";
         private const string ElementNameEditTypeSliderMax = "max";
 
@@ -548,7 +549,7 @@ namespace PawnManager
                     }
                     PawnTemplateParameterDropDown.Option option = new PawnTemplateParameterDropDown.Option();
                     option.Label = GetEditElementLabel(optionElement);
-                    try { option.Value = (int)optionElement.Element(ElementNameEditTypeDropDownOptionValue); }
+                    try { option.Value = optionElement.Element(ElementNameEditTypeDropDownOptionValue).Value.ToInt(); }
                     catch (Exception ex)
                     {
                         throw new XmlException(string.Format(
@@ -568,10 +569,12 @@ namespace PawnManager
         {
             try
             {
+                XElement converterElement = xElement.Element(ElementNameEditTypeSliderConverter);
                 return new PawnTemplateParameterSlider
                 {
-                    Minimum = (int)xElement.Element(ElementNameEditTypeSliderMin),
-                    Maximum = (int)xElement.Element(ElementNameEditTypeSliderMax)
+                    Minimum = xElement.Element(ElementNameEditTypeSliderMin).Value.ToInt(),
+                    Maximum = xElement.Element(ElementNameEditTypeSliderMax).Value.ToInt(),
+                    ValueConverter = PawnTemplateParameterSlider.CreateConverterFromKey(converterElement == null ? "" : converterElement.Value)
                 };
             }
             catch (Exception ex)

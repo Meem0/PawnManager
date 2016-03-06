@@ -27,314 +27,362 @@
         <key>voice</key>
         <label>Voice</label>
         <slider>
+          <converter>plusOne</converter>
           <min>0</min>
-          <max>15</max>
+          <max>11</max>
         </slider>
       </parameter>
-      <parameter>
-        <key>face</key>
-        <label>Face type</label>
-        <slider>
-          <min>50</min>
-          <max>89</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eye</key>
-        <label>Eye type</label>
-        <slider>
-          <min>50</min>
-          <max>89</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eyeX</key>
-        <label>Eye separation</label>
-        <slider>
-          <min>0</min>
-          <max>4</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eyeY</key>
-        <label>Eye height</label>
-        <slider>
-          <min>0</min>
-          <max>4</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eyeSize</key>
-        <label>Eye size</label>
-        <slider>
-          <min>0</min>
-          <max>3</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eyeColourR</key>
-        <label>Right eye colour</label>
-        <slider>
-          <min>0</min>
-          <max>29</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eyeColourL</key>
-        <label>Left eye colour</label>
-        <slider>
-          <min>0</min>
-          <max>29</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eyebrow</key>
-        <label>Eyebrow type</label>
-        <slider>
-          <min>0</min>
-          <max>3</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eyebrowX</key>
-        <label>Eyebrow separation</label>
-        <slider>
-          <min>0</min>
-          <max>3</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eyebrowY</key>
-        <label>Eyebrow height</label>
-        <slider>
-          <min>0</min>
-          <max>4</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>nose</key>
-        <label>Nose type</label>
-        <slider>
-          <min>50</min>
-          <max>89</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>noseY</key>
-        <label>Nose height</label>
-        <slider>
-          <min>0</min>
-          <max>4</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>noseSize</key>
-        <label>Nose size</label>
-        <slider>
-          <min>0</min>
-          <max>3</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>mouth</key>
-        <label>Mouth type</label>
-        <slider>
-          <min>50</min>
-          <max>89</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>mouthY</key>
-        <label>Mouth height</label>
-        <slider>
-          <min>0</min>
-          <max>4</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>ear</key>
-        <label>Ear type</label>
-        <slider>
-          <min>50</min>
-          <max>89</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>earY</key>
-        <label>Ear height</label>
-        <slider>
-          <min>0</min>
-          <max>3</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>earZ</key>
-        <label>Ear depth</label>
-        <slider>
-          <min>0</min>
-          <max>3</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>bodySlender</key>
-        <label>bodySlender</label>
-        <slider>
-          <min>0</min>
-          <max>4</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>bodyMuscle</key>
-        <label>bodyMuscle</label>
-        <slider>
-          <min>0</min>
-          <max>3</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>breast</key>
-        <label>Breast size</label>
-        <slider>
-          <min>0</min>
-          <max>4</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>HumanBodyAll</key>
-        <label>HumanBodyAll</label>
-        <slider>
-          <min>50</min>
-          <max>94</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>humanHead</key>
-        <label>humanHead</label>
-        <slider>
-          <min>50</min>
-          <max>94</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>humanBody</key>
-        <label>humanBody</label>
-        <slider>
-          <min>50</min>
-          <max>94</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>humanArm</key>
-        <label>humanArm</label>
-        <slider>
-          <min>50</min>
-          <max>94</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>humanLeg</key>
-        <label>humanLeg</label>
-        <slider>
-          <min>50</min>
-          <max>94</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>movement</key>
-        <label>movement</label>
-        <slider>
-          <min>0</min>
-          <max>4</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>posture</key>
-        <label>posture</label>
-        <slider>
-          <min>0</min>
-          <max>3</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>wrinkle</key>
-        <label>wrinkle</label>
-        <slider>
-          <min>0</min>
-          <max>3</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>makeup</key>
-        <label>makeup</label>
-        <slider>
-          <min>0</min>
-          <max>15</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>scar</key>
-        <label>scar</label>
-        <slider>
-          <min>0</min>
-          <max>12</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>skinColour</key>
-        <label>Skin colour</label>
-        <slider>
-          <min>0</min>
-          <max>29</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>eyebrowColour</key>
-        <label>eyebrowColour</label>
-        <slider>
-          <min>0</min>
-          <max>20</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>makeupColour</key>
-        <label>makeupColour</label>
-        <slider>
-          <min>0</min>
-          <max>20</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>hair</key>
-        <label>Hair type</label>
-        <slider>
-          <min>0</min>
-          <max>15</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>hairColour</key>
-        <label>Hair colour</label>
-        <slider>
-          <min>0</min>
-          <max>19</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>beard</key>
-        <label>Beard type</label>
-        <slider>
-          <min>0</min>
-          <max>33</max>
-        </slider>
-      </parameter>
-      <parameter>
-        <key>beardColour</key>
-        <label>Beard colour</label>
-        <slider>
-          <min>0</min>
-          <max>20</max>
-        </slider>
-      </parameter>
+      <category>
+        <label>Face</label>
+        <parameter>
+          <key>face</key>
+          <label>Face type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>47</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>humanHead</key>
+          <label>Head size</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>8</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>hair</key>
+          <label>Hair type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>61</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>beard</key>
+          <label>Beard type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>41</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eye</key>
+          <label>Eye type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>35</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eyeX</key>
+          <label>Eye separation</label>
+          <slider>
+            <converter>xOffset</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eyeY</key>
+          <label>Eye height</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eyeSize</key>
+          <label>Eye size</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eyebrow</key>
+          <label>Eyebrow type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>39</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eyebrowX</key>
+          <label>Eyebrow separation</label>
+          <slider>
+            <converter>xOffset</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eyebrowY</key>
+          <label>Eyebrow height</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>nose</key>
+          <label>Nose type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>35</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>noseY</key>
+          <label>Nose height</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>noseSize</key>
+          <label>Nose size</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>mouth</key>
+          <label>Mouth type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>35</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>mouthY</key>
+          <label>Mouth height</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>ear</key>
+          <label>Ear type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>35</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>earY</key>
+          <label>Ear height</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>earZ</key>
+          <label>Ear depth</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>makeup</key>
+          <label>Makeup type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>15</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>scar</key>
+          <label>Scar type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>47</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>wrinkle</key>
+          <label>Wrinkle severity</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+      </category>
+      <category>
+        <label>Body</label>
+        <parameter>
+          <key>HumanBodyAll</key>
+          <label>Height</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>8</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>bodySlender</key>
+          <label>Weight</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>humanBody</key>
+          <label>Torso type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>11</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>humanArm</key>
+          <label>Arm type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>11</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>humanLeg</key>
+          <label>Leg type</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>11</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>bodyMuscle</key>
+          <label>Musculature</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>breast</key>
+          <label>Breast size</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>movement</key>
+          <label>Stance</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>posture</key>
+          <label>Posture</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>4</max>
+          </slider>
+        </parameter>
+      </category>
+      <category>
+        <label>Colours</label>
+        <parameter>
+          <key>skinColour</key>
+          <label>Skin colour</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>52</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>hairColour</key>
+          <label>Hair colour</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>52</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>beardColour</key>
+          <label>Beard colour</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>52</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eyeColourR</key>
+          <label>Right eye colour</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>52</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eyeColourL</key>
+          <label>Left eye colour</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>52</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>eyebrowColour</key>
+          <label>Eyebrow colour</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>52</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>makeupColour</key>
+          <label>Makeup colour</label>
+          <slider>
+            <converter>plusOne</converter>
+            <min>0</min>
+            <max>52</max>
+          </slider>
+        </parameter>
+      </category>
     </category>
     <parameter>
       <key>vocation</key>
@@ -354,15 +402,15 @@
           <value>3</value>
         </option>
         <option>
-          <label>Assassin</label>
+          <label>Mystic Knight</label>
           <value>4</value>
         </option>
         <option>
-          <label>Mystic Knight</label>
+          <label>Assassin</label>
           <value>5</value>
         </option>
         <option>
-          <label>Magic Archer</label>
+          <label>Magick Archer</label>
           <value>6</value>
         </option>
         <option>

@@ -20,7 +20,7 @@
             <DockPanel>
                 <Button x:Name="butSave" Content="Save Pawn" DockPanel.Dock="Left" Height="23" Width="80" Margin="5,0" Click="butSave_Click"
                     IsEnabled="{Binding PawnModel.IsPawnLoaded}" 
-                    ToolTip="Save a Pawn to a Pawn file used by this application only."/>
+                    ToolTip="Save the currently loaded Pawn to a Pawn file that this application can read."/>
                 <Button x:Name="butLoad" Content="Load Pawn" DockPanel.Dock="Left" Height="23" Width="80" Margin="5,0" Click="butLoad_Click"
                     ToolTip="Load a Pawn from a Pawn file made by this application."/>
                 <Button HorizontalAlignment="Right" Width="85" Height="23" Margin="5,0"
