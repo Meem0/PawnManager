@@ -630,8 +630,12 @@ namespace PawnManager
         private const string ElementNameSavParameterArray = "array";
         private const string ElementNameSavParameterContainer = "class";
         private const string ElementNameSavElementName = "name";
+        private const string ElementNameSavTemplateList = "templates";
+        private const string ElementNameSavTemplate = "template";
 
         #endregion
+
+        private static Dictionary<string, SavConfigClass> savConfigTemplates;
 
         private static void ParseSavConfig(XElement config)
         {
@@ -641,41 +645,85 @@ namespace PawnManager
                 throw new XmlException("Config file is missing sav parse tree.");
             }
 
-            savConfigRootClass = ParseSavClassElement(savTreeXml);
-        }
-        
-        private static SavConfigClass ParseSavClassElement(XElement xElement)
-        {
-            List<SavConfigElement> children = new List<SavConfigElement>();
-
-            foreach (XElement child in xElement.Elements())
+            XElement templateListElement = savTreeXml.Element(ElementNameSavTemplateList);
+            if (templateListElement != null)
             {
-                SavConfigElement parsedElement = null;
+                savConfigTemplates = new Dictionary<string, SavConfigClass>();
 
-                if (child.Name == ElementNameSavParameterContainer)
+                foreach (XElement templateElement in templateListElement.Elements(ElementNameSavTemplate))
                 {
-                    parsedElement = ParseSavClassElement(child);
-                }
-                else if (child.Name == ElementNameSavParameter)
-                {
-                    parsedElement = ParseSavDataElement(child);
-                }
-                else if (child.Name == ElementNameSavParameterArray)
-                {
-                    parsedElement = ParseSavArrayElement(child);
-                }
+                    XElement keyElement = templateElement.Element(ElementNameKey);
+                    if (keyElement == null || keyElement.Value.Length == 0)
+                    {
+                        throw new XmlException(string.Format(
+                            "{0} element missing {1}",
+                            ElementNameSavTemplate,
+                            ElementNameKey));
+                    }
+                    SavConfigClass templateClass = ParseSavClassElement(templateElement);
 
-                if (parsedElement != null)
-                {
-                    children.Add(parsedElement);
+                    savConfigTemplates.Add(keyElement.Value, templateClass);
                 }
             }
 
-            return new SavConfigClass
+            savConfigRootClass = ParseSavClassElement(savTreeXml);
+        }
+
+        private static SavConfigClass ParseSavClassElement(XElement xElement)
+        {
+            SavConfigClass ret = new SavConfigClass
             {
-                Name = GetSavElementName(xElement),
-                Children = children
+                Name = GetSavElementName(xElement)
             };
+
+            XElement templateElement = xElement.Element(ElementNameSavTemplate);
+            if (templateElement != null)
+            {
+                SavConfigClass template = null;
+                try
+                {
+                    template = savConfigTemplates[templateElement.Value];
+                }
+                catch (Exception ex)
+                {
+                    throw new XmlException(string.Format(
+                        "Save config class with name {0} uses a template that doesn't exist: {1}.",
+                        ret.Name,
+                        templateElement.Value),
+                        ex);
+                }
+
+                ret.Children = template.Children;
+            }
+            else
+            {
+                ret.Children = new List<SavConfigElement>();
+
+                foreach (XElement child in xElement.Elements())
+                {
+                    SavConfigElement parsedElement = null;
+
+                    if (child.Name == ElementNameSavParameterContainer)
+                    {
+                        parsedElement = ParseSavClassElement(child);
+                    }
+                    else if (child.Name == ElementNameSavParameter)
+                    {
+                        parsedElement = ParseSavDataElement(child);
+                    }
+                    else if (child.Name == ElementNameSavParameterArray)
+                    {
+                        parsedElement = ParseSavArrayElement(child);
+                    }
+
+                    if (parsedElement != null)
+                    {
+                        ret.Children.Add(parsedElement);
+                    }
+                }
+            }
+
+            return ret;
         }
 
         private static SavConfigParameter ParseSavDataElement(XElement xElement)
