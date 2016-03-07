@@ -51,6 +51,9 @@
                                                       DisplayMemberPath="Label" Width="180" />
                                             </StackPanel>
                                         </DataTemplate>
+                                        <DataTemplate DataType="{x:Type local:PawnTreeParameterHex}">
+                                            <TextBox Text="{Binding Path=HexValue}" Width="225" />
+                                        </DataTemplate>
                                     </ContentControl.Resources>
                                 </ContentControl>
                             </DataTemplate>

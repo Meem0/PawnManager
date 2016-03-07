@@ -115,7 +115,7 @@ namespace PawnManager
                 return null;
             }
             PawnData loadPawn = new PawnData();
-            appearanceConfig.LoadSavToPawn(loadPawn, pawnFile);
+            appearanceConfig.LoadSavToPawn(loadPawn, pawnFile, SavSlot.MainPawn);
             return loadPawn;
         }
 
@@ -154,14 +154,14 @@ namespace PawnManager
         {
             public string Name { get; set; }
 
-            public abstract void LoadPawnToSav(PawnData pawn, XElement xElement);
-            public abstract void LoadSavToPawn(PawnData pawn, XElement xElement);
+            public abstract void LoadPawnToSav(PawnData pawn, XElement xElement, SavSlot savSlot);
+            public abstract void LoadSavToPawn(PawnData pawn, XElement xElement, SavSlot savSlot);
 
             protected static void LoadParameterToSav(PawnParameter parameter, XElement xElement)
             {
                 try
                 {
-                    xElement.GetValueAttribute().Value = (parameter.Value.ToInt()).ToString();
+                    xElement.GetValueAttribute().Value = (parameter.Value.ToInt64()).ToString();
                 }
                 catch (Exception ex)
                 {
@@ -177,38 +177,56 @@ namespace PawnManager
         {
             public List<SavConfigElement> Children { get; set; }
 
-            public override void LoadPawnToSav(PawnData pawn, XElement xElement)
+            public class Condition
             {
-                int i = 0;
-                foreach (XElement childXElement in xElement.Elements())
-                {
-                    if (i == Children.Count)
-                    {
-                        return;
-                    }
+                public List<SavSlot> AllowedPawns { get; set; }
+                 = new List<SavSlot>();
+                public bool IsWriteOnly { get; set; } = false;
+            }
+            public Condition ParseCondition { get; set; } = null;
 
-                    if (childXElement.GetNameAttribute() == Children[i].Name)
+            public override void LoadPawnToSav(PawnData pawn, XElement xElement, SavSlot savSlot)
+            {
+                // only proceed with the write if there is no condition
+                // or if the current Pawn is allowed by the condition
+                if (ParseCondition == null || ParseCondition.AllowedPawns.Contains(savSlot))
+                {
+                    int i = 0;
+                    foreach (XElement childXElement in xElement.Elements())
                     {
-                        Children[i].LoadPawnToSav(pawn, childXElement);
-                        ++i;
+                        if (i == Children.Count)
+                        {
+                            return;
+                        }
+
+                        if (childXElement.GetNameAttribute() == Children[i].Name)
+                        {
+                            Children[i].LoadPawnToSav(pawn, childXElement, savSlot);
+                            ++i;
+                        }
                     }
                 }
             }
 
-            public override void LoadSavToPawn(PawnData pawn, XElement xElement)
+            public override void LoadSavToPawn(PawnData pawn, XElement xElement, SavSlot savSlot)
             {
-                int i = 0;
-                foreach (XElement childXElement in xElement.Elements())
+                // only proceed with the write if there is no condition
+                // or if the condition allows reading for the current Pawn
+                if (ParseCondition == null || (ParseCondition.AllowedPawns.Contains(savSlot) && !ParseCondition.IsWriteOnly))
                 {
-                    if (i == Children.Count)
+                    int i = 0;
+                    foreach (XElement childXElement in xElement.Elements())
                     {
-                        return;
-                    }
+                        if (i == Children.Count)
+                        {
+                            return;
+                        }
 
-                    if (childXElement.GetNameAttribute() == Children[i].Name)
-                    {
-                        Children[i].LoadSavToPawn(pawn, childXElement);
-                        ++i;
+                        if (childXElement.GetNameAttribute() == Children[i].Name)
+                        {
+                            Children[i].LoadSavToPawn(pawn, childXElement, savSlot);
+                            ++i;
+                        }
                     }
                 }
             }
@@ -232,7 +250,7 @@ namespace PawnManager
 
             private bool isName = false;
 
-            public override void LoadPawnToSav(PawnData pawn, XElement xElement)
+            public override void LoadPawnToSav(PawnData pawn, XElement xElement, SavSlot savSlot)
             {
                 if (isName)
                 {
@@ -247,7 +265,7 @@ namespace PawnManager
                 }
             }
 
-            public override void LoadSavToPawn(PawnData pawn, XElement xElement)
+            public override void LoadSavToPawn(PawnData pawn, XElement xElement, SavSlot savSlot)
             {
                 if (isName)
                 {
@@ -289,7 +307,7 @@ namespace PawnManager
                 {
                     foreach (XElement letterElement in xElement.Elements())
                     {
-                        int value = letterElement.GetParsedValueAttribute();
+                        long value = letterElement.GetParsedValueAttribute();
                         if (value == 0)
                         {
                             break;
@@ -309,11 +327,20 @@ namespace PawnManager
         {
             public List<string> Keys { get; set; }
 
-            public override void LoadPawnToSav(PawnData pawn, XElement xElement)
+            public override void LoadPawnToSav(PawnData pawn, XElement xElement, SavSlot savSlot)
             {
                 int i = 0;
                 foreach (XElement childElement in xElement.Elements())
                 {
+                    if (i >= Keys.Count)
+                    {
+                        throw new XmlException(string.Format(
+                            "An array in the save config is missing a key " +
+                            "for the following element: {0}\n" +
+                            "Array's first key is: {1}",
+                            childElement.ToString(),
+                            Keys.Count > 0 ? Keys[0] : ""));
+                    }
                     if (Keys[i].Length > 0)
                     {
                         PawnParameter pawnParameter = pawn.GetParameter(Keys[i]);
@@ -326,11 +353,17 @@ namespace PawnManager
                 }
             }
 
-            public override void LoadSavToPawn(PawnData pawn, XElement xElement)
+            public override void LoadSavToPawn(PawnData pawn, XElement xElement, SavSlot savSlot)
             {
                 int i = 0;
                 foreach (XElement childElement in xElement.Elements())
                 {
+                    if (i >= Keys.Count)
+                    {
+                        throw new XmlException(string.Format(
+                            "Array {0} in save config is missing a child class",
+                            Name));
+                    }
                     if (Keys[i].Length > 0)
                     {
                         PawnParameter pawnParameter = pawn.GetOrAddParameter(Keys[i]);
@@ -339,6 +372,44 @@ namespace PawnManager
                             pawnParameter.Value = childElement.GetParsedValueAttribute();
                         }
                     }
+                    ++i;
+                }
+            }
+        }
+
+        private class SavConfigClassArray : SavConfigElement
+        {
+            public List<SavConfigClass> Classes { get; set; }
+            private const int ExceptionPreviewLength = 64;
+
+            public override void LoadPawnToSav(PawnData pawn, XElement xElement, SavSlot savSlot)
+            {
+                int i = 0;
+                foreach (XElement childElement in xElement.Elements())
+                {
+                    if (i >= Classes.Count)
+                    {
+                        throw new XmlException(string.Format(
+                            "Class array {0} in save config is missing a child class",
+                            Name));
+                    }
+                    Classes[i].LoadPawnToSav(pawn, childElement, savSlot);
+                    ++i;
+                }
+            }
+
+            public override void LoadSavToPawn(PawnData pawn, XElement xElement, SavSlot savSlot)
+            {
+                int i = 0;
+                foreach (XElement childElement in xElement.Elements())
+                {
+                    if (i >= Classes.Count)
+                    {
+                        throw new XmlException(string.Format(
+                            "Class array {0} in save config is missing a child class",
+                            Name));
+                    }
+                    Classes[i].LoadSavToPawn(pawn, childElement, savSlot);
                     ++i;
                 }
             }
@@ -356,9 +427,8 @@ namespace PawnManager
         /// <returns>The loaded Pawn, or null if no Pawn was loaded</returns>
         public static PawnData LoadPawnSav(SavSlot savSlot, XElement savRoot)
         {
-            XElement savPawnXElement = SavGetPawn(savRoot, savSlot);
             PawnData loadPawn = new PawnData();
-            savConfigRootClass.LoadSavToPawn(loadPawn, savPawnXElement);
+            savConfigRootClass.LoadSavToPawn(loadPawn, savRoot, savSlot);
             return loadPawn;
         }
 
@@ -370,39 +440,9 @@ namespace PawnManager
         /// <param name="savRoot">The loaded .sav file</param>
         public static void SavePawnSav(PawnData pawn, SavSlot savSlot, XElement savRoot)
         {
-            XElement savPawnXElement = SavGetPawn(savRoot, savSlot);
-            savConfigRootClass.LoadPawnToSav(pawn, savPawnXElement);
+            savConfigRootClass.LoadPawnToSav(pawn, savRoot, savSlot);
         }
-
-        private static XElement SavGetPawn(XElement savRoot, SavSlot savSlot)
-        {
-            XElement pawnClass = null;
-
-            try
-            {
-                XElement pawnArray = savRoot.GetChildByName("mPlayerDataManual");
-                pawnArray = pawnArray.GetChildByName("mPlCmcEditAndParam");
-                pawnArray = pawnArray.GetChildByName("mCmc");
-
-                int index = (int)savSlot;
-                int currentIndex = 0;
-                foreach (XElement child in pawnArray.Elements())
-                {
-                    if (currentIndex++ == index)
-                    {
-                        pawnClass = child;
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Invalid save file.", ex);
-            }
-
-            return pawnClass;
-        }
-
+        
         #endregion
 
         #region config parsing
@@ -425,6 +465,7 @@ namespace PawnManager
         private const string ElementNameEditParameterContainer = "category";
         private const string ElementNameEditLabel = "label";
         private const string ElementNameEditTypeString = "string";
+        private const string ElementNameEditTypeHex = "hex";
         private const string ElementNameEditTypeDropDown = "options";
         private const string ElementNameEditTypeDropDownOption = "option";
         private const string ElementNameEditTypeDropDownOptionValue = "value";
@@ -441,12 +482,6 @@ namespace PawnManager
 
         private static PawnTemplateCategory ParsePawnTemplate(XElement config)
         {
-            XElement optionsDictXml = config.Element(ElementNameOptionsDict);
-            if (optionsDictXml != null)
-            {
-                ParseOptionsDict(optionsDictXml);
-            }
-
             XElement editTreeXml = config.Element(ElementNameEditParseTreeRoot);
             if (editTreeXml == null)
             {
@@ -454,7 +489,13 @@ namespace PawnManager
                     "Config file is missing element: {0}",
                     ElementNameEditParseTreeRoot));
             }
-            
+
+            XElement optionsDictXml = editTreeXml.Element(ElementNameOptionsDict);
+            if (optionsDictXml != null)
+            {
+                ParseOptionsDict(optionsDictXml);
+            }
+
             return ParseEditCategory(editTreeXml);
         }
 
@@ -498,6 +539,10 @@ namespace PawnManager
                 else if (child.Name == ElementNameEditTypeString)
                 {
                     editParameter = new PawnTemplateParameterName();
+                }
+                else if (child.Name == ElementNameEditTypeHex)
+                {
+                    editParameter = new PawnTemplateParameterHex();
                 }
             }
 
@@ -632,6 +677,9 @@ namespace PawnManager
         private const string ElementNameSavElementName = "name";
         private const string ElementNameSavTemplateList = "templates";
         private const string ElementNameSavTemplate = "template";
+        private const string ElementNameSavCondition = "condition";
+        private const string ElementNameSavConditionPawn = "pawn";
+        private const string ElementNameSavConditionWriteOnly = "writeonly";
 
         #endregion
 
@@ -676,6 +724,8 @@ namespace PawnManager
                 Name = GetSavElementName(xElement)
             };
 
+            ret.ParseCondition = ParseSavClassConditionElement(xElement);
+
             XElement templateElement = xElement.Element(ElementNameSavTemplate);
             if (templateElement != null)
             {
@@ -709,11 +759,18 @@ namespace PawnManager
                     }
                     else if (child.Name == ElementNameSavParameter)
                     {
-                        parsedElement = ParseSavDataElement(child);
+                        parsedElement = ParseSavParameterElement(child);
                     }
                     else if (child.Name == ElementNameSavParameterArray)
                     {
-                        parsedElement = ParseSavArrayElement(child);
+                        if (child.Element(ElementNameSavParameterContainer) != null)
+                        {
+                            parsedElement = ParseSavClassArrayElement(child);
+                        }
+                        else
+                        {
+                            parsedElement = ParseSavParameterArrayElement(child);
+                        }
                     }
 
                     if (parsedElement != null)
@@ -726,7 +783,7 @@ namespace PawnManager
             return ret;
         }
 
-        private static SavConfigParameter ParseSavDataElement(XElement xElement)
+        private static SavConfigParameter ParseSavParameterElement(XElement xElement)
         {
             return new SavConfigParameter
             {
@@ -735,7 +792,7 @@ namespace PawnManager
             };
         }
 
-        private static SavConfigParameterArray ParseSavArrayElement(XElement xElement)
+        private static SavConfigParameterArray ParseSavParameterArrayElement(XElement xElement)
         {
             SavConfigParameterArray ret = new SavConfigParameterArray()
             {
@@ -745,6 +802,57 @@ namespace PawnManager
             foreach (XElement keyElement in xElement.Elements(ElementNameKey))
             {
                 ret.Keys.Add(keyElement.Value);
+            }
+            return ret;
+        }
+
+        private static SavConfigClassArray ParseSavClassArrayElement(XElement xElement)
+        {
+            SavConfigClassArray ret = new SavConfigClassArray()
+            {
+                Name = GetSavElementName(xElement),
+                Classes = new List<SavConfigClass>()
+            };
+            foreach (XElement classElement in xElement.Elements(ElementNameSavParameterContainer))
+            {
+                SavConfigClass configClass = ParseSavClassElement(classElement);
+                ret.Classes.Add(configClass);
+            }
+            return ret;
+        }
+
+        private static SavConfigClass.Condition ParseSavClassConditionElement(XElement xElement)
+        {
+            // TODO - do something about this disgusting function
+
+            SavConfigClass.Condition ret = null;
+            XElement conditionElement = xElement.Element(ElementNameSavCondition);
+            if (conditionElement != null)
+            {
+                ret = new SavConfigClass.Condition();
+                foreach (XElement allowedPawnElement in conditionElement.Elements(ElementNameSavConditionPawn))
+                {
+                    if (allowedPawnElement.Value == SavSlot.MainPawn.ToString())
+                    {
+                        ret.AllowedPawns.Add(SavSlot.MainPawn);
+                    }
+                    else if (allowedPawnElement.Value == SavSlot.Pawn1.ToString())
+                    {
+                        ret.AllowedPawns.Add(SavSlot.Pawn1);
+                    }
+                    else if (allowedPawnElement.Value == SavSlot.Pawn2.ToString())
+                    {
+                        ret.AllowedPawns.Add(SavSlot.Pawn2);
+                    }
+                }
+                // if no allowed Pawns specified, allow all through
+                if (ret.AllowedPawns.Count == 0)
+                {
+                    ret.AllowedPawns.Add(SavSlot.MainPawn);
+                    ret.AllowedPawns.Add(SavSlot.Pawn1);
+                    ret.AllowedPawns.Add(SavSlot.Pawn2);
+                }
+                ret.IsWriteOnly = conditionElement.Element(ElementNameSavConditionWriteOnly) != null;
             }
             return ret;
         }

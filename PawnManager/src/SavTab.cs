@@ -23,9 +23,14 @@ namespace PawnManager
             get { return savPath; }
             set
             {
+                value = value.Replace("\"", "");
                 savPath = value;
                 NotifyPropertyChanged();
-                IsSavPathValidFile = File.Exists(savPath);
+                try
+                {
+                    IsSavPathValidFile = File.Exists(savPath);
+                }
+                catch { }
             }
         }
 

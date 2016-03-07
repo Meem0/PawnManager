@@ -86,7 +86,15 @@ namespace PawnManager
             return new PawnTreeParameterDropDown { Template = this };
         }
     }
-    
+
+    public class PawnTemplateParameterHex : PawnTemplateParameter
+    {
+        public override PawnTreeParameter CreateTreeParameter()
+        {
+            return new PawnTreeParameterHex { Template = this };
+        }
+    }
+
     public class PawnTemplateParameterSlider : PawnTemplateParameter
     {
         public Converter ValueConverter { get; set; }

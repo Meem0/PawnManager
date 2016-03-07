@@ -124,7 +124,42 @@ namespace PawnManager
             }
         }
     }
-    
+
+    public class PawnTreeParameterHex : PawnTreeParameter
+    {
+        public PawnTemplateParameterHex Template { get; set; }
+
+        public override string Label
+        {
+            get
+            {
+                return Template.Label;
+            }
+        }
+
+        public string HexValue
+        {
+            get
+            {
+                uint num = 0;
+                try
+                {
+                    num = Convert.ToUInt32(PawnParameter.Value);
+                }
+                catch { }
+                return num.ToString("X8");
+            }
+            set
+            {
+                try
+                {
+                    PawnParameter.Value = uint.Parse(value, System.Globalization.NumberStyles.HexNumber);
+                }
+                catch { }
+            }
+        }
+    }
+
     public class PawnTreeParameterName : PawnTreeParameter
     {
         public PawnTemplateParameterName Template { get; set; }

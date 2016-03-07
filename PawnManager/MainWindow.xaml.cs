@@ -64,7 +64,7 @@ namespace PawnManager
             DataContext = this;
             
             SavTab = new SavTab();
-
+            
             try
             {
                 InitializeConfig();
@@ -322,7 +322,9 @@ namespace PawnManager
             string savDir = SavTab.SavPath;
             int substrLength = Math.Max(savDir.LastIndexOf('\\'), savDir.LastIndexOf('/'));
             if (substrLength != -1)
+            {
                 savDir = savDir.Substring(0, substrLength);
+            }
             if (System.IO.Directory.Exists(savDir))
             {
                 savDir = savDir.Replace('/', '\\');

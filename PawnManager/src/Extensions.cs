@@ -52,11 +52,11 @@ namespace PawnManager
         /// </summary>
         /// <param name="xElement">The element with the 'value' attribute</param>
         /// <returns>The int value of the 'value' attribute</returns>
-        public static int GetParsedValueAttribute(this XElement xElement)
+        public static Int64 GetParsedValueAttribute(this XElement xElement)
         {
             try
             {
-                return int.Parse(xElement.GetValueAttribute().Value);
+                return Int64.Parse(xElement.GetValueAttribute().Value);
             }
             catch (Exception ex)
             {
@@ -88,6 +88,17 @@ namespace PawnManager
             try
             {
                 ret = Convert.ToInt32(value);
+            }
+            catch { }
+            return ret;
+        }
+
+        public static Int64 ToInt64(this object value, Int64 defaultValue = 0)
+        {
+            Int64 ret = defaultValue;
+            try
+            {
+                ret = Convert.ToInt64(value);
             }
             catch { }
             return ret;
