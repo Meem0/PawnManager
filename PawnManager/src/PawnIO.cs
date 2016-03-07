@@ -460,13 +460,14 @@ namespace PawnManager
         #region element names
 
         private const string ElementNameOptionsDict = "optionsDict";
+        private const string ElementNameOptionsDictEntry = "optionsDictEntry";
         private const string ElementNameEditParseTreeRoot = "edit";
         private const string ElementNameEditParameter = "parameter";
         private const string ElementNameEditParameterContainer = "category";
         private const string ElementNameEditLabel = "label";
-        private const string ElementNameEditTypeString = "string";
+        private const string ElementNameEditTypeName = "name";
         private const string ElementNameEditTypeHex = "hex";
-        private const string ElementNameEditTypeDropDown = "options";
+        private const string ElementNameEditTypeDropDown = "dropDown";
         private const string ElementNameEditTypeDropDownOption = "option";
         private const string ElementNameEditTypeDropDownOptionValue = "value";
         private const string ElementNameEditTypeDropDownDisableCustom = "disableCustom";
@@ -536,7 +537,7 @@ namespace PawnManager
                 {
                     editParameter = ParseEditElementSlider(child);
                 }
-                else if (child.Name == ElementNameEditTypeString)
+                else if (child.Name == ElementNameEditTypeName)
                 {
                     editParameter = new PawnTemplateParameterName();
                 }
@@ -556,7 +557,7 @@ namespace PawnManager
         {
             PawnTemplateParameterDropDown dropDown = new PawnTemplateParameterDropDown();
 
-            if (xElement.Parent.Element(ElementNameEditTypeDropDownDisableCustom) == null)
+            if (xElement.Element(ElementNameEditTypeDropDownDisableCustom) == null)
             {
                 dropDown.AddOption(new PawnTemplateParameterDropDown.Option { Label = "Custom", Value = -2 });
                 dropDown.AllowCustom = true;
@@ -583,15 +584,8 @@ namespace PawnManager
             }
             else
             {
-                foreach (XElement optionElement in xElement.Elements())
+                foreach (XElement optionElement in xElement.Elements(ElementNameEditTypeDropDownOption))
                 {
-                    if (optionElement.Name != ElementNameEditTypeDropDownOption)
-                    {
-                        throw new XmlException(string.Format(
-                            "{0} is not a valid child of {1}",
-                            optionElement.Name,
-                            ElementNameEditTypeDropDown));
-                    }
                     PawnTemplateParameterDropDown.Option option = new PawnTemplateParameterDropDown.Option();
                     option.Label = GetEditElementLabel(optionElement);
                     try { option.Value = optionElement.Element(ElementNameEditTypeDropDownOptionValue).Value.ToInt(); }
@@ -642,7 +636,7 @@ namespace PawnManager
         {
             try
             {
-                foreach (XElement optionListElement in xElement.Elements(ElementNameEditTypeDropDown))
+                foreach (XElement optionListElement in xElement.Elements(ElementNameOptionsDictEntry))
                 {
                     List<PawnTemplateParameterDropDown.Option> optionsList
                         = new List<PawnTemplateParameterDropDown.Option>();

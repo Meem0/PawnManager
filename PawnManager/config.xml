@@ -1,8 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <root version="1">
+  <!--
+  This section drives what is shown in the Edit tab.
+  "category" elements create branches in the tree structure.
+  "parameter" elements are fields that the user can edit.
+    Each parameter has a unique key (it MUST be unique!) identifying it.
+    This allows Pawn files to be a simple, flat, dictionary of key/value pairs.
+    Depending on the child elements of a parameter element, the parameter can be
+    displayed using a variety of UI controls, such as a drop-down or a slider.
+  -->
   <edit>
+    <!--
+    This is a dictionary of reusable options for drop-downs.
+    This helps to prevent code duplication.
+    For example, there are six drop-downs per weapon skill.
+    Without this, you would have to copy/paste the dozens of
+    available skills for each of the six drop-downs.
+    -->
     <optionsDict>
-      <options>
+      <optionsDictEntry>
         <key>skillSword</key>
         <option>
           <label>Unassigned</label>
@@ -16,8 +32,8 @@
           <label>Skyward Lash</label>
           <value>45</value>
         </option>
-      </options>
-      <options>
+      </optionsDictEntry>
+      <optionsDictEntry>
         <key>skillMace</key>
         <option>
           <label>Unassigned</label>
@@ -31,15 +47,15 @@
           <label>Skyward Lash</label>
           <value>45</value>
         </option>
-      </options>
-      <options>
+      </optionsDictEntry>
+      <optionsDictEntry>
         <key>skillGSword</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
         </option>
-      </options>
-      <options>
+      </optionsDictEntry>
+      <optionsDictEntry>
         <key>skillDagger</key>
         <option>
           <label>Unassigned</label>
@@ -49,8 +65,8 @@
           <label>Scarlet Kisses</label>
           <value>152</value>
         </option>
-      </options>
-      <options>
+      </optionsDictEntry>
+      <optionsDictEntry>
         <key>skillWand</key>
         <option>
           <label>Unassigned</label>
@@ -64,22 +80,22 @@
           <label>Anodyne</label>
           <value>220</value>
         </option>
-      </options>
-      <options>
+      </optionsDictEntry>
+      <optionsDictEntry>
         <key>skillWandDX</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
         </option>
-      </options>
-      <options>
+      </optionsDictEntry>
+      <optionsDictEntry>
         <key>skillHammer</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
         </option>
-      </options>
-      <options>
+      </optionsDictEntry>
+      <optionsDictEntry>
         <key>skillShield</key>
         <option>
           <label>Unassigned</label>
@@ -89,8 +105,8 @@
           <label>Shield Summons</label>
           <value>272</value>
         </option>
-      </options>
-      <options>
+      </optionsDictEntry>
+      <optionsDictEntry>
         <key>skillBow</key>
         <option>
           <label>Unassigned</label>
@@ -100,27 +116,63 @@
           <label>Threefold Arrow</label>
           <value>350</value>
         </option>
-      </options>
-      <options>
+      </optionsDictEntry>
+      <optionsDictEntry>
         <key>skillBowMG</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
         </option>
-      </options>
+      </optionsDictEntry>
     </optionsDict>
+    <!--
+    This creates an expandable tree node labelled Appearance in the Edit tab.
+    It is purely cosmetic; the order or structure of categories doesn't impact anything,
+    and they are not associated to anything else using keys or whatnot.
+    -->
     <category>
       <label>Appearance</label>
+      <!--
+      This creates a field labelled Name.
+      Name is a special parameter, because in the .sav file it is a huge array
+      of 25 character values, encoded as decimal numbers, but we just want to display
+      it as a simple string.
+      The <name></name> element tells PawnManager to display this as a "name" field,
+      which determines how it interprets the data when reading from the .sav file,
+      and what control to use in the UI (in this case, a simple text box).
+      It's empty because there isn't anything more to say about this being a name field,
+      unlike a drop-down where you need to specify what the options are, or a slider,
+      where you need to give the range of values.
+      -->
       <parameter>
         <key>name</key>
         <label>Name</label>
-        <string></string>
+        <name></name>
       </parameter>
       <parameter>
         <key>gender</key>
         <label>Gender</label>
-        <disableCustom />
-        <options>
+        <!--
+        This is a drop-down field, which is important because most of the crowd-sourced research
+        will involve these.
+        First, you'll notice <disableCustom />.  That's a kind of rare option for drop-downs.
+        If you don't specify it, a "Custom" option is automatically added to the drop-down,
+        and the user is allowed to put in any value they want in the number field beside the drop-down.
+        That is very important for research, because it lets you see what the current value in the .sav file is,
+        or lets you put in your own value for testing (careful! that can crash your game!),
+        before we have created a labelled option for that value.
+        However, for something like Gender, we obviously know that the only two options are Male and Female,
+        so there's no point in allowing the user to enter a custom value, as it will probably just crash their game.
+        -->
+        <dropDown>
+          <disableCustom />
+          <!--
+          This is an option.  It contains the label for the option (purely cosmetic, it's not a key or anything),
+          and the value used by the game for that option.
+          So for gender, there are two possible values used by the game: 0 and 1,
+          corresponding to male and female respectively.
+          Again, the label is just for ease of use; we could call it "Boy" and "Girl", or "Man" and "Woman".
+          -->
           <option>
             <label>Male</label>
             <value>0</value>
@@ -129,11 +181,23 @@
             <label>Female</label>
             <value>1</value>
           </option>
-        </options>
+        </dropDown>
       </parameter>
       <parameter>
         <key>voice</key>
         <label>Voice</label>
+        <!--
+        This is a slider element, which allows the user to choose any number between a range of values.
+        These aren't very nice, because nobody knows what "Voice = 8" means.
+        Want to do something easy to help out?
+        Change this to a drop-down, with descriptions for each voice!
+        The "min" and "max" fields represent the minimum/maximum values that can be used *IN THE .SAV FILE*,
+        and this is where the converter comes in.
+        The converter converts the value for it to be displayed in the UI, both as the slider value and as the
+        number in the text box beside the slider.
+        The "plusOne" converter just adds one to the value, because the .sav file uses 0-based numbers,
+        but the user likes to see 1-based (and they are labelled as 1-based in the character creator).
+        -->
         <slider>
           <converter>plusOne</converter>
           <min>0</min>
@@ -191,6 +255,11 @@
           <key>eyeX</key>
           <label>Eye separation</label>
           <slider>
+            <!--
+            The xOffset converter does 5 - value.
+            That's because 0 in the .sav file corresponds to 5 (max) eye separation in the character creator,
+            and 4 in the .sav file corresponds to 1 (min) eye separation in the character creator.
+            -->
             <converter>xOffset</converter>
             <min>0</min>
             <max>4</max>
@@ -427,6 +496,11 @@
       </category>
       <category>
         <label>Colours</label>
+        <!--
+        One day I'd like to do a colour picker!
+        That will probably never happen ;)
+        Maybe someone else can write the code for it.
+        -->
         <parameter>
           <key>skinColour</key>
           <label>Skin colour</label>
@@ -495,8 +569,8 @@
     <parameter>
       <key>vocation</key>
       <label>Vocation</label>
-      <disableCustom />
-      <options>
+      <dropDown>
+        <disableCustom />
         <option>
           <label>Fighter</label>
           <value>1</value>
@@ -533,7 +607,7 @@
           <label>Sorcerer</label>
           <value>9</value>
         </option>
-      </options>
+      </dropDown>
     </parameter>
     <category>
       <label>Job levels</label>
@@ -690,44 +764,51 @@
         <parameter>
           <key>skillSword1</key>
           <label>Sword skill 1</label>
-          <options>
+          <dropDown>
+            <!--
+            This links to an entry in the optionsDict.
+            See how it's used six times in the Sword skills category?
+            It would be bad practice to copy/paste the sword skills options six times here,
+            especially since there are going to be a lot of skills, and it will be constantly
+            updating while it's being researched.
+            -->
             <key>skillSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillSword2</key>
           <label>Sword skill 2</label>
-          <options>
+          <dropDown>
             <key>skillSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillSword3</key>
           <label>Sword skill 3</label>
-          <options>
+          <dropDown>
             <key>skillSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillSword4</key>
           <label>Sword skill 4</label>
-          <options>
+          <dropDown>
             <key>skillSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillSword5</key>
           <label>Sword skill 5</label>
-          <options>
+          <dropDown>
             <key>skillSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillSword6</key>
           <label>Sword skill 6</label>
-          <options>
+          <dropDown>
             <key>skillSword</key>
-          </options>
+          </dropDown>
         </parameter>
       </category>
       <category>
@@ -735,44 +816,44 @@
         <parameter>
           <key>skillMace1</key>
           <label>Mace skill 1</label>
-          <options>
+          <dropDown>
             <key>skillMace</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillMace2</key>
           <label>Mace skill 2</label>
-          <options>
+          <dropDown>
             <key>skillMace</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillMace3</key>
           <label>Mace skill 3</label>
-          <options>
+          <dropDown>
             <key>skillMace</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillMace4</key>
           <label>Mace skill 4</label>
-          <options>
+          <dropDown>
             <key>skillMace</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillMace5</key>
           <label>Mace skill 5</label>
-          <options>
+          <dropDown>
             <key>skillMace</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillMace6</key>
           <label>Mace skill 6</label>
-          <options>
+          <dropDown>
             <key>skillMace</key>
-          </options>
+          </dropDown>
         </parameter>
       </category>
       <category>
@@ -780,44 +861,44 @@
         <parameter>
           <key>skillGSword1</key>
           <label>Greatsword skill 1</label>
-          <options>
+          <dropDown>
             <key>skillGSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword2</key>
           <label>Greatsword skill 2</label>
-          <options>
+          <dropDown>
             <key>skillGSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword3</key>
           <label>Greatsword skill 3</label>
-          <options>
+          <dropDown>
             <key>skillGSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword4</key>
           <label>Greatsword skill 4</label>
-          <options>
+          <dropDown>
             <key>skillGSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword5</key>
           <label>Greatsword skill 5</label>
-          <options>
+          <dropDown>
             <key>skillGSword</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword6</key>
           <label>Greatsword skill 6</label>
-          <options>
+          <dropDown>
             <key>skillGSword</key>
-          </options>
+          </dropDown>
         </parameter>
       </category>
       <category>
@@ -825,44 +906,44 @@
         <parameter>
           <key>skillDagger1</key>
           <label>Dagger skill 1</label>
-          <options>
+          <dropDown>
             <key>skillDagger</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger2</key>
           <label>Dagger skill 2</label>
-          <options>
+          <dropDown>
             <key>skillDagger</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger3</key>
           <label>Dagger skill 3</label>
-          <options>
+          <dropDown>
             <key>skillDagger</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger4</key>
           <label>Dagger skill 4</label>
-          <options>
+          <dropDown>
             <key>skillDagger</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger5</key>
           <label>Dagger skill 5</label>
-          <options>
+          <dropDown>
             <key>skillDagger</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger6</key>
           <label>Dagger skill 6</label>
-          <options>
+          <dropDown>
             <key>skillDagger</key>
-          </options>
+          </dropDown>
         </parameter>
       </category>
       <category>
@@ -870,44 +951,44 @@
         <parameter>
           <key>skillWand1</key>
           <label>Wand skill 1</label>
-          <options>
+          <dropDown>
             <key>skillWand</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillWand2</key>
           <label>Wand skill 2</label>
-          <options>
+          <dropDown>
             <key>skillWand</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillWand3</key>
           <label>Wand skill 3</label>
-          <options>
+          <dropDown>
             <key>skillWand</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillWand4</key>
           <label>Wand skill 4</label>
-          <options>
+          <dropDown>
             <key>skillWand</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillWand5</key>
           <label>Wand skill 5</label>
-          <options>
+          <dropDown>
             <key>skillWand</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillWand6</key>
           <label>Wand skill 6</label>
-          <options>
+          <dropDown>
             <key>skillWand</key>
-          </options>
+          </dropDown>
         </parameter>
       </category>
       <category>
@@ -915,44 +996,44 @@
         <parameter>
           <key>skillHammer1</key>
           <label>Hammer skill 1</label>
-          <options>
+          <dropDown>
             <key>skillHammer</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer2</key>
           <label>Hammer skill 2</label>
-          <options>
+          <dropDown>
             <key>skillHammer</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer3</key>
           <label>Hammer skill 3</label>
-          <options>
+          <dropDown>
             <key>skillHammer</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer4</key>
           <label>Hammer skill 4</label>
-          <options>
+          <dropDown>
             <key>skillHammer</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer5</key>
           <label>Hammer skill 5</label>
-          <options>
+          <dropDown>
             <key>skillHammer</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer6</key>
           <label>Hammer skill 6</label>
-          <options>
+          <dropDown>
             <key>skillHammer</key>
-          </options>
+          </dropDown>
         </parameter>
       </category>
       <category>
@@ -960,44 +1041,44 @@
         <parameter>
           <key>skillShield1</key>
           <label>Shield skill 1</label>
-          <options>
+          <dropDown>
             <key>skillShield</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillShield2</key>
           <label>Shield skill 2</label>
-          <options>
+          <dropDown>
             <key>skillShield</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillShield3</key>
           <label>Shield skill 3</label>
-          <options>
+          <dropDown>
             <key>skillShield</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillShield4</key>
           <label>Shield skill 4</label>
-          <options>
+          <dropDown>
             <key>skillShield</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillShield5</key>
           <label>Shield skill 5</label>
-          <options>
+          <dropDown>
             <key>skillShield</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillShield6</key>
           <label>Shield skill 6</label>
-          <options>
+          <dropDown>
             <key>skillShield</key>
-          </options>
+          </dropDown>
         </parameter>
       </category>
       <category>
@@ -1005,51 +1086,88 @@
         <parameter>
           <key>skillBow1</key>
           <label>Bow skill 1</label>
-          <options>
+          <dropDown>
             <key>skillBow</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillBow2</key>
           <label>Bow skill 2</label>
-          <options>
+          <dropDown>
             <key>skillBow</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillBow3</key>
           <label>Bow skill 3</label>
-          <options>
+          <dropDown>
             <key>skillBow</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillBow4</key>
           <label>Bow skill 4</label>
-          <options>
+          <dropDown>
             <key>skillBow</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillBow5</key>
           <label>Bow skill 5</label>
-          <options>
+          <dropDown>
             <key>skillBow</key>
-          </options>
+          </dropDown>
         </parameter>
         <parameter>
           <key>skillBow6</key>
           <label>Bow skill 6</label>
-          <options>
+          <dropDown>
             <key>skillBow</key>
-          </options>
+          </dropDown>
         </parameter>
       </category>
     </category>
   </edit>
+  <!--
+  This section tells PawnManager how to read a .sav file.
+  More specifically, this section mirrors the structure of the .sav file,
+  and tells PawnManager which elements to associate with a given key,
+  used by the edit section.
+  
+  It basically works by reading an element in the config, gets the name of that element,
+  then traverses the .sav file breadth-wise (i.e. without recursing into children)
+  until it finds an element with that name.  If the element is a class (i.e. contains other elements),
+  it recurses into that element, and if it's something else ("data" or "array" in the config),
+  it grabs the key, looks up the key in the edit config, then reads or writes that data to/from the Pawn.
+  
+  So yes, this *mirrors* the structure of the .sav file.  It is very important that everything here
+  is in exactly the same order as the .sav file, or else PawnManager will crash or give up or
+  skip a section or something when it encounters an element out-of-order.
+  
+  The .sav file contains a nice array of three big structures, all with exactly the same elements,
+  each containing the data of the three pawns.
+  Pawns 1 and 2 just use their respective entries from that array (2 and 3), and cause no fuss.
+  The Main Pawn is a little bitch though, and while it WRITES to entry 1 when you save the game,
+  it READS its data from all over the goddamned place.
+  For example, it reads its appearance from mSystemData/mEditPawn.  That means you need different
+  behaviour depending on what Pawn you're exporting.
+  Technically we don't have to write to that first entry when exporting the main Pawn,
+  but we do anyway, just to mirror the behaviour of the game.
+  As of release 0.1.0, I have no idea where the main Pawn reads its skills, vocation, level, etc. from,
+  so you won't be able to export any of that to the main Pawn.
+  -->
   <sav>
+    <!--
+    This is basically just a list of reusable element trees for the sav section.
+    For example, the Pawn appearance section is used in two completely different places in the .sav file
+    (in the mCmc array, where you find Pawn 1 and Pawn 2, and in the mSystemData/mEditPawn section,
+    for the main Pawn), so they reference a template instead of copy/pasting the XML.
+    -->
     <templates>
       <template>
+        <!--
+        This key is for referencing this template.
+        -->
         <key>mEdit</key>
         <data>
           <name>(u8*)mNameStr</name>
@@ -1380,12 +1498,23 @@
         <array>
           <name>mCmc</name>
           <class>
-            <!--Main pawn-->
+            <!--
+            This condition says that everything in this section only applies to the main Pawn,
+            so if you're not importing or exporting the main Pawn, skip this section.
+            -->
             <condition>
               <pawn>MainPawn</pawn>
             </condition>
             <class>
               <name>mEdit</name>
+              <!--
+              This condition says to only write to the .sav file here, and not to read the values here
+              into the Pawn, since there is another section later on (in mSystemData) that is the
+              "real" data that the main Pawn gets its appearance from.
+              Technically we could read from here, since PawnManager and the game both keep the two places
+              in sync when writing, but the game doesn't read from here, and the current implementation
+              will throw an error if you try to read a duplicate key while loading into a Pawn.
+              -->
               <condition>
                 <writeonly/>
               </condition>
