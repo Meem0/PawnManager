@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<root version="1">
+<root version="2">
   <!--
   This section drives what is shown in the Edit tab.
   "category" elements create branches in the tree structure.
@@ -687,7 +687,7 @@
     <category>
       <label>Skills</label>
       <category>
-        <label>mSkillLv1</label>
+        <label>mSkillLv1 (try FFFFFFFF for all!)</label>
         <parameter>
           <key>skillLv1_1</key>
           <label>[0]</label>
@@ -1127,6 +1127,81 @@
         </parameter>
       </category>
     </category>
+    <category>
+      <label>Inclination (experimental!)</label>
+      <parameter>
+        <key>incScatherValue</key>
+        <label>Scather</label>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>incMedicantValue</key>
+        <label>Medicant</label>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>incMitigatorValue</key>
+        <label>Mitigator</label>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>incChallengerValue</key>
+        <label>Challenger</label>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>incUtilitarianValue</key>
+        <label>Utilitarian</label>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>incGuardianValue</key>
+        <label>Guardian</label>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>incNexusValue</key>
+        <label>Nexus</label>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>incPioneerValue</key>
+        <label>Pioneer</label>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <key>incAcquisitorValue</key>
+        <label>Acquisitor</label>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+    </category>
   </edit>
   <!--
   This section tells PawnManager how to read a .sav file.
@@ -1489,6 +1564,42 @@
           <name>mParam</name>
           <template>mParam</template>
         </class>
+        <data>
+          <name>mInfo[ INFO_TYPE_BELLIGERENT ].mValue</name>
+          <key>incScatherValue</key>
+        </data>
+        <data>
+          <name>mInfo[ INFO_TYPE_PRUDENT ].mValue</name>
+          <key>incMedicantValue</key>
+        </data>
+        <data>
+          <name>mInfo[ INFO_TYPE_POOR_AIM ].mValue</name>
+          <key>incMitigatorValue</key>
+        </data>
+        <data>
+          <name>mInfo[ INFO_TYPE_STRATEGY ].mValue</name>
+          <key>incChallengerValue</key>
+        </data>
+        <data>
+          <name>mInfo[ INFO_TYPE_TACTICS ].mValue</name>
+          <key>incUtilitarianValue</key>
+        </data>
+        <data>
+          <name>mInfo[ INFO_TYPE_PROTECTION ].mValue</name>
+          <key>incGuardianValue</key>
+        </data>
+        <data>
+          <name>mInfo[ INFO_TYPE_SAME_SUPPORT ].mValue</name>
+          <key>incNexusValue</key>
+        </data>
+        <data>
+          <name>mInfo[ INFO_TYPE_CURIOSITY ].mValue</name>
+          <key>incPioneerValue</key>
+        </data>
+        <data>
+          <name>mInfo[ INFO_TYPE_GATHER ].mValue</name>
+          <key>incAcquisitorValue</key>
+        </data>
       </template>
     </templates>
     <class>
@@ -1524,6 +1635,42 @@
               <name>mParam</name>
               <template>mParam</template>
             </class>
+            <data>
+              <name>mInfo[ INFO_TYPE_BELLIGERENT ].mValue</name>
+              <key>incScatherValue</key>
+            </data>
+            <data>
+              <name>mInfo[ INFO_TYPE_PRUDENT ].mValue</name>
+              <key>incMedicantValue</key>
+            </data>
+            <data>
+              <name>mInfo[ INFO_TYPE_POOR_AIM ].mValue</name>
+              <key>incMitigatorValue</key>
+            </data>
+            <data>
+              <name>mInfo[ INFO_TYPE_STRATEGY ].mValue</name>
+              <key>incChallengerValue</key>
+            </data>
+            <data>
+              <name>mInfo[ INFO_TYPE_TACTICS ].mValue</name>
+              <key>incUtilitarianValue</key>
+            </data>
+            <data>
+              <name>mInfo[ INFO_TYPE_PROTECTION ].mValue</name>
+              <key>incGuardianValue</key>
+            </data>
+            <data>
+              <name>mInfo[ INFO_TYPE_SAME_SUPPORT ].mValue</name>
+              <key>incNexusValue</key>
+            </data>
+            <data>
+              <name>mInfo[ INFO_TYPE_CURIOSITY ].mValue</name>
+              <key>incPioneerValue</key>
+            </data>
+            <data>
+              <name>mInfo[ INFO_TYPE_GATHER ].mValue</name>
+              <key>incAcquisitorValue</key>
+            </data>
           </class>
           <class>
             <!--Pawn 1-->

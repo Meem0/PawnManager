@@ -56,7 +56,13 @@ namespace PawnManager
         {
             try
             {
-                return Int64.Parse(xElement.GetValueAttribute().Value);
+                string valueAttribute = xElement.GetValueAttribute().Value;
+                Int64 result;
+                if (Int64.TryParse(valueAttribute, out result))
+                {
+                    return result;
+                }
+                return (Int64)float.Parse(valueAttribute);
             }
             catch (Exception ex)
             {
