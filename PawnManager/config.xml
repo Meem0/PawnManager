@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<root version="2">
+<root version="3">
   <!--
   This section drives what is shown in the Edit tab.
   "category" elements create branches in the tree structure.
@@ -19,109 +19,586 @@
     -->
     <optionsDict>
       <optionsDictEntry>
-        <key>skillSword</key>
+        <key>optionsSkillSword</key>
         <option>
-          <label>Unassigned</label>
-          <value>-1</value>
-        </option>
-        <option>
-          <label>Blink Strike</label>
+          <label>Blink Strike | Burst Strike</label>
           <value>40</value>
         </option>
         <option>
-          <label>Skyward Lash</label>
+          <label>Broad Cut | Broad Slash</label>
+          <value>41</value>
+        </option>
+        <option>
+          <label>Downthrust | Downcrack</label>
+          <value>42</value>
+        </option>
+        <option>
+          <label>Tusk Toss | Antler Toss</label>
+          <value>43</value>
+        </option>
+        <option>
+          <label>Compass Slash | Full Moon Slash</label>
+          <value>44</value>
+        </option>
+        <option>
+          <label>Skyward Lash | Heavenward Lash</label>
           <value>45</value>
         </option>
+        <option>
+          <label>Flesh Skewer | Soul Skewer</label>
+          <value>46</value>
+        </option>
+        <option>
+          <label>Hindsight Slash | Hindsight Sweep</label>
+          <value>47</value>
+        </option>
+        <option>
+          <label>Stone Will | Steel Will</label>
+          <value>48</value>
+        </option>
+        <option>
+          <label>Legion's Bite | Dragon's Maw</label>
+          <value>49</value>
+        </option>
+        <option>
+          <label>Perilous Sigil | Ruinous Sigil</label>
+          <value>50</value>
+        </option>
+        <option>
+          <label>Magick Cannon | Great Cannon</label>
+          <value>51</value>
+        </option>
+        <option>
+          <label>Funnel Sigil | Vortex Sigil</label>
+          <value>52</value>
+        </option>
+        <option>
+          <label>Sky Dance | Sky Rapture</label>
+          <value>53</value>
+        </option>
+        <option>
+          <label>Stone Grove | Stone Forest</label>
+          <value>54</value>
+        </option>
+        <option>
+          <label>Intimate Strike | Initimate Gambit</label>
+          <value>55</value>
+        </option>
+        <option>
+          <label>Windmill Slash | Great Windmill</label>
+          <value>56</value>
+        </option>
+        <option>
+          <label>Powder Charge | Powder Blast</label>
+          <value>57</value>
+        </option>
+        <option>
+          <label>Gouge | Dire Gouge</label>
+          <value>58</value>
+        </option>
+        <option>
+          <label>Clarity | Clairvoyance</label>
+          <value>59</value>
+        </option>
       </optionsDictEntry>
       <optionsDictEntry>
-        <key>skillMace</key>
+        <key>optionsSkillLSword</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
         </option>
         <option>
-          <label>Blink Strike</label>
-          <value>40</value>
+          <label>Upward Strike | Whirlwind Slash</label>
+          <value>100</value>
         </option>
         <option>
-          <label>Skyward Lash</label>
-          <value>45</value>
+          <label>Pommel Strike | Pommel Bash</label>
+          <value>101</value>
+        </option>
+        <option>
+          <label>Savage Lunge | Indomitable Lunge</label>
+          <value>102</value>
+        </option>
+        <option>
+          <label>Escape Slash | Exodus Slash</label>
+          <value>103</value>
+        </option>
+        <option>
+          <label>Savage Lash | Indomitable Lash</label>
+          <value>104</value>
+        </option>
+        <option>
+          <label>Ladder Blade | Catapult Blade</label>
+          <value>105</value>
+        </option>
+        <option>
+          <label>Spark Slash | Corona Slash</label>
+          <value>106</value>
+        </option>
+        <option>
+          <label>Act of Atonement | Act of Vengeance</label>
+          <value>107</value>
+        </option>
+        <option>
+          <label>Battle Cry | War Cry</label>
+          <value>108</value>
+        </option>
+        <option>
+          <label>Arc of Might | Arc of Deliverance</label>
+          <value>109</value>
         </option>
       </optionsDictEntry>
       <optionsDictEntry>
-        <key>skillGSword</key>
+        <key>optionsSkillDagger</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
         </option>
-      </optionsDictEntry>
-      <optionsDictEntry>
-        <key>skillDagger</key>
         <option>
-          <label>Unassigned</label>
-          <value>-1</value>
+          <label>Biting Wind | Cutting Wind</label>
+          <value>150</value>
         </option>
         <option>
-          <label>Scarlet Kisses</label>
+          <label>Toss and Trigger | Advanced Trigger</label>
+          <value>151</value>
+        </option>
+        <option>
+          <label>Scarlet Kisses | Hundred Kisses</label>
           <value>152</value>
         </option>
+        <option>
+          <label>Dazzle Hold | Dazzle Blast</label>
+          <value>153</value>
+        </option>
+        <option>
+          <label>Sprint | Mad Dash</label>
+          <value>154</value>
+        </option>
+        <option>
+          <label>Helm Splitter | Skull Splitter</label>
+          <value>155</value>
+        </option>
+        <option>
+          <label>Ensnare | Implicate</label>
+          <value>156</value>
+        </option>
+        <option>
+          <label>Pilfer | Master Thief</label>
+          <value>157</value>
+        </option>
+        <option>
+          <label>Reset | Instant Reset</label>
+          <value>158</value>
+        </option>
+        <option>
+          <label>Stepping Stone | Leaping Stone</label>
+          <value>159</value>
+        </option>
+        <option>
+          <label>Sunburst | Sunflare</label>
+          <value>160</value>
+        </option>
+        <option>
+          <label>Shadowpin | Shadowshackle</label>
+          <value>161</value>
+        </option>
+        <option>
+          <label>Scension | Grand Scension</label>
+          <value>162</value>
+        </option>
+        <option>
+          <label>Magick Rebuffer | Magick Rebalancer</label>
+          <value>163</value>
+        </option>
+        <option>
+          <label>Wind Harness | Gale Harness</label>
+          <value>164</value>
+        </option>
+        <option>
+          <label>Back Kick | Escape Onslaught</label>
+          <value>165</value>
+        </option>
+        <option>
+          <label>Spiderbite | Snakebite</label>
+          <value>166</value>
+        </option>
+        <option>
+          <label>Backfire | Immolation</label>
+          <value>167</value>
+        </option>
+        <option>
+          <label>Stealth | Invisibility</label>
+          <value>168</value>
+        </option>
+        <option>
+          <label>Easy Kill | Masterful Kill</label>
+          <value>169</value>
+        </option>
       </optionsDictEntry>
       <optionsDictEntry>
-        <key>skillWand</key>
+        <key>optionsSkillStaff</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
         </option>
         <option>
-          <label>Ingle</label>
+          <label>Ingle | High Ingle</label>
           <value>210</value>
         </option>
         <option>
-          <label>Anodyne</label>
+          <label>Frazil | High Frazil</label>
+          <value>211</value>
+        </option>
+        <option>
+          <label>Levin | High Levin</label>
+          <value>212</value>
+        </option>
+        <option>
+          <label>Comestion | High Comestion</label>
+          <value>213</value>
+        </option>
+        <option>
+          <label>Frigor | High Frigor</label>
+          <value>214</value>
+        </option>
+        <option>
+          <label>Brontide | High Brontide</label>
+          <value>215</value>
+        </option>
+        <option>
+          <label>Grapnel | High Grapnel</label>
+          <value>216</value>
+        </option>
+        <option>
+          <label>Silentium | High Silentium</label>
+          <value>217</value>
+        </option>
+        <option>
+          <label>Blearing | High Blearing</label>
+          <value>218</value>
+        </option>
+        <option>
+          <label>Lassitude | High Lassitude</label>
+          <value>219</value>
+        </option>
+        <option>
+          <label>Anodyne | High Anodyne</label>
           <value>220</value>
         </option>
+        <option>
+          <label>Halidom | High Halidom</label>
+          <value>221</value>
+        </option>
+        <option>
+          <label>Fire Boon | Fire Affinity</label>
+          <value>222</value>
+        </option>
+        <option>
+          <label>Ice Boon | Ice Affinity</label>
+          <value>223</value>
+        </option>
+        <option>
+          <label>Thunder Boon | Thunder Affinity</label>
+          <value>224</value>
+        </option>
+        <option>
+          <label>Holy Boon | Holy Affinity</label>
+          <value>225</value>
+        </option>
+        <option>
+          <label>Dark Boon | Dark Affinity</label>
+          <value>226</value>
+        </option>
+        <option>
+          <label>Bolide | High Bolide</label>
+          <value>227</value>
+        </option>
+        <option>
+          <label>Gicel | High Gicel</label>
+          <value>228</value>
+        </option>
+        <option>
+          <label>Fulmination | High Fulmination</label>
+          <value>229</value>
+        </option>
+        <option>
+          <label>Seism | High Seism</label>
+          <value>230</value>
+        </option>
+        <option>
+          <label>Maelstrom | High Maelstrom</label>
+          <value>231</value>
+        </option>
+        <option>
+          <label>Exequy | High Exequy</label>
+          <value>232</value>
+        </option>
+        <option>
+          <label>Petrifaction | High Petrifaction</label>
+          <value>233</value>
+        </option>
+        <option>
+          <label>Miasma | High Miasma</label>
+          <value>234</value>
+        </option>
+        <option>
+          <label>Perdition | High Perdition</label>
+          <value>235</value>
+        </option>
+        <option>
+          <label>Sopor | High Sopor</label>
+          <value>236</value>
+        </option>
+        <option>
+          <label>Voidspell | High Voidspell</label>
+          <value>237</value>
+        </option>
+        <option>
+          <label>Spellscreen | High Spellscreen</label>
+          <value>238</value>
+        </option>
+        <option>
+          <label>Necromancy | High Necromancy</label>
+          <value>239</value>
+        </option>
       </optionsDictEntry>
       <optionsDictEntry>
-        <key>skillWandDX</key>
+        <key>optionsSkillShield</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
         </option>
-      </optionsDictEntry>
-      <optionsDictEntry>
-        <key>skillHammer</key>
         <option>
-          <label>Unassigned</label>
-          <value>-1</value>
-        </option>
-      </optionsDictEntry>
-      <optionsDictEntry>
-        <key>skillShield</key>
-        <option>
-          <label>Unassigned</label>
-          <value>-1</value>
+          <label>Shield Strike | Shield Storm</label>
+          <value>270</value>
         </option>
         <option>
-          <label>Shield Summons</label>
+          <label>Springboard | Launchboard</label>
+          <value>271</value>
+        </option>
+        <option>
+          <label>Shield Summons | Shield Drum</label>
           <value>272</value>
         </option>
+        <option>
+          <label>Cymbal Attack | Cymbal Onslaught</label>
+          <value>273</value>
+        </option>
+        <option>
+          <label>Sheltered Spike | Sheltered Assault</label>
+          <value>274</value>
+        </option>
+        <option>
+          <label>Perfect Defense | Divine Defense</label>
+          <value>275</value>
+        </option>
+        <option>
+          <label>Moving Castle | Swift Castle</label>
+          <value>276</value>
+        </option>
+        <option>
+          <label>Flight Response | Enhanced Response</label>
+          <value>277</value>
+        </option>
+        <option>
+          <label>Staredown | Showdown</label>
+          <value>278</value>
+        </option>
       </optionsDictEntry>
       <optionsDictEntry>
-        <key>skillBow</key>
+        <key>optionsSkillMShield</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
         </option>
         <option>
-          <label>Threefold Arrow</label>
+          <label>Firecounter | Flame Riposte</label>
+          <value>310</value>
+        </option>
+        <option>
+          <label>Icecounter | Frost Riposte</label>
+          <value>311</value>
+        </option>
+        <option>
+          <label>Thundercounter | Thunder Riposte</label>
+          <value>312</value>
+        </option>
+        <option>
+          <label>Holycounter | Blessed Riposte</label>
+          <value>313</value>
+        </option>
+        <option>
+          <label>Darkcounter | Abyssal Riposte</label>
+          <value>314</value>
+        </option>
+        <option>
+          <label>Fire Enchanter | Flame Trance</label>
+          <value>315</value>
+        </option>
+        <option>
+          <label>Ice Enchanter | Ice Enchanter</label>
+          <value>316</value>
+        </option>
+        <option>
+          <label>Thunder Enchanter | Thunder Enchanter</label>
+          <value>317</value>
+        </option>
+        <option>
+          <label>Holy Enchanter | Blessed Trance</label>
+          <value>318</value>
+        </option>
+        <option>
+          <label>Dark Enchanter | Abyssal Trance</label>
+          <value>319</value>
+        </option>
+        <option>
+          <label>Holy Glare | Holy Furor</label>
+          <value>320</value>
+        </option>
+        <option>
+          <label>Dark Anguish | Abyssal Anguish</label>
+          <value>321</value>
+        </option>
+        <option>
+          <label>Holy Wall | Holy Fortress</label>
+          <value>322</value>
+        </option>
+        <option>
+          <label>Demonspite | Demonswrath</label>
+          <value>323</value>
+        </option>
+        <option>
+          <label>Holy Aid | Holy Grace</label>
+          <value>324</value>
+        </option>
+      </optionsDictEntry>
+      <optionsDictEntry>
+        <key>optionsSkillBow</key>
+        <option>
+          <label>Unassigned</label>
+          <value>-1</value>
+        </option>
+        <option>
+          <label>Threefold Arrow | Fivefold Flurry</label>
           <value>350</value>
         </option>
+        <option>
+          <label>Triad Shot | Pentad Shot</label>
+          <value>351</value>
+        </option>
+        <option>
+          <label>Full Bend | Mighty Bend</label>
+          <value>352</value>
+        </option>
+        <option>
+          <label>Cloudburst Volley | Downpour Volley</label>
+          <value>353</value>
+        </option>
+        <option>
+          <label>Splinter Dart | Fracture Dart</label>
+          <value>354</value>
+        </option>
+        <option>
+          <label>Whistle Dart | Shriek Dart</label>
+          <value>355</value>
+        </option>
+        <option>
+          <label>Keen Sight | Lyncean Sight</label>
+          <value>356</value>
+        </option>
+        <option>
+          <label>Puncture Dart | Skewer Dart</label>
+          <value>357</value>
+        </option>
+        <option>
+          <label>Blunting Arrow | Plegic Arrow</label>
+          <value>358</value>
+        </option>
       </optionsDictEntry>
       <optionsDictEntry>
-        <key>skillBowMG</key>
+        <key>optionsSkillLBow</key>
         <option>
           <label>Unassigned</label>
           <value>-1</value>
+        </option>
+        <option>
+          <label>Sixfold Arrow | Tenfold Flurry</label>
+          <value>400</value>
+        </option>
+        <option>
+          <label>Heptad Shot | Endecad Shot</label>
+          <value>401</value>
+        </option>
+        <option>
+          <label>Dire Arrow | Deathly Arrow</label>
+          <value>402</value>
+        </option>
+        <option>
+          <label>Foot Binder | Body Binder</label>
+          <value>403</value>
+        </option>
+        <option>
+          <label>Invasive Arrow | Crippling Arrow</label>
+          <value>404</value>
+        </option>
+        <option>
+          <label>Flying Din | Fearful Din</label>
+          <value>405</value>
+        </option>
+        <option>
+          <label>Meteor Shot | Comet Shot</label>
+          <value>406</value>
+        </option>
+        <option>
+          <label>Whirling Arrow | Spiral Arrow</label>
+          <value>407</value>
+        </option>
+        <option>
+          <label>Gamble Draw | Great Gamble</label>
+          <value>408</value>
+        </option>
+      </optionsDictEntry>
+      <optionsDictEntry>
+        <key>optionsSkillMBow</key>
+        <option>
+          <label>Unassigned</label>
+          <value>-1</value>
+        </option>
+        <option>
+          <label>Threefold Bolt | Sixfold Bolt</label>
+          <value>359</value>
+        </option>
+        <option>
+          <label>Seeker Bolt | Hunter Bolt</label>
+          <value>360</value>
+        </option>
+        <option>
+          <label>Explosive Bolt | Explosive Rivet</label>
+          <value>361</value>
+        </option>
+        <option>
+          <label>Ricochet Seeker | Ricochet Hunter</label>
+          <value>362</value>
+        </option>
+        <option>
+          <label>Magickal Flare | Magickal Gleam</label>
+          <value>363</value>
+        </option>
+        <option>
+          <label>Funnel Trail | Vortex Trail</label>
+          <value>364</value>
+        </option>
+        <option>
+          <label>Ward Arrow | Great Ward Arrow</label>
+          <value>365</value>
+        </option>
+        <option>
+          <label>Bracer Arrow | Great Bracer Arrow</label>
+          <value>366</value>
+        </option>
+        <option>
+          <label>Sacrificial Bolt | Great Sacrifice</label>
+          <value>367</value>
         </option>
       </optionsDictEntry>
     </optionsDict>
@@ -610,84 +1087,419 @@
       </dropDown>
     </parameter>
     <category>
-      <label>Job levels</label>
+      <label>Levels / Exp</label>
       <parameter>
-        <key>joblevel1</key>
-        <label>Fighter level</label>
+        <label>Level</label>
+        <key>level</key>
         <slider>
           <min>1</min>
-          <max>10</max>
+          <max>200</max>
         </slider>
       </parameter>
       <parameter>
-        <key>joblevel2</key>
-        <label>Strider level</label>
+        <label>Experience</label>
+        <key>exp</key>
         <slider>
           <min>1</min>
-          <max>10</max>
+          <max>3700000</max>
         </slider>
       </parameter>
       <parameter>
-        <key>joblevel3</key>
-        <label>Mage level</label>
+        <label>Exp for next level</label>
+        <key>expNext</key>
         <slider>
           <min>1</min>
-          <max>10</max>
+          <max>3700000</max>
+        </slider>
+      </parameter>
+      <category>
+        <label>Job ranks</label>
+        <parameter>
+          <key>joblevel1</key>
+          <label>Fighter rank</label>
+          <slider>
+            <min>1</min>
+            <max>9</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>joblevel2</key>
+          <label>Strider rank</label>
+          <slider>
+            <min>1</min>
+            <max>9</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>joblevel3</key>
+          <label>Mage rank</label>
+          <slider>
+            <min>1</min>
+            <max>9</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>joblevel4</key>
+          <label>Mystic Knight rank</label>
+          <slider>
+            <min>1</min>
+            <max>9</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>joblevel5</key>
+          <label>Assassin rank</label>
+          <slider>
+            <min>1</min>
+            <max>9</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>joblevel6</key>
+          <label>Magic Archer rank</label>
+          <slider>
+            <min>1</min>
+            <max>9</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>joblevel7</key>
+          <label>Warrior rank</label>
+          <slider>
+            <min>1</min>
+            <max>9</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>joblevel8</key>
+          <label>Ranger rank</label>
+          <slider>
+            <min>1</min>
+            <max>9</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>joblevel9</key>
+          <label>Sorcerer rank</label>
+          <slider>
+            <min>1</min>
+            <max>9</max>
+          </slider>
+        </parameter>
+      </category>
+      <category>
+        <label>Discipline points (?)</label>
+        <parameter>
+          <key>jobPoint1</key>
+          <label>Fighter</label>
+          <slider>
+            <min>0</min>
+            <max>1000000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobPoint2</key>
+          <label>Strider</label>
+          <slider>
+            <min>0</min>
+            <max>1000000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobPoint3</key>
+          <label>Mage</label>
+          <slider>
+            <min>0</min>
+            <max>1000000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobPoint4</key>
+          <label>Mystic Knight</label>
+          <slider>
+            <min>0</min>
+            <max>1000000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobPoint5</key>
+          <label>Assassin</label>
+          <slider>
+            <min>0</min>
+            <max>1000000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobPoint6</key>
+          <label>Magic Archer</label>
+          <slider>
+            <min>0</min>
+            <max>1000000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobPoint7</key>
+          <label>Warrior</label>
+          <slider>
+            <min>0</min>
+            <max>1000000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobPoint8</key>
+          <label>Ranger</label>
+          <slider>
+            <min>0</min>
+            <max>1000000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobPoint9</key>
+          <label>Sorcerer</label>
+          <slider>
+            <min>0</min>
+            <max>1000000</max>
+          </slider>
+        </parameter>
+      </category>
+      <category>
+        <label>Discipline points spent</label>
+        <parameter>
+          <key>jobExp1</key>
+          <label>Fighter</label>
+          <slider>
+            <min>0</min>
+            <max>29000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExp2</key>
+          <label>Strider</label>
+          <slider>
+            <min>0</min>
+            <max>29000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExp3</key>
+          <label>Mage</label>
+          <slider>
+            <min>0</min>
+            <max>29000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExp4</key>
+          <label>Mystic Knight</label>
+          <slider>
+            <min>0</min>
+            <max>50600</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExp5</key>
+          <label>Assassin</label>
+          <slider>
+            <min>0</min>
+            <max>50600</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExp6</key>
+          <label>Magic Archer</label>
+          <slider>
+            <min>0</min>
+            <max>46100</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExp7</key>
+          <label>Warrior</label>
+          <slider>
+            <min>0</min>
+            <max>37600</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExp8</key>
+          <label>Ranger</label>
+          <slider>
+            <min>0</min>
+            <max>34150</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExp9</key>
+          <label>Sorcerer</label>
+          <slider>
+            <min>0</min>
+            <max>42200</max>
+          </slider>
+        </parameter>
+      </category>
+      <category>
+        <label>Discipline points to next rank</label>
+        <parameter>
+          <key>jobExpNext1</key>
+          <label>Fighter</label>
+          <slider>
+            <min>0</min>
+            <max>7500</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExpNext2</key>
+          <label>Strider</label>
+          <slider>
+            <min>0</min>
+            <max>7500</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExpNext3</key>
+          <label>Mage</label>
+          <slider>
+            <min>0</min>
+            <max>7500</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExpNext4</key>
+          <label>Mystic Knight</label>
+          <slider>
+            <min>0</min>
+            <max>14500</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExpNext5</key>
+          <label>Assassin</label>
+          <slider>
+            <min>0</min>
+            <max>14500</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExpNext6</key>
+          <label>Magic Archer</label>
+          <slider>
+            <min>0</min>
+            <max>13200</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExpNext7</key>
+          <label>Warrior</label>
+          <slider>
+            <min>0</min>
+            <max>11000</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExpNext8</key>
+          <label>Ranger</label>
+          <slider>
+            <min>0</min>
+            <max>9500</max>
+          </slider>
+        </parameter>
+        <parameter>
+          <key>jobExpNext9</key>
+          <label>Sorcerer</label>
+          <slider>
+            <min>0</min>
+            <max>12000</max>
+          </slider>
+        </parameter>
+      </category>
+    </category>
+    <category>
+      <label>Stats</label>
+      <parameter>
+        <label>Current HP</label>
+        <key>hp</key>
+        <slider>
+          <min>0</min>
+          <max>10000</max>
         </slider>
       </parameter>
       <parameter>
-        <key>joblevel4</key>
-        <label>Assassin level</label>
+        <label>Max HP</label>
+        <key>hpMax</key>
         <slider>
-          <min>1</min>
-          <max>10</max>
+          <min>0</min>
+          <max>10000</max>
         </slider>
       </parameter>
       <parameter>
-        <key>joblevel5</key>
-        <label>Mystic Knight level</label>
+        <label>hpMaxWhite (?)</label>
+        <key>hpMaxWhite</key>
         <slider>
-          <min>1</min>
-          <max>10</max>
+          <min>0</min>
+          <max>10000</max>
         </slider>
       </parameter>
       <parameter>
-        <key>joblevel6</key>
-        <label>Magic Archer level</label>
+        <label>Stamina</label>
+        <key>stamina</key>
         <slider>
-          <min>1</min>
-          <max>10</max>
+          <min>0</min>
+          <max>10000</max>
         </slider>
       </parameter>
       <parameter>
-        <key>joblevel7</key>
-        <label>Warrior level</label>
+        <label>Stamina Base (?)</label>
+        <key>staminaBase</key>
         <slider>
-          <min>1</min>
-          <max>10</max>
+          <min>0</min>
+          <max>10000</max>
         </slider>
       </parameter>
       <parameter>
-        <key>joblevel8</key>
-        <label>Ranger level</label>
+        <label>Stamina Level (?)</label>
+        <key>staminaLv</key>
         <slider>
-          <min>1</min>
-          <max>10</max>
+          <min>0</min>
+          <max>1000</max>
         </slider>
       </parameter>
       <parameter>
-        <key>joblevel9</key>
-        <label>Sorcerer level</label>
+        <label>Attack</label>
+        <key>atk</key>
         <slider>
-          <min>1</min>
-          <max>10</max>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <label>Defense</label>
+        <key>def</key>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <label>Magick</label>
+        <key>mAtk</key>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
+        </slider>
+      </parameter>
+      <parameter>
+        <label>Magick Defense</label>
+        <key>mDef</key>
+        <slider>
+          <min>0</min>
+          <max>1000</max>
         </slider>
       </parameter>
     </category>
     <category>
       <label>Skills</label>
       <category>
-        <label>mSkillLv1 (try FFFFFFFF for all!)</label>
+        <label>mSkillLv1 (hex - try FFFFFFFF for all!)</label>
         <parameter>
           <key>skillLv1_1</key>
           <label>[0]</label>
@@ -760,6 +1572,79 @@
         </parameter>
       </category>
       <category>
+        <label>mSkillLv2 (maybe similar to mSkillLv1?)</label>
+        <parameter>
+          <key>skillLv2_1</key>
+          <label>[0]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_2</key>
+          <label>[1]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_3</key>
+          <label>[2]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_4</key>
+          <label>[3]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_5</key>
+          <label>[4]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_6</key>
+          <label>[5]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_7</key>
+          <label>[6]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_8</key>
+          <label>[7]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_9</key>
+          <label>[8]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_10</key>
+          <label>[9]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_11</key>
+          <label>[10]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_12</key>
+          <label>[11]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_13</key>
+          <label>[12]</label>
+          <hex></hex>
+        </parameter>
+        <parameter>
+          <key>skillLv2_14</key>
+          <label>[13]</label>
+          <hex></hex>
+        </parameter>
+      </category>
+      <category>
         <label>Sword</label>
         <parameter>
           <key>skillSword1</key>
@@ -768,46 +1653,44 @@
             <!--
             This links to an entry in the optionsDict.
             See how it's used six times in the Sword skills category?
-            It would be bad practice to copy/paste the sword skills options six times here,
-            especially since there are going to be a lot of skills, and it will be constantly
-            updating while it's being researched.
+            It would be bad practice to copy/paste the sword skills options six times here.
             -->
-            <key>skillSword</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillSword2</key>
           <label>Sword skill 2</label>
           <dropDown>
-            <key>skillSword</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillSword3</key>
           <label>Sword skill 3</label>
           <dropDown>
-            <key>skillSword</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillSword4</key>
           <label>Sword skill 4</label>
           <dropDown>
-            <key>skillSword</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillSword5</key>
           <label>Sword skill 5</label>
           <dropDown>
-            <key>skillSword</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillSword6</key>
           <label>Sword skill 6</label>
           <dropDown>
-            <key>skillSword</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
       </category>
@@ -817,87 +1700,87 @@
           <key>skillMace1</key>
           <label>Mace skill 1</label>
           <dropDown>
-            <key>skillMace</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillMace2</key>
           <label>Mace skill 2</label>
           <dropDown>
-            <key>skillMace</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillMace3</key>
           <label>Mace skill 3</label>
           <dropDown>
-            <key>skillMace</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillMace4</key>
           <label>Mace skill 4</label>
           <dropDown>
-            <key>skillMace</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillMace5</key>
           <label>Mace skill 5</label>
           <dropDown>
-            <key>skillMace</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillMace6</key>
           <label>Mace skill 6</label>
           <dropDown>
-            <key>skillMace</key>
+            <key>optionsSkillSword</key>
           </dropDown>
         </parameter>
       </category>
       <category>
-        <label>Greatsword</label>
+        <label>Longsword</label>
         <parameter>
           <key>skillGSword1</key>
-          <label>Greatsword skill 1</label>
+          <label>Longsword skill 1</label>
           <dropDown>
-            <key>skillGSword</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword2</key>
-          <label>Greatsword skill 2</label>
+          <label>Longsword skill 2</label>
           <dropDown>
-            <key>skillGSword</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword3</key>
-          <label>Greatsword skill 3</label>
+          <label>Longsword skill 3</label>
           <dropDown>
-            <key>skillGSword</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword4</key>
-          <label>Greatsword skill 4</label>
+          <label>Longsword skill 4</label>
           <dropDown>
-            <key>skillGSword</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword5</key>
-          <label>Greatsword skill 5</label>
+          <label>Longsword skill 5</label>
           <dropDown>
-            <key>skillGSword</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillGSword6</key>
-          <label>Greatsword skill 6</label>
+          <label>Longsword skill 6</label>
           <dropDown>
-            <key>skillGSword</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
       </category>
@@ -907,132 +1790,177 @@
           <key>skillDagger1</key>
           <label>Dagger skill 1</label>
           <dropDown>
-            <key>skillDagger</key>
+            <key>optionsSkillDagger</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger2</key>
           <label>Dagger skill 2</label>
           <dropDown>
-            <key>skillDagger</key>
+            <key>optionsSkillDagger</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger3</key>
           <label>Dagger skill 3</label>
           <dropDown>
-            <key>skillDagger</key>
+            <key>optionsSkillDagger</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger4</key>
           <label>Dagger skill 4</label>
           <dropDown>
-            <key>skillDagger</key>
+            <key>optionsSkillDagger</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger5</key>
           <label>Dagger skill 5</label>
           <dropDown>
-            <key>skillDagger</key>
+            <key>optionsSkillDagger</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillDagger6</key>
           <label>Dagger skill 6</label>
           <dropDown>
-            <key>skillDagger</key>
+            <key>optionsSkillDagger</key>
           </dropDown>
         </parameter>
       </category>
       <category>
-        <label>Wand</label>
+        <label>Staff</label>
         <parameter>
-          <key>skillWand1</key>
-          <label>Wand skill 1</label>
+          <key>skillStaff1</key>
+          <label>Staff skill 1</label>
           <dropDown>
-            <key>skillWand</key>
+            <key>optionsSkillStaff</key>
           </dropDown>
         </parameter>
         <parameter>
-          <key>skillWand2</key>
-          <label>Wand skill 2</label>
+          <key>skillStaff2</key>
+          <label>Staff skill 2</label>
           <dropDown>
-            <key>skillWand</key>
+            <key>optionsSkillStaff</key>
           </dropDown>
         </parameter>
         <parameter>
-          <key>skillWand3</key>
-          <label>Wand skill 3</label>
+          <key>skillStaff3</key>
+          <label>Staff skill 3</label>
           <dropDown>
-            <key>skillWand</key>
+            <key>optionsSkillStaff</key>
           </dropDown>
         </parameter>
         <parameter>
-          <key>skillWand4</key>
-          <label>Wand skill 4</label>
+          <key>skillStaff4</key>
+          <label>Staff skill 4</label>
           <dropDown>
-            <key>skillWand</key>
+            <key>optionsSkillStaff</key>
           </dropDown>
         </parameter>
         <parameter>
-          <key>skillWand5</key>
-          <label>Wand skill 5</label>
+          <key>skillStaff5</key>
+          <label>Staff skill 5</label>
           <dropDown>
-            <key>skillWand</key>
+            <key>optionsSkillStaff</key>
           </dropDown>
         </parameter>
         <parameter>
-          <key>skillWand6</key>
-          <label>Wand skill 6</label>
+          <key>skillStaff6</key>
+          <label>Staff skill 6</label>
           <dropDown>
-            <key>skillWand</key>
+            <key>optionsSkillStaff</key>
           </dropDown>
         </parameter>
       </category>
       <category>
-        <label>Hammer</label>
+        <label>Archistaff</label>
+        <parameter>
+          <key>skillArchistaff1</key>
+          <label>Archistaff skill 1</label>
+          <dropDown>
+            <key>optionsSkillStaff</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillArchistaff2</key>
+          <label>Archistaff skill 2</label>
+          <dropDown>
+            <key>optionsSkillStaff</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillArchistaff3</key>
+          <label>Archistaff skill 3</label>
+          <dropDown>
+            <key>optionsSkillStaff</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillArchistaff4</key>
+          <label>Archistaff skill 4</label>
+          <dropDown>
+            <key>optionsSkillStaff</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillArchistaff5</key>
+          <label>Archistaff skill 5</label>
+          <dropDown>
+            <key>optionsSkillStaff</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillArchistaff6</key>
+          <label>Archistaff skill 6</label>
+          <dropDown>
+            <key>optionsSkillStaff</key>
+          </dropDown>
+        </parameter>
+      </category>
+      <category>
+        <label>Warhammer</label>
         <parameter>
           <key>skillHammer1</key>
-          <label>Hammer skill 1</label>
+          <label>Warhammer skill 1</label>
           <dropDown>
-            <key>skillHammer</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer2</key>
-          <label>Hammer skill 2</label>
+          <label>Warhammer skill 2</label>
           <dropDown>
-            <key>skillHammer</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer3</key>
-          <label>Hammer skill 3</label>
+          <label>Warhammer skill 3</label>
           <dropDown>
-            <key>skillHammer</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer4</key>
-          <label>Hammer skill 4</label>
+          <label>Warhammer skill 4</label>
           <dropDown>
-            <key>skillHammer</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer5</key>
-          <label>Hammer skill 5</label>
+          <label>Warhammer skill 5</label>
           <dropDown>
-            <key>skillHammer</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillHammer6</key>
-          <label>Hammer skill 6</label>
+          <label>Warhammer skill 6</label>
           <dropDown>
-            <key>skillHammer</key>
+            <key>optionsSkillLSword</key>
           </dropDown>
         </parameter>
       </category>
@@ -1042,42 +1970,87 @@
           <key>skillShield1</key>
           <label>Shield skill 1</label>
           <dropDown>
-            <key>skillShield</key>
+            <key>optionsSkillShield</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillShield2</key>
           <label>Shield skill 2</label>
           <dropDown>
-            <key>skillShield</key>
+            <key>optionsSkillShield</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillShield3</key>
           <label>Shield skill 3</label>
           <dropDown>
-            <key>skillShield</key>
+            <key>optionsSkillShield</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillShield4</key>
           <label>Shield skill 4</label>
           <dropDown>
-            <key>skillShield</key>
+            <key>optionsSkillShield</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillShield5</key>
           <label>Shield skill 5</label>
           <dropDown>
-            <key>skillShield</key>
+            <key>optionsSkillShield</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillShield6</key>
           <label>Shield skill 6</label>
           <dropDown>
-            <key>skillShield</key>
+            <key>optionsSkillShield</key>
+          </dropDown>
+        </parameter>
+      </category>
+      <category>
+        <label>Magick Shield</label>
+        <parameter>
+          <key>skillMShield1</key>
+          <label>Shield skill 1</label>
+          <dropDown>
+            <key>optionsSkillMShield</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMShield2</key>
+          <label>Shield skill 2</label>
+          <dropDown>
+            <key>optionsSkillMShield</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMShield3</key>
+          <label>Shield skill 3</label>
+          <dropDown>
+            <key>optionsSkillMShield</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMShield4</key>
+          <label>Shield skill 4</label>
+          <dropDown>
+            <key>optionsSkillMShield</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMShield5</key>
+          <label>Shield skill 5</label>
+          <dropDown>
+            <key>optionsSkillMShield</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMShield6</key>
+          <label>Shield skill 6</label>
+          <dropDown>
+            <key>optionsSkillMShield</key>
           </dropDown>
         </parameter>
       </category>
@@ -1087,48 +2060,138 @@
           <key>skillBow1</key>
           <label>Bow skill 1</label>
           <dropDown>
-            <key>skillBow</key>
+            <key>optionsSkillBow</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillBow2</key>
           <label>Bow skill 2</label>
           <dropDown>
-            <key>skillBow</key>
+            <key>optionsSkillBow</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillBow3</key>
           <label>Bow skill 3</label>
           <dropDown>
-            <key>skillBow</key>
+            <key>optionsSkillBow</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillBow4</key>
           <label>Bow skill 4</label>
           <dropDown>
-            <key>skillBow</key>
+            <key>optionsSkillBow</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillBow5</key>
           <label>Bow skill 5</label>
           <dropDown>
-            <key>skillBow</key>
+            <key>optionsSkillBow</key>
           </dropDown>
         </parameter>
         <parameter>
           <key>skillBow6</key>
           <label>Bow skill 6</label>
           <dropDown>
-            <key>skillBow</key>
+            <key>optionsSkillBow</key>
+          </dropDown>
+        </parameter>
+      </category>
+      <category>
+        <label>Longbow</label>
+        <parameter>
+          <key>skillLBow1</key>
+          <label>Longbow skill 1</label>
+          <dropDown>
+            <key>optionsSkillLBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillLBow2</key>
+          <label>Longbow skill 2</label>
+          <dropDown>
+            <key>optionsSkillLBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillLBow3</key>
+          <label>Longbow skill 3</label>
+          <dropDown>
+            <key>optionsSkillLBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillLBow4</key>
+          <label>Longbow skill 4</label>
+          <dropDown>
+            <key>optionsSkillLBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillLBow5</key>
+          <label>Longbow skill 5</label>
+          <dropDown>
+            <key>optionsSkillLBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillLBow6</key>
+          <label>Longbow skill 6</label>
+          <dropDown>
+            <key>optionsSkillLBow</key>
+          </dropDown>
+        </parameter>
+      </category>
+      <category>
+        <label>Magick Bow</label>
+        <parameter>
+          <key>skillMBow1</key>
+          <label>Magick Bow skill 1</label>
+          <dropDown>
+            <key>optionsSkillMBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMBow2</key>
+          <label>Magick Bow skill 2</label>
+          <dropDown>
+            <key>optionsSkillMBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMBow3</key>
+          <label>Magick Bow skill 3</label>
+          <dropDown>
+            <key>optionsSkillMBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMBow4</key>
+          <label>Magick Bow skill 4</label>
+          <dropDown>
+            <key>optionsSkillMBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMBow5</key>
+          <label>Magick Bow skill 5</label>
+          <dropDown>
+            <key>optionsSkillMBow</key>
+          </dropDown>
+        </parameter>
+        <parameter>
+          <key>skillMBow6</key>
+          <label>Magick Bow skill 6</label>
+          <dropDown>
+            <key>optionsSkillMBow</key>
           </dropDown>
         </parameter>
       </category>
     </category>
     <category>
-      <label>Inclination (experimental!)</label>
+      <label>Inclination (highest 2 values)</label>
       <parameter>
         <key>incScatherValue</key>
         <label>Scather</label>
@@ -1412,6 +2475,10 @@
       <template>
         <key>mParam</key>
         <data>
+          <name>mLevel</name>
+          <key>level</key>
+        </data>
+        <data>
           <name>mJob</name>
           <key>vocation</key>
         </data>
@@ -1466,21 +2533,21 @@
         </array>
         <array>
           <name>mWeaponSkill[nWeapon::WAND]</name>
-          <key>skillWand1</key>
-          <key>skillWand2</key>
-          <key>skillWand3</key>
-          <key>skillWand4</key>
-          <key>skillWand5</key>
-          <key>skillWand6</key>
+          <key>skillStaff1</key>
+          <key>skillStaff2</key>
+          <key>skillStaff3</key>
+          <key>skillStaff4</key>
+          <key>skillStaff5</key>
+          <key>skillStaff6</key>
         </array>
         <array>
           <name>mWeaponSkill[nWeapon::WAND_DX]</name>
-          <key>skillWandDX1</key>
-          <key>skillWandDX2</key>
-          <key>skillWandDX3</key>
-          <key>skillWandDX4</key>
-          <key>skillWandDX5</key>
-          <key>skillWandDX6</key>
+          <key>skillArchistaff1</key>
+          <key>skillArchistaff2</key>
+          <key>skillArchistaff3</key>
+          <key>skillArchistaff4</key>
+          <key>skillArchistaff5</key>
+          <key>skillArchistaff6</key>
         </array>
         <array>
           <name>mWeaponSkill[nWeapon::HAMMER]</name>
@@ -1502,12 +2569,12 @@
         </array>
         <array>
           <name>mWeaponSkill[nWeapon::SHIELD_L]</name>
-          <key>skillShieldL1</key>
-          <key>skillShieldL2</key>
-          <key>skillShieldL3</key>
-          <key>skillShieldL4</key>
-          <key>skillShieldL5</key>
-          <key>skillShieldL6</key>
+          <key>skillMShield1</key>
+          <key>skillMShield2</key>
+          <key>skillMShield3</key>
+          <key>skillMShield4</key>
+          <key>skillMShield5</key>
+          <key>skillMShield6</key>
         </array>
         <array>
           <name>mWeaponSkill[nWeapon::BOW]</name>
@@ -1520,21 +2587,21 @@
         </array>
         <array>
           <name>mWeaponSkill[nWeapon::BOW_L]</name>
-          <key>skillBowL1</key>
-          <key>skillBowL2</key>
-          <key>skillBowL3</key>
-          <key>skillBowL4</key>
-          <key>skillBowL5</key>
-          <key>skillBowL6</key>
+          <key>skillLBow1</key>
+          <key>skillLBow2</key>
+          <key>skillLBow3</key>
+          <key>skillLBow4</key>
+          <key>skillLBow5</key>
+          <key>skillLBow6</key>
         </array>
         <array>
           <name>mWeaponSkill[nWeapon::BOW_MG]</name>
-          <key>skillBowMG1</key>
-          <key>skillBowMG2</key>
-          <key>skillBowMG3</key>
-          <key>skillBowMG4</key>
-          <key>skillBowMG5</key>
-          <key>skillBowMG6</key>
+          <key>skillMBow1</key>
+          <key>skillMBow2</key>
+          <key>skillMBow3</key>
+          <key>skillMBow4</key>
+          <key>skillMBow5</key>
+          <key>skillMBow6</key>
         </array>
         <array>
           <name>mSkillLv1</name>
@@ -1552,6 +2619,110 @@
           <key>skillLv1_12</key>
           <key>skillLv1_13</key>
           <key>skillLv1_14</key>
+        </array>
+        <array>
+          <name>mSkillLv2</name>
+          <key>skillLv2_1</key>
+          <key>skillLv2_2</key>
+          <key>skillLv2_3</key>
+          <key>skillLv2_4</key>
+          <key>skillLv2_5</key>
+          <key>skillLv2_6</key>
+          <key>skillLv2_7</key>
+          <key>skillLv2_8</key>
+          <key>skillLv2_9</key>
+          <key>skillLv2_10</key>
+          <key>skillLv2_11</key>
+          <key>skillLv2_12</key>
+          <key>skillLv2_13</key>
+          <key>skillLv2_14</key>
+        </array>
+        <data>
+          <name>mHp</name>
+          <key>hp</key>
+        </data>
+        <data>
+          <name>mHpMax</name>
+          <key>hpMax</key>
+        </data>
+        <data>
+          <name>mHpMaxWhite</name>
+          <key>hpMaxWhite</key>
+        </data>
+        <data>
+          <name>mStamina</name>
+          <key>stamina</key>
+        </data>
+        <data>
+          <name>mStaminaBase</name>
+          <key>staminaBase</key>
+        </data>
+        <data>
+          <name>mStaminaLv</name>
+          <key>staminaLv</key>
+        </data>
+        <data>
+          <name>mBasicAttack</name>
+          <key>atk</key>
+        </data>
+        <data>
+          <name>mBasicDefend</name>
+          <key>def</key>
+        </data>
+        <data>
+          <name>mBasicMgcAttack</name>
+          <key>mAtk</key>
+        </data>
+        <data>
+          <name>mBasicMgcDefend</name>
+          <key>mDef</key>
+        </data>
+        <data>
+          <name>mExp</name>
+          <key>exp</key>
+        </data>
+        <data>
+          <name>mNextExp</name>
+          <key>expNext</key>
+        </data>
+        <array>
+          <name>mJobExp</name>
+          <key></key>
+          <key>jobExp1</key>
+          <key>jobExp2</key>
+          <key>jobExp3</key>
+          <key>jobExp4</key>
+          <key>jobExp5</key>
+          <key>jobExp6</key>
+          <key>jobExp7</key>
+          <key>jobExp8</key>
+          <key>jobExp9</key>
+        </array>
+        <array>
+          <name>mJobNextExp</name>
+          <key></key>
+          <key>jobExpNext1</key>
+          <key>jobExpNext2</key>
+          <key>jobExpNext3</key>
+          <key>jobExpNext4</key>
+          <key>jobExpNext5</key>
+          <key>jobExpNext6</key>
+          <key>jobExpNext7</key>
+          <key>jobExpNext8</key>
+          <key>jobExpNext9</key>
+        </array>
+        <array>
+          <name>mJobPoint</name>
+          <key></key>
+          <key>jobPoint1</key>
+          <key>jobPoint2</key>
+          <key>jobPoint3</key>
+          <key>jobPoint4</key>
+          <key>jobPoint5</key>
+          <key>jobPoint6</key>
+          <key>jobPoint7</key>
+          <key>jobPoint8</key>
+          <key>jobPoint9</key>
         </array>
       </template>
       <template>
