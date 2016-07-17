@@ -19,6 +19,7 @@
     -->
     <optionsDict>
       <optionsDictEntry>
+        <!-- here are some test changes -->
         <key>optionsSkillSword</key>
         <option>
           <label>Blink Strike | Burst Strike</label>
