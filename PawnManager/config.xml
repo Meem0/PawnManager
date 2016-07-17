@@ -32,6 +32,7 @@
           <label>Downthrust | Downcrack</label>
           <value>42</value>
         </option>
+        <!-- this tosses a tusk-->
         <option>
           <label>Tusk Toss | Antler Toss</label>
           <value>43</value>
