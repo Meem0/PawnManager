@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.IO;
 using System.Xml.Linq;
+using System.Xml;
+using System.Text;
 
 namespace PawnManager
 {
@@ -56,10 +58,38 @@ namespace PawnManager
         public PawnData Import()
         {
             bool? isPacked;
-            string savText = LoadSav(out isPacked);
-            XElement savRoot = XElement.Parse(savText);
+            XElement savRoot = LoadSav(out isPacked);
 
             return PawnIO.LoadPawnSav(SavSourcePawn, savRoot);
+        }
+
+        private string EncodeXml(XElement xml)
+        {
+            string ret = "";
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                UTF8Encoding encoding = new UTF8Encoding(false);
+                using (StreamWriter streamWriter = new StreamWriter(memoryStream, encoding))
+                {
+                    XmlWriterSettings settings = new XmlWriterSettings();
+                    settings.NewLineChars = "\n";
+                    using (XmlWriter xmlWriter = XmlWriter.Create(streamWriter, settings))
+                    {
+                        xmlWriter.WriteStartDocument();
+                        xmlWriter.WriteWhitespace("\n");
+                        xml.WriteTo(xmlWriter);
+                        xmlWriter.WriteWhitespace("\n");
+                    }
+
+                    byte[] buffer = new byte[memoryStream.Length];
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    memoryStream.Read(buffer, 0, (int)memoryStream.Length);
+
+                    string replaceStr = encoding.GetString(buffer, 0, (int)memoryStream.Length);
+                    ret = replaceStr.Replace(" />", "/>");
+                }
+            }
+            return ret;
         }
 
         /// <summary>
@@ -72,15 +102,14 @@ namespace PawnManager
         public void Export(PawnData exportPawn)
         {
             bool? isPacked;
-            string savText = LoadSav(out isPacked);
-            XElement savRoot = XElement.Parse(savText, LoadOptions.PreserveWhitespace);
+            XElement savRoot = LoadSav(out isPacked);
 
             PawnIO.SavePawnSav(exportPawn, SavSourcePawn, savRoot);
 
             if (isPacked == true)
             {
-                string savTextEdited = savRoot.ToString(SaveOptions.DisableFormatting);
-                SavTool.RepackSav(SavPath, savTextEdited);
+                string encoded = EncodeXml(savRoot);
+                SavTool.RepackSav(SavPath, encoded);
             }
             else if (isPacked == false)
             {
@@ -88,7 +117,7 @@ namespace PawnManager
             }
         }
         
-        private string LoadSav(out bool? isPacked)
+        private XElement LoadSav(out bool? isPacked)
         {
             if (!File.Exists(SavPath))
             {
@@ -100,13 +129,13 @@ namespace PawnManager
             if (SavTool.ValidateSav(SavPath))
             {
                 isPacked = true;
-                return SavTool.UnpackSav(SavPath);
+                string unpackedText = SavTool.UnpackSav(SavPath);
+                return XElement.Parse(unpackedText, LoadOptions.PreserveWhitespace);
             }
             else
             {
-                string unpackedText = File.ReadAllText(SavPath);
                 isPacked = false;
-                return unpackedText;
+                return XElement.Load(SavPath, LoadOptions.PreserveWhitespace);
             }
         }
         
