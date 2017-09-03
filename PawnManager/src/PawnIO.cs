@@ -161,7 +161,12 @@ namespace PawnManager
             {
                 try
                 {
-                    xElement.GetValueAttribute().Value = (parameter.Value.ToInt64()).ToString();
+                    string parameterString = (parameter.Value.ToInt64()).ToString();
+                    if (parameter.FormatAsFloat)
+                    {
+                        parameterString += ".000000";
+                    }
+                    xElement.GetValueAttribute().Value = parameterString;
                 }
                 catch (Exception ex)
                 {
@@ -473,6 +478,7 @@ namespace PawnManager
         private const string ElementNameEditTypeDropDownDisableCustom = "disableCustom";
         private const string ElementNameEditTypeSlider = "slider";
         private const string ElementNameEditTypeSliderConverter = "converter";
+        private const string ElementNameEditTypeSliderFloat = "float";
         private const string ElementNameEditTypeSliderMin = "min";
         private const string ElementNameEditTypeSliderMax = "max";
 
@@ -609,11 +615,13 @@ namespace PawnManager
             try
             {
                 XElement converterElement = xElement.Element(ElementNameEditTypeSliderConverter);
+                XElement floatElement = xElement.Element(ElementNameEditTypeSliderFloat);
                 return new PawnTemplateParameterSlider
                 {
                     Minimum = xElement.Element(ElementNameEditTypeSliderMin).Value.ToInt(),
                     Maximum = xElement.Element(ElementNameEditTypeSliderMax).Value.ToInt(),
-                    ValueConverter = PawnTemplateParameterSlider.CreateConverterFromKey(converterElement == null ? "" : converterElement.Value)
+                    ValueConverter = PawnTemplateParameterSlider.CreateConverterFromKey(converterElement == null ? "" : converterElement.Value),
+                    FormatAsFloat = floatElement != null,
                 };
             }
             catch (Exception ex)

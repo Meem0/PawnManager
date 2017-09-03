@@ -5,6 +5,7 @@ namespace PawnManager
     public class PawnParameter
     {
         public object Value { get; set; }
+        public bool FormatAsFloat { get; set; } = false;
     }
 
     public class PawnData

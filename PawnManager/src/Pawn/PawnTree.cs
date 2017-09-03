@@ -201,6 +201,7 @@ namespace PawnManager
             {
                 value.Value = value.Value.ToInt();
                 base.PawnParameter = value;
+                base.PawnParameter.FormatAsFloat = Template.FormatAsFloat;
             }
         }
 

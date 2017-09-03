@@ -98,6 +98,7 @@ namespace PawnManager
     public class PawnTemplateParameterSlider : PawnTemplateParameter
     {
         public Converter ValueConverter { get; set; }
+        public bool FormatAsFloat { get; set; }
         public int Minimum { get; set; }
         public int Maximum { get; set; }
         public int UIMinimum
