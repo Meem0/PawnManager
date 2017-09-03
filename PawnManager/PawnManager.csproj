@@ -81,7 +81,6 @@
     <Compile Include="src\Pawn\PawnTree.cs" />
     <Compile Include="src\SavTab.cs" />
     <Compile Include="src\SavTool.cs" />
-    <Compile Include="src\SavXmlWriter.cs" />
     <Compile Include="src\Tree\Collection.cs" />
     <Compile Include="src\Tree\Converters.cs" />
     <Compile Include="src\Tree\ITreeModel.cs" />
