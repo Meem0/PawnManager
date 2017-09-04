@@ -106,14 +106,15 @@ namespace PawnManager
 
             PawnIO.SavePawnSav(exportPawn, SavSourcePawn, savRoot);
 
+            string encoded = EncodeXml(savRoot);
+
             if (isPacked == true)
             {
-                string encoded = EncodeXml(savRoot);
                 SavTool.RepackSav(SavPath, encoded);
             }
             else if (isPacked == false)
             {
-                savRoot.Save(SavPath, SaveOptions.DisableFormatting);
+                File.WriteAllText(SavPath, encoded, new UTF8Encoding(false));
             }
         }
         
